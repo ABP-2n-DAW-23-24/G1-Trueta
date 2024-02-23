@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('conditions', function (Blueprint $table) {
             $table->id();
-            $table->integer('criteriaId');
+            $table->unsignedBigInteger('criteriaId');
             $table->integer('min');
             $table->integer('max');
             $table->timestamps();

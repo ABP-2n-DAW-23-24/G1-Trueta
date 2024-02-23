@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('conditionsDoses', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('medicationId');
-            $table->unsignedBigInteger('conditionId');
+        Schema::table('conditionsDoses', function (Blueprint $table) {
+            $table->foreign('conditionId')->references('id')->on('conditions');
+            $table->foreign('medicationId')->references('id')->on('medication');
+
         });
     }
 
@@ -23,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('conditionsDoses', function (Blueprint $table) {
+            //
+        });
     }
 };
