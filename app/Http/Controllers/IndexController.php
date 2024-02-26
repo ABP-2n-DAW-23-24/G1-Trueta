@@ -9,11 +9,13 @@ use App\Models\Dose;
 
 class IndexController extends Controller
 {
-    public function index() {        
-        $dose = Dose::getDose(7, 65, 90, 30);
+    
 
-        dd([$dose]);
+    public function index() {        
+
 
         return Inertia::render('Index');
     }
+
+
 }
