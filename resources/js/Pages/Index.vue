@@ -7,17 +7,20 @@ import Wizard from '@/Components/Wizard.vue';
 <template>
     <body>
         <Logo class="logo" />
-        <Aside class="aside"/>
-        <Wizard class="main"/>
+        <Aside class="aside" />
+        <Wizard class="main" />
     </body>
 </template>
 
 <style scoped> .logo {
      grid-area: logo;
+
+
  }
 
  .aside {
      grid-area: aside;
+
  }
 
  .main {
@@ -33,12 +36,11 @@ import Wizard from '@/Components/Wizard.vue';
          'logo main'
          'aside main';
      grid-template-columns: 1fr 4fr;
-     overflow: hidden;
+        grid-template-rows: 100px 1fr;
+     height: 100%;
+
  }
 
- .aside {
-     background-color: red;
- }
 
  .main {
      background-color: green;
