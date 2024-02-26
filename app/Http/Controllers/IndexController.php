@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Inertia\Response;
+
+use App\Models\Dose;
 
 class IndexController extends Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
+    public function index() {        
+        // $dose = Dose::getDose(7, 65, 90, 30);
 
-    public function index(): Response
-    {
+        // dd([$dose]);
+
         return Inertia::render('Index');
     }
 }
