@@ -1,10 +1,9 @@
 <script setup></script>
 
 <template>
-    <div class="aside">
-    
+    <div>
+        <slot></slot>
     </div>
 </template>
 
 <style scoped></style>
-```

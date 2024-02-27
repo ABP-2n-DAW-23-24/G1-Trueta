@@ -14,7 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="column has-text-centered m-auto is-size-2 box"
+    <div class="column m-5 box is-size-2 has-text-centered is-full"
       :class="{
         'has-surgery has-text-white': type === 'cirugia',
         'has-subSurgery has-text-white': type === 'subcirugia'
@@ -26,9 +26,18 @@ const props = defineProps({
 <style>
 .has-subSurgery {
     background-color: #34bbca;
+    min-width: 250px;
+    @media (max-width: 430px) {
+      min-width: 200px;
+      max-height: 200px;
+    }
 }
 .has-surgery {
     background-color: #1131d4;
+    min-width: 250px;
+    @media (max-width: 430px) {
+      min-width: 200px;
+      max-height: 200px;
+  }
 }
-
 </style>
