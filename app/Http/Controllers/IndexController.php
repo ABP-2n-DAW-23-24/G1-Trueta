@@ -11,7 +11,6 @@ class IndexController extends Controller
 {
     public function index() {        
         // $dose = Dose::getDose(7, 65, 90, 30);
-
         // dd([$dose]);
 
         return Inertia::render('Index');
