@@ -1,4 +1,7 @@
 <script setup>
+import { ref,defineProps  } from 'vue';
+
+import Footer from '@/Components/Footer.vue';
 import Logo from '@/Components/Logo.vue';
 import Aside from '@/Components/Aside.vue';
 import Wizard from '@/Components/Wizard.vue';

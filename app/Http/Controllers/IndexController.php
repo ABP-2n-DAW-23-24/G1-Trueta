@@ -7,13 +7,31 @@ use Inertia\Inertia;
 
 use App\Models\Dose;
 
+use App\Models\Surgery;
+use App\Models\Operation;
+
 class IndexController extends Controller
 {
+    
+
     public function index() {        
         // $dose = Dose::getDose(7, 65, 90, 30);
 
         // dd([$dose]);
 
-        return Inertia::render('Index');
+     
+            $surgeries = Surgery::with('operations')->get();
+    
+            $groupedSurgeries = $surgeries->map(function ($surgery) {
+                return [
+                    'surgery_name' => $surgery->name,
+                    'operations' => $surgery->operations->pluck('name')->all(),
+                ];
+            });
+    
+            return Inertia::render('Index', ['Surgeries' => $groupedSurgeries]);
+        
     }
+
+
 }
