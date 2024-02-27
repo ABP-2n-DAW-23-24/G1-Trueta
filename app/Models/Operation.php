@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Model\Surgery;
 
 class Operation extends Model
 {
@@ -12,4 +13,9 @@ class Operation extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function surgery()
+    {
+        return $this->belongsTo(Surgery::class, 'surgeryId');
+    }
 }

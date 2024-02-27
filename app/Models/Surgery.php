@@ -13,4 +13,10 @@ class Surgery extends Model
         'name',
         'surgeryId'
     ];
+
+    public function operations()
+    {
+        return $this->hasMany(Operation::class, 'surgeryId', 'id');
+    }
+
 }
