@@ -1,23 +1,33 @@
 <script setup>
+import { ref,defineProps  } from 'vue';
+
+import Footer from '@/Components/Footer.vue';
 import Logo from '@/Components/Logo.vue';
 import Aside from '@/Components/Aside.vue';
 import Wizard from '@/Components/Wizard.vue';
+
+const props = defineProps(['Surgeries']);
+const surgeries = ref(props.Surgeries);
 </script>
 
 <template>
     <body>
         <Logo class="logo" />
-        <Aside class="aside"/>
-        <Wizard class="main"/>
+        <Aside class="aside" :surgeries="surgeries" />
+        <Wizard class="main" />
     </body>
+    <Footer />
 </template>
 
 <style scoped> .logo {
      grid-area: logo;
+
+
  }
 
  .aside {
      grid-area: aside;
+
  }
 
  .main {
@@ -33,12 +43,11 @@ import Wizard from '@/Components/Wizard.vue';
          'logo main'
          'aside main';
      grid-template-columns: 1fr 4fr;
-     overflow: hidden;
+        grid-template-rows: 100px 1fr;
+     height: 100vh;
+
  }
 
- .aside {
-     background-color: red;
- }
 
  .main {
      background-color: green;
