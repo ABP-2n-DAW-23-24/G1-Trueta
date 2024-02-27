@@ -1,17 +1,21 @@
-<script setup></script>
+<script setup>
+import WizardHeader from '@/Components/WizardHeader.vue';
+import WizardGrid from '@/Components/WizardGrid.vue';
+import WizardSquare from '@/Components/WizardSquare.vue';
+</script>
 
 <template>
-    <div class="aside">
-
-
+    <div>
+        <WizardHeader></WizardHeader>
+        <WizardGrid>
+            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
+            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
+            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
+            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
+            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
+            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
+        </WizardGrid>
     </div>
 </template>
 
-<style scoped>
-
-.aside{
-    height: 100vh;
-}
-
-</style>
-```
+<style scoped></style>
