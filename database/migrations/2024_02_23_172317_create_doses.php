@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('doses', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->unsignedBigInteger('conditionsDosesId');
+            $table->unsignedBigInteger('medicationId');
             $table->string('dose');
+            $table->timestamps();
         });
     }
 
