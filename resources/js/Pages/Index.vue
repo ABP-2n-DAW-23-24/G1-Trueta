@@ -1,4 +1,5 @@
 <script setup>
+import Footer from '@/Components/Footer.vue';
 import Logo from '@/Components/Logo.vue';
 import Aside from '@/Components/Aside.vue';
 import Wizard from '@/Components/Wizard.vue';
@@ -10,6 +11,7 @@ import Wizard from '@/Components/Wizard.vue';
         <Aside class="aside"/>
         <Wizard class="main"/>
     </body>
+    <Footer />
 </template>
 
 <style scoped> .logo {
