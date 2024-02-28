@@ -7,10 +7,12 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\MedicationPanelController;
 
 
 Route::get('/', [IndexController::class, 'index'])->name('footer');
 
+Route::get('/medication-panel', [MedicationPanelController::class, 'index'])->name('medication-panel');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
