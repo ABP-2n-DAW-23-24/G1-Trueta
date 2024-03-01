@@ -21,7 +21,7 @@ class MedicationPanelController extends Controller
     // insert medication
     public function addMedication(Request $request) {
         $data = $request->all();
-        $medication = Medication::addMedication($data);
+        $medication = Medication::create($data);
         
     }
 }
