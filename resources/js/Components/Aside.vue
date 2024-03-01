@@ -17,7 +17,7 @@ const toggleCollapse = (key) => {
 
 <template>
     <aside class="menu">
-      <ul class="menu-list">
+      <ul class="menu-list" style="margin-bottom: 20px;">
         <li v-for="surgery in surgeries" :key="surgery.surgery_name">
           <div class="title">
             <a class="name" @click="toggleCollapse(surgery.surgery_name)">{{ surgery.surgery_name }}</a>
@@ -29,7 +29,7 @@ const toggleCollapse = (key) => {
               :class="{ 'arrow-rotated': collapsed[surgery.surgery_name] }"
             />
           </div>
-          <ul class="name-list" v-if="collapsed[surgery.surgery_name]">
+          <ul class="name-list" v-if="collapsed[surgery.surgery_name]" >
             <li v-for="operation in surgery.operations" :key="operation">
               <a>{{ operation }}</a>
             </li>

@@ -9,6 +9,8 @@ use App\Models\Dose;
 
 use App\Models\Surgery;
 use App\Models\Operation;
+use Illuminate\Support\Facades\Auth;
+
 
 class IndexController extends Controller
 {
@@ -28,7 +30,11 @@ class IndexController extends Controller
                 ];
             });
     
-            return Inertia::render('Index', ['Surgeries' => $groupedSurgeries]);
+            return Inertia::render('Index', [
+                'Surgeries' => $groupedSurgeries,
+                'Auth'=>Auth::user(),
+
+            ]);
         
     }
 
