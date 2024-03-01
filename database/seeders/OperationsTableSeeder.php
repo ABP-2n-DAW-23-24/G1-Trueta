@@ -66,10 +66,35 @@ class OperationsTableSeeder extends Seeder
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Procediments de cirurgia menor com:Litotrícia extracorpòrea,Cirurgia endourològica ambulatòria,Cistoscòpia,Cirurgia nèta testicular Fimosi,Cirurgia de penis sense implant'
+            'name' => 'Litotrícia extracorpòrea,Cirurgia de penis sense implant'
         ]);
 
-        
+        Operation::create([
+            'surgeryId' => 2,
+            'name' => 'Cirurgia endourològica ambulatòria'
+        ]);
+
+        Operation::create([
+            'surgeryId' => 2,
+            'name' => 'Cistoscòpia'
+        ]);
+
+        Operation::create([
+            'surgeryId' => 2,
+            'name' => 'Cirurgia nèta testicular'
+        ]);
+
+        Operation::create([
+            'surgeryId' => 2,
+            'name' => 'Fimosi'
+        ]);
+
+        Operation::create([
+            'surgeryId' => 2,
+            'name' => 'Cirurgia de penis sense implant'
+        ]);
+
+
         Operation::create([
             'surgeryId' => 3,
             'name' => 'Cesària'
