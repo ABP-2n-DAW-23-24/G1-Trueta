@@ -7,9 +7,13 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\MedicationPanelController;
 
 
 
+Route::get('/medication-panel', [MedicationPanelController::class, 'index'])->name('medication-panel');
+Route::get('/medication-panel/get-medication', [MedicationPanelController::class, 'getMedication'])->name('get-medication');
+Route::post('/medication-panel/add-medication', [MedicationPanelController::class, 'addMedication'])->name('add-medication');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
