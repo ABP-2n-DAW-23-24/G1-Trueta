@@ -4,6 +4,7 @@
     <div class="logo">
      <img src="../../assets/img/logoTrueta.png" alt="Logo Trueta">
     </div>
+   
 
 </template>
 
@@ -23,6 +24,5 @@
         height: 50px;
     }
 }
-
 </style>
    

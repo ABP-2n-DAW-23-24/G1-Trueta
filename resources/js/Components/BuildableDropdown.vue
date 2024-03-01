@@ -3,7 +3,8 @@ import { ref,onMounted  } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 //values for use the component
 const props = defineProps({
-  text: String,
+  text: Object,
+
   routes: Object
 })
 const menuVisible = ref(false);
@@ -45,10 +46,10 @@ function toggleMenu(event) {
     <div class="relative inline-block text-left h-full" style="height: 100%;">
       <div style="height: 100%;">
         <button @click="toggleMenu" 
-          class="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none "
-          type="button" style="width: fit-content;height: 100%;background-color: #D9D9D9;"  ref="mainRef">
+          class="inline-flex items-center justify-center w-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none "
+          type="button" style="width: fit-content;height: 100%;background-color: #D9D9D9;border:none;" :style="{fontSize:text.font_size}"  ref="mainRef">
 
-          {{ text }}
+          {{ text.text }}
 
           <svg :class="menuVisible ? 'transform rotate-180' : ''" class="w-5 h-5 ml-2 -mr-1"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -68,7 +69,7 @@ function toggleMenu(event) {
        style="min-width: 100%; max-width: max-content;background-color: #D9D9D9;"
        :style="{ top: topPosition + 'px' }">
     <div class="py-1" role="none" v-for="(i, index) in routes">
-      <DropdownLink :href="route(i.routeName)"> {{ i.label }} </DropdownLink>
+      <DropdownLink :href="route(i.routeName)" :method="i.method"> {{ i.label }} </DropdownLink>
 
     </div>
   </div>

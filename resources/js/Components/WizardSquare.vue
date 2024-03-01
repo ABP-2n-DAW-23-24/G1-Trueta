@@ -25,7 +25,7 @@ const props = defineProps({
 
 <style>
 .has-subSurgery {
-    background-color: #34bbca;
+    background-color: #F1F0F0;
     min-width: 250px;
     @media (max-width: 430px) {
       min-width: 200px;
