@@ -1,17 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useForm,router } from '@inertiajs/vue3';
 
-
-
-// Refs to track which medication content is currently active
 const activeMedication = ref(1);
 
-// Function to toggle medication content
 const toggleMedication = (index) => {
     activeMedication.value = index;
 };
 
-// Function to hide all medication content except the active one
 const hideAllMedications = () => {
     document.querySelectorAll('.medicationcontent > div').forEach((medication, index) => {
         if (index !== activeMedication.value - 1) {
@@ -23,7 +20,6 @@ const hideAllMedications = () => {
 };
 
 onMounted(() => {
-    // Initially hide all medication content except the first one
     hideAllMedications();
 });
 
@@ -68,39 +64,82 @@ const closeModalCondicio = () => {
     modal.classList.remove('is-active');
 };
 
+const medications = ref([]);
+
+onMounted(() => {
+    axios.get('/medication-panel/get-medication')
+        .then(response => {
+            medications.value = response.data;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+});
+
+// form to add a new medication
+const addMedication = useForm({
+    name: '',
+});
+
+const submit = () => {
+    addMedication.post('/medication-panel/add-medication', {
+        onSuccess: () => {
+            getMedications()
+            closeModal();
+         
+        }
+    });
+};
+
+function getMedications(){
+    axios.get('/medication-panel/get-medication')
+        .then(response => {
+            medications.value = response.data;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+}
+
+
 </script>
 
 <template>
     <body>
         <div class="medications">
-            <div class="medicationbuttons">
-                <a href="#" class="medicationbutton" id="medication1btn" @click="toggleMedication(1)"
-                    :class="{ 'active': activeMedication === 1 }">GENTIMICINA</a>
-                <a href="#" class="medicationbutton" id="medication2btn" @click="toggleMedication(2)"
-                    :class="{ 'active': activeMedication === 2 }">VANCOMICINA</a>
-                <a href="#" class="medicationbutton" id="medication3btn" @click="toggleMedication(3)"
-                    :class="{ 'active': activeMedication === 3 }">AMIKACINA</a>
+            <div class="medication-button">
+                <div class="medicationbuttons" v-for="medication in medications" :key="medication.id">
+
+                    <a href="#" class="medicationbutton" :class="{ active: activeMedication === medication.id }" :value="medication.id"
+                        @click="toggleMedication(medication.id)">
+                        {{ medication.name }}
+                    </a>
+                </div>
             </div>
             <div class="afegirmedicament">
                 <div id="image-modal" class="modal">
                     <div class="modal-background" @click="closeModal"></div>
-                    <div class="modal-content">
-                        <div class="modal-card">
-                            <section class="modal-card-body">
-                                <div class="field">
-                                    <label class="label">Nom del medicament:</label>
-                                    <div class="control">
-                                        <input class="input" type="text" placeholder="Nom del medicament...">
+                    <form @submit.prevent="submit">
+                        <div class="modal-content">
+                            <div class="modal-card">
+                                <section class="modal-card-body">
+                                    <div class="field">
+                                        <label class="label">Nom del medicament:</label>
+                                        <div class="control">
+                                            <input class="input" type="text" placeholder="Nom del medicament..."
+                                                v-model="addMedication.name">
+                                        </div>
                                     </div>
-                                </div>
-                            </section>
-                            <footer class="modal-card-foot">
-                                <button class="button is-success afegirmedicamentbtn">Afegir</button>
-                                <button class="button" @click="closeModal">Cancelar</button>
-                            </footer>
+                                </section>
+                                <footer class="modal-card-foot">
+                                    <button class="button is-success afegirmedicamentbtn" type="submit">Afegir</button>
+                                    <button class="button" @click="closeModal" type="button">Cancelar</button>
+                                </footer>
+                            </div>
                         </div>
-                    </div>
-                    <button id="image-modal-close" class="modal-close" @click="closeModal"></button>
+                        <button id="image-modal-close" class="modal-close" @click="closeModal"></button>
+                    </form>
                 </div>
                 <button class="afegirmedicamentbtn" id="showModal" @click="showModal">
                     + Afegir medicament
@@ -144,7 +183,7 @@ const closeModalCondicio = () => {
                     <div class="modal" id="condicio-modal">
                         <div class="modal-background" @click="closeModalCondicio"></div>
                         <div class="modal-card">
-                            
+
                             <section class="modal-card-body">
                                 <div class="field">
                                     <div class="control select-dosis">
@@ -157,9 +196,9 @@ const closeModalCondicio = () => {
                                     </div>
                                     <label class="label label-dosis mt-5">Condició:</label>
                                     <div class="control edit-select">
-                                      
+
                                         <div class="select edit-select-div">
-                                          
+
 
                                             <select>
                                                 <option disabled selected>Selecciona una opció</option>
@@ -213,36 +252,36 @@ const closeModalCondicio = () => {
                                     <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
                                 </button>
                                 <div class="modal" id="image-modal-editar">
-                                    
-                        <div class="modal-background" @click="closeModalEditar"></div>
-                        <div class="modal-card">
-                            
-                            <section class="modal-card-body">
-                                <div class="field">
-                                    <label class="label label-dosis ">Condició:</label>
-                                    <div class="control edit-select">
-                                      
-                                        <div class="select edit-select-div">
-                                          
 
-                                            <select>
-                                                <option disabled selected>Selecciona una opció</option>
-                                                <option>Opció 1</option>
-                                                <option>Opció 2</option>
-                                                <option>Opció 3</option>
-                                            </select>
-                                        </div>
-                                        <input class="input" type="number" placeholder="Minim: ">
-                                        <input class="input" type="number" placeholder="Maxim: ">
+                                    <div class="modal-background" @click="closeModalEditar"></div>
+                                    <div class="modal-card">
+
+                                        <section class="modal-card-body">
+                                            <div class="field">
+                                                <label class="label label-dosis ">Condició:</label>
+                                                <div class="control edit-select">
+
+                                                    <div class="select edit-select-div">
+
+
+                                                        <select>
+                                                            <option disabled selected>Selecciona una opció</option>
+                                                            <option>Opció 1</option>
+                                                            <option>Opció 2</option>
+                                                            <option>Opció 3</option>
+                                                        </select>
+                                                    </div>
+                                                    <input class="input" type="number" placeholder="Minim: ">
+                                                    <input class="input" type="number" placeholder="Maxim: ">
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <footer class="modal-card-foot">
+                                            <button class="button is-success afegirmedicamentbtn">Afegir</button>
+                                            <button class="button" @click="closeModalEditar">Cancelar</button>
+                                        </footer>
                                     </div>
                                 </div>
-                            </section>
-                            <footer class="modal-card-foot">
-                                <button class="button is-success afegirmedicamentbtn">Afegir</button>
-                                <button class="button" @click="closeModalEditar">Cancelar</button>
-                            </footer>
-                        </div>
-                    </div>
                                 <button class="button is-success is-outlined editar" id="showModalEditar"
                                     @click="showModalEditar">
                                     <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
