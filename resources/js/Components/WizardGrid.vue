@@ -1,23 +1,58 @@
 <script setup>
+  import { ref } from 'vue';
+  import axios from 'axios';
+  import WizardSquare from '@/Components/WizardSquare.vue';
+
+  const props = defineProps({
+    crumb: {
+      type: Number,
+      required: true
+    },
+    setCrumb: {
+      type: Function,
+      required: true
+    }
+  });
+
+  const surgeries = ref([]);
+  const selectedSurgery = ref(0);
+
+  axios.get("/json/surgeriesWithOperations")
+  .then(response => {
+    surgeries.value = response.data;
+  });
+
+  function handleSurgeryClick(surgery) {
+    selectedSurgery.value = surgery;
+    props.setCrumb(1);
+  }
 
 </script>
 <template>
-  <div class="columns is-multiline is-centered m-5  wizard-grid bg_main">
-    <slot></slot>
+  <div class="wizard-grid-container">
+      <WizardSquare
+        v-show="crumb === 0"
+        v-for="(surgery, index) in surgeries"
+        @click="() => handleSurgeryClick(index)"
+        :name="surgery.name"
+        type="surgery"
+      />
+
+      <!-- Este es un intento de mostrar las operaciones -->
+      <!-- <WizardSquare
+        v-show="crumb === 1"
+        v-for="operation in surgeries.length > 0 ? surgeries[selectedSurgery].operations : []"
+        @click="selectedOperation = operation"
+        :name="operation.name"
+        type="operation"
+      /> -->
   </div>
 </template>
 
 <style scoped>
-/*  */
-.bg_main{
-  background:#F1F0F0;
-  border-radius:10px;
-}
-  .wizard-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
-}
+  .wizard-grid-container {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(230px, auto));
+  }
 </style>

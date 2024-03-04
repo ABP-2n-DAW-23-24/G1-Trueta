@@ -563,17 +563,6 @@ class OperationsTableSeeder extends Seeder
         Operation::create([
             'surgeryId' => 20,
             'name' => 'Shunt transjugular portosistèmic (TIPS)'
-        ]);
-
-        
-
-
-
-
-
-
-
-
-        
+        ]);        
     }
 }
