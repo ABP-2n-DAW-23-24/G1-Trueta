@@ -52,6 +52,7 @@ const submit = () => {
                         </g>
                     </svg>
                     <input
+                        autofocus
                         title="Nom d'usuari"
                         type="text"
                         class="input" 

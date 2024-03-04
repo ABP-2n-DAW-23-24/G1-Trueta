@@ -1,57 +1,55 @@
 <script setup>
-import { ref,defineProps } from 'vue';
+import { ref, defineProps } from 'vue';
+import axios from 'axios';
 
-const props = defineProps(['surgeries']);
+const surgeries = ref(null);
 
-const surgeries = props.surgeries
-const collapsed = ref({
-  cardiaca: false,
-  'urològica': false 
+axios.get("/json/surgeriesWithOperations")
+.then(response => {
+  surgeries.value = response.data;
 });
+
+const collapsed = ref({});
 
 const toggleCollapse = (key) => {
   collapsed.value[key] = !collapsed.value[key];
 };
 </script>
 
-
 <template>
-    <aside class="menu">
-      <ul class="menu-list" style="margin-bottom: 20px;">
-        <li v-for="surgery in surgeries" :key="surgery.surgery_name">
-          <div class="title">
-            <a class="name" @click="toggleCollapse(surgery.surgery_name)">{{ surgery.surgery_name }}</a>
-            <img
+  <aside class="menu">
+    <ul class="menu-list" style="margin-bottom: 20px;">
+      <li v-for="surgery in surgeries" :key="surgery.id">
+        <div class="title">
+          <a class="name" @click="toggleCollapse(surgery.id)">{{ surgery.name }}</a>
+          <img
               src="../../assets/svg/arrow.svg"
               alt="arrow"
               class="arrow"
-              @click="toggleCollapse(surgery.surgery_name)"
-              :class="{ 'arrow-rotated': collapsed[surgery.surgery_name] }"
-            />
-          </div>
-          <ul class="name-list" v-if="collapsed[surgery.surgery_name]" >
-            <li v-for="operation in surgery.operations" :key="operation">
-              <a>{{ operation }}</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </aside>
-  </template>
-
+              @click="toggleCollapse(surgery.id)"
+              :class="{ 'arrow-rotated': collapsed[surgery.id] }"
+          />
+        </div>
+        <ul class="name-list" v-if="collapsed[surgery.id]" >
+          <li v-for="operation in surgery.operations" :key="operation">
+            <a>{{ operation.name }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+</template>
 <style scoped>
 .menu {
-  grid-area: aside;
   background-color: #ffffff;
-  padding: 15px;
   height: 100%;
-  overflow-y: auto; /* Agrega un scrollbar vertical cuando el contenido excede la altura máxima */
-  padding-right: 10px; /* Agrega un espacio para el scrollbar para evitar que se superponga al contenido */
+  overflow-y: auto;
 }
 
 .name {
   color: #434343;
   font-size: 16px;
+  width: fit-content;
 }
 
 .title {

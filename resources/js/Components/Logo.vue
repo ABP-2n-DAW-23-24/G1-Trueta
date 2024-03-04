@@ -1,28 +1,20 @@
 <script setup></script>
 
 <template>
-    <div class="logo">
-     <img src="../../assets/img/logoTrueta.png" alt="Logo Trueta">
+    <div class="logo-container">
+        <img src="../../assets/img/logoTrueta.png" alt="Logotip de l'Hospital Trueta">
     </div>
-   
-
 </template>
 
 <style scoped>
-
-.logo{
+.logo-container {
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 50px;
-    height: 100px;
 }
 
-@media screen and (max-width: 768px){
-    .logo{
-        padding: 20px;
-        height: 50px;
-    }
+.logo-container img {
+    height: 100%;
 }
 </style>
-   

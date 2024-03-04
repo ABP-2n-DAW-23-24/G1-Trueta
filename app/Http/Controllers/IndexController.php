@@ -12,31 +12,14 @@ use App\Models\Operation;
 use Illuminate\Support\Facades\Auth;
 
 
+
 class IndexController extends Controller
 {
-    
+    public function index() {
+        $surgeries = Surgery::with('operations')->get()->toArray();
 
-    public function index() {        
-        // $dose = Dose::getDose(7, 65, 90, 30);
-        // dd([$dose]);
-
-     
-            $surgeries = Surgery::with('operations')->get();
-    
-            $groupedSurgeries = $surgeries->map(function ($surgery) {
-                return [
-                    'surgery_name' => $surgery->name,
-                    'operations' => $surgery->operations->pluck('name')->all(),
-                ];
-            });
-    
-            return Inertia::render('Index', [
-                'Surgeries' => $groupedSurgeries,
-                'Auth'=>Auth::user(),
-
-            ]);
-        
+        return Inertia::render('Index', [
+            'surgeries' => $surgeries
+        ]);
     }
-
-
 }
