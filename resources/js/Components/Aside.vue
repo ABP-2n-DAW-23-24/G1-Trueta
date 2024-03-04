@@ -58,6 +58,10 @@ const toggleCollapse = (key) => {
   margin: 0 !important;
 }
 
+.title a {
+  width: 100%;
+}
+
 .arrow {
   width: 20px;
   height: 20px;
