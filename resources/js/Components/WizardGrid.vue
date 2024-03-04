@@ -39,13 +39,13 @@
       />
 
       <!-- Este es un intento de mostrar las operaciones -->
-      <!-- <WizardSquare
+      <WizardSquare
         v-show="crumb === 1"
         v-for="operation in surgeries.length > 0 ? surgeries[selectedSurgery].operations : []"
         @click="selectedOperation = operation"
         :name="operation.name"
         type="operation"
-      /> -->
+      /> 
   </div>
 </template>
 
