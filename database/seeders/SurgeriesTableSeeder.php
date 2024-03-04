@@ -67,7 +67,7 @@ class SurgeriesTableSeeder extends Seeder
         ]);
 
         Surgery::create([
-            'name' => 'ESOFÀGICA,GÀSTRICA,DUODENAL SENSE OBSTRUCCIÓ'
+            'name' => 'ESOFÀGICA, GÀSTRICA, DUODENAL SENSE OBSTRUCCIÓ'
         ]);
 
         Surgery::create([

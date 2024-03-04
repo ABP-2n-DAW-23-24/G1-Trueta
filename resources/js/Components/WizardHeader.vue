@@ -1,26 +1,40 @@
 <script setup>
+import UserDropdown from "@/Components/UserDropdown.vue";
+import BreadcrumbsProgress from "@/Components/BreadcrumbsProgress.vue";
+
+const props = defineProps({
+  crumb: {
+    type: Number,
+    required: true
+  },
+  setCrumb: {
+    type: Function,
+    required: true
+  }
+});
+
+const breadcrumbs = ["Cirurgía", "Operació", "Pacient", "Resultat"];
+
 </script>
 
 <template>
-    <div class="header has-background-black m-5">
-        <div class="left has-background-primary p-4">
-
-        </div>
-        <div class="right has-background-link is-one-quarter p-4">
-
-        </div>
+    <div class="wizard-header-container">
+      <BreadcrumbsProgress
+        :breadcrumbs="breadcrumbs"
+        :crumb="crumb"
+        :setCrumb="setCrumb"
+      />
+      <UserDropdown />
     </div>
 </template>
 
 <style scoped>
-.header {
-        display: grid;
-        grid-template-columns: 2fr 0.5fr;
-        grid-template-rows: 0.5fr;
-        grid-column-gap: 0px;
-        grid-row-gap: 0px;
-    }
 
-.left { grid-area: 1 / 1 / 2 / 2; }
-.right { grid-area: 1 / 2 / 2 / 3; }
+.wizard-header-container {
+  display: grid;
+  grid-template-columns: auto 175px;
+  height: 50px;
+  gap: 15px;
+}
+
 </style>

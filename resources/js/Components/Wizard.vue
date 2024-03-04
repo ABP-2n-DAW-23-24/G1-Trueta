@@ -1,21 +1,32 @@
 <script setup>
+import { ref } from 'vue';
 import WizardHeader from '@/Components/WizardHeader.vue';
 import WizardGrid from '@/Components/WizardGrid.vue';
-import WizardSquare from '@/Components/WizardSquare.vue';
+
+const crumb = ref(0);
+
+function setCrumb(value) {
+  crumb.value = value;
+}
+
 </script>
 
 <template>
-    <div>
-        <WizardHeader></WizardHeader>
-        <WizardGrid>
-            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
-            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
-            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
-            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
-            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
-            <WizardSquare name="asdadsda" type="cirugia"></WizardSquare>
-        </WizardGrid>
+    <div class="wizard-container">
+        <WizardHeader
+            :crumb="crumb"
+            :setCrumb="setCrumb"
+        />
+        <WizardGrid
+            :crumb="crumb"
+            :setCrumb="setCrumb"
+        />
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.wizard-container {
+    display: grid;
+    gap: 15px;
+}
+</style>
