@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Medication;
+use App\Models\Dose;
+use App\Models\Condition;
+use App\Models\Criteria;
+use App\Models\ConditionsDose;
 
 class MedicationPanelController extends Controller
 {
@@ -14,7 +18,7 @@ class MedicationPanelController extends Controller
 
     // get medication
     public function getMedication() {
-        $medications = Medication::getAllMedications();
+        $medications = Medication::get();
         return response()->json($medications);
     }
 
@@ -24,4 +28,20 @@ class MedicationPanelController extends Controller
         $medication = Medication::create($data);
         
     }
+
+    // get dose by medication and their condition_dose, condition and criteria
+    public function getDoseByMedication($medicationId) {
+        $condition = Condition::getAllConditions($medicationId);
+        return response()->json($condition);
+    }
+
+    // delete condition_dose by condition id and dose id
+    public function deleteConditionDose($conditionId, $doseId) {
+        $conditionDose = ConditionsDose::where('conditionId', $conditionId)
+            ->where('doseId', $doseId)
+            ->delete();
+    }
+
+   
+
 }
