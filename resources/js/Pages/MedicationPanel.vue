@@ -1,17 +1,20 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useForm,router } from '@inertiajs/vue3';
+import { useForm, router } from '@inertiajs/vue3';
 
-const activeMedication = ref(1);
+const activeMedication = ref(null); // Cambiar el valor inicial a null
 
-const toggleMedication = (index) => {
-    activeMedication.value = index;
+const toggleMedication = (medicationId) => {
+    activeMedication.value = medicationId;
+    console.log(activeMedication.value);
+    getDoses(medicationId);
 };
 
 const hideAllMedications = () => {
-    document.querySelectorAll('.medicationcontent > div').forEach((medication, index) => {
-        if (index !== activeMedication.value - 1) {
+    document.querySelectorAll('.medicationcontent > div').forEach((medication) => {
+        const medicationId = parseInt(medication.dataset.medicationId);
+        if (medicationId !== activeMedication.value) {
             medication.style.display = 'none';
         } else {
             medication.style.display = 'block';
@@ -64,6 +67,18 @@ const closeModalCondicio = () => {
     modal.classList.remove('is-active');
 };
 
+const showModalDelete = (doseId) => {
+    const modal = document.getElementById('image-modal-delete' + doseId);
+    modal.classList.add('is-active');
+    console.log(doseId);
+};
+
+const closeModalDelete = (doseId) => {
+    const modal = document.getElementById('image-modal-delete' + doseId);
+    modal.classList.remove('is-active');
+    selectedDoses.value = {};
+};
+
 const medications = ref([]);
 
 onMounted(() => {
@@ -86,12 +101,12 @@ const submit = () => {
         onSuccess: () => {
             getMedications()
             closeModal();
-         
+
         }
     });
 };
 
-function getMedications(){
+function getMedications() {
     axios.get('/medication-panel/get-medication')
         .then(response => {
             medications.value = response.data;
@@ -102,17 +117,71 @@ function getMedications(){
 
 }
 
+// doses by medication
+const doses = ref([]);
 
+
+function getDoses(medicationId) {
+    axios.get('/medication-panel/get-dose-medication/' + medicationId)
+        .then(response => {
+            console.log(response.data);
+            doses.value = response.data;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+// delete dose with button
+// const deleteDose = (conditionId, doseId) => {
+//     axios.delete('/medication-panel/delete-condition-dose/' + conditionId + '/' + doseId)
+//         .then(response => {
+//             getDoses(activeMedication.value);
+//             console.log('Dosis eliminada');
+//         })
+//         .catch(error => {
+//             console.log(error);
+//         });
+// };
+
+// for selected doses, delete dose with button
+ function deleteDose(doseId, selectedDoses) {
+    for (const conditionId in selectedDoses) {
+        if (selectedDoses[conditionId]) {
+            axios.delete('/medication-panel/delete-condition-dose/' + conditionId + '/' + doseId)
+                .then(response => {
+                    getDoses(activeMedication.value);
+                    console.log('Dosis eliminada');
+                    closeModalDelete(doseId);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }
+}
+
+const selectedDoses = ref({});
+
+const handleCheckbox = (conditionId) => {
+  selectedDoses.value[conditionId] = !selectedDoses.value[conditionId];
+  
+  console.log(selectedDoses.value[conditionId]);
+  console.log(selectedDoses.value);
+};
 </script>
 
 <template>
+
     <body>
+
         <div class="medications">
             <div class="medication-button">
                 <div class="medicationbuttons" v-for="medication in medications" :key="medication.id">
 
-                    <a href="#" class="medicationbutton" :class="{ active: activeMedication === medication.id }" :value="medication.id"
-                        @click="toggleMedication(medication.id)">
+                    <a href="#" class="medicationbutton" :class="{ active: activeMedication === medication.id }"
+                        :value="medication.id" @click="toggleMedication(medication.id)"
+                        :data-medication-id="medication.id">
                         {{ medication.name }}
                     </a>
                 </div>
@@ -147,8 +216,9 @@ function getMedications(){
             </div>
         </div>
 
-        <div class="medicationcotent">
-            <div class="medication1btn" v-show="activeMedication === 1">
+        <div class="medicationcontent" v-for="medication in medications" :key="medication.id"
+            :data-medication-id="medication.id">
+            <div class="medication1btn" v-if="activeMedication === medication.id">
                 <div class="afegir">
                     <div id="image-modal-dosis" class="modal">
                         <div class="modal-background" @click="closeModalDosis"></div>
@@ -188,11 +258,13 @@ function getMedications(){
                                 <div class="field">
                                     <div class="control select-dosis">
                                         <label class="label label-dosis">Dosis:</label>
-
-                                        <select class="select">
-                                            <option>5mg/kg</option>
-                                            <option>120mg/kg</option>
-                                        </select>
+<!-- 
+                                        <select class="select" v-model="selectedDose">
+                                            <option disabled selected>Selecciona una opció</option>
+                                            <option v-for="dose in doses" :key="dose.doseId" :value="dose.doseId">
+                                                {{ dose.dose }}
+                                            </option>
+                                        </select> -->
                                     </div>
                                     <label class="label label-dosis mt-5">Condició:</label>
                                     <div class="control edit-select">
@@ -232,185 +304,48 @@ function getMedications(){
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td rowspan="4">5mg/kg</td>
-                            <td>Clcr > 60ml/min</td>
-                            <td class="right-align">
-                                <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
+                        <tr v-for="dose, index in doses" :key="dose.doseId">
+                            <td> {{ doses[index][0].dose }}
                             </td>
-                        </tr>
-                        <tr>
-
-                            <td>Clcr 40-60ml/min</td>
+                            <td>
+                                <div v-for="dose, index in doses[index]">
+                                    <div class="condition">
+                                        {{ dose.name || 'null' }}, Màxim: {{ dose.max || '0' }}, Mínim: {{ dose.min ||
+                    '0'
+                                        }}
+                                    </div>
+                                </div>
+                            </td>
                             <td class="right-align">
-                                <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <div class="modal" id="image-modal-editar">
-
-                                    <div class="modal-background" @click="closeModalEditar"></div>
+                                <div class="modal" :id="'image-modal-delete' + dose[0].doseId">
+                                    <div class="modal-background" @click="closeModalDelete(dose[0].doseId)"></div>
                                     <div class="modal-card">
 
                                         <section class="modal-card-body">
                                             <div class="field">
-                                                <label class="label label-dosis ">Condició:</label>
-                                                <div class="control edit-select">
-
-                                                    <div class="select edit-select-div">
-
-
-                                                        <select>
-                                                            <option disabled selected>Selecciona una opció</option>
-                                                            <option>Opció 1</option>
-                                                            <option>Opció 2</option>
-                                                            <option>Opció 3</option>
-                                                        </select>
+                                                <div class="control select-dosis">
+                                                    <label class="label label-dosis">Eliminar dosis {{ dose[0].dose
+                                                        }}</label>
+                                                    <!--  checkbox with the conditions by doseId -->
+                                                    <div v-for="doseItem in doses[index]" :key="doseItem.conditionId">
+                                                        <input type="checkbox" :value="doseItem.conditionId"
+                                                             @change="handleCheckbox(doseItem.conditionId)" class="checkdelete">
+                                                        <label>{{ doseItem.name || 'null' }}, Màxim: {{ doseItem.max ||
+                                                                '0' }}, Mínim: {{ doseItem.min || '0' }}</label>
                                                     </div>
-                                                    <input class="input" type="number" placeholder="Minim: ">
-                                                    <input class="input" type="number" placeholder="Maxim: ">
                                                 </div>
                                             </div>
                                         </section>
                                         <footer class="modal-card-foot">
-                                            <button class="button is-success afegirmedicamentbtn">Afegir</button>
-                                            <button class="button" @click="closeModalEditar">Cancelar</button>
+                                            <!-- le pasa el id de la dosis y el id de la condición -->
+                                            <button class="button is-success afegirmedicamentbtn" @click="deleteDose(dose[0].doseId, selectedDoses)">Eliminar</button>
+                                            <button class="button"
+                                                @click="closeModalDelete(dose[0].doseId)">Cancel</button>
                                         </footer>
                                     </div>
                                 </div>
-                                <button class="button is-success is-outlined editar" id="showModalEditar"
-                                    @click="showModalEditar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td>Clcr 20-40ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td>Clcr 20ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td rowspan="2">120mg/kg</td>
-                            <td>Clcr > 60ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Clcr 40-60ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="medication2btn" v-show="activeMedication === 2">
-                <div class="afegir">
-                    <div class="afegir">
-                        <div id="image-modal-dosis" class="modal">
-                            <div class="modal-background" @click="closeModalDosis"></div>
-                            <div class="modal-content">
-                                <div class="modal-card">
-                                    <section class="modal-card-body">
-                                        <div class="field">
-                                            <label class="label label-dosis">Nom del medicament:</label>
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="Nom del medicament...">
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <footer class="modal-card-foot">
-                                        <button class="button is-success afegirmedicamentbtn">Afegir</button>
-                                        <button class="button" @click="closeModalDosis">Cancelar</button>
-                                    </footer>
-                                </div>
-                            </div>
-                            <button id="image-modal-close" class="modal-close" @click="closeModalDosis"></button>
-                        </div>
-                        <button class="afegirdosi" id="showModalDosis" @click="showModalDosis">
-                            + Afegir dosi
-                        </button>
-                    </div>
-                </div>
-                <table class="table is-hoverable">
-                    <thead>
-                        <tr class="table-header">
-                            <th>Dosis</th>
-                            <th>Condició</th>
-                            <th class="right-align">Acció</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr > 60ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr 40-60ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr 20-40ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr 20ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
+                                <button class="button is-danger is-outlined drop"
+                                    @click="showModalDelete(dose[0].doseId)">
                                     <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
                                 </button>
                                 <button class="button is-success is-outlined editar">
@@ -420,91 +355,7 @@ function getMedications(){
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="medication3btn" v-show="activeMedication === 3">
-                <div class="afegir">
-                    <div class="afegir">
-                        <div id="image-modal-dosis" class="modal">
-                            <div class="modal-background" @click="closeModalDosis"></div>
-                            <div class="modal-content">
-                                <div class="modal-card">
-                                    <section class="modal-card-body">
-                                        <div class="field">
-                                            <label class="label label-dosis">Nom del medicament:</label>
-                                            <div class="control">
-                                                <input class="input" type="text" placeholder="Nom del medicament...">
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <footer class="modal-card-foot">
-                                        <button class="button is-success afegirmedicamentbtn">Afegir</button>
-                                        <button class="button" @click="closeModalDosis">Cancelar</button>
-                                    </footer>
-                                </div>
-                            </div>
-                            <button id="image-modal-close" class="modal-close" @click="closeModalDosis"></button>
-                        </div>
-                        <button class="afegirdosi" id="showModalDosis" @click="showModalDosis">
-                            + Afegir dosi
-                        </button>
-                    </div>
-                </div>
-                <table class="table is-hoverable">
-                    <thead>
-                        <tr class="table-header">
-                            <th>Dosis</th>
-                            <th>Condició</th>
-                            <th class="right-align">Acció</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr > 60ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr 40-60ml/mindgbgfbfdbgfdbgfdbfd</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr 20-40ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5mg/kg</td>
-                            <td>Clcr 20ml/min</td>
-                            <td class="right-align"> <button class="button is-danger is-outlined drop">
-                                    <img src="../../assets/svg/basura.svg" alt="Drop" width="20px" height="20px">
-                                </button>
-                                <button class="button is-success is-outlined editar">
-                                    <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <p>No hi han dosis disponibles per aquest medicament</p>
             </div>
         </div>
     </body>
@@ -556,9 +407,11 @@ body {
     border-radius: 5px;
 }
 
-.medicationcotent {
+.medicationcontent {
     margin-left: 200px;
+    padding: 0 !important;
     padding: 20px;
+
 }
 
 .medicationbutton.active {
@@ -592,7 +445,7 @@ body {
 }
 
 .afegir {
-    margin-top: 20px;
+    margin-top: 0px;
     margin-bottom: 20px;
     text-align: right;
     display: flex;
@@ -612,6 +465,7 @@ body {
     transition: 0.3s;
     font-weight: bold;
     margin-bottom: 5px;
+    margin-top: 15px;
 }
 
 .afegirdosi:hover {
@@ -673,5 +527,14 @@ body {
 
 .select-dosis {
     text-align: left;
+}
+
+.condition {
+    margin-bottom: 10px;
+}
+
+.checkdelete {
+    margin-right: 5px;
+    border-radius: 5px;
 }
 </style>

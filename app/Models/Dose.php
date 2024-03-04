@@ -40,4 +40,10 @@ class Dose extends Model
             'glomerularFiltration' => $glomerularFiltration,
         ])[0];
     }
+
+    // get all doses by medication id
+    public function scopeGetAllDoses($query, $medicationId)
+    {
+        return Dose::where('medicationId', $medicationId)->get();
+    }
 }
