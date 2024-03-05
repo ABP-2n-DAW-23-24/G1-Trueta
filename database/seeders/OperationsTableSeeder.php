@@ -66,32 +66,38 @@ class OperationsTableSeeder extends Seeder
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Litotrícia extracorpòrea,Cirurgia de penis sense implant'
+            'name' => 'Litotrícia extracorpòrea',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Cirurgia endourològica ambulatòria'
+            'name' => 'Cirurgia endourològica ambulatòria',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Cistoscòpia'
+            'name' => 'Cistoscòpia',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Cirurgia nèta testicular'
+            'name' => 'Cirurgia nèta testicular',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Fimosi'
+            'name' => 'Fimosi',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 2,
-            'name' => 'Cirurgia de penis sense implant'
+            'name' => 'Cirurgia de penis sense implant',
+            'profilaxis' => 0
         ]);
 
 
@@ -406,13 +412,15 @@ class OperationsTableSeeder extends Seeder
 
         Operation::create([
             'surgeryId' => 13,
-            'name' => 'Cirurgia endocrina cervical (tiroides / paratiroides)'
+            'name' => 'Cirurgia endocrina cervical (tiroides / paratiroides)',
+            'profilaxis' => 0
         ]);
 
         
         Operation::create([
             'surgeryId' => 13,
-            'name' => 'Hernioplastia inguinal laparoscòpica'
+            'name' => 'Hernioplastia inguinal laparoscòpica',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
@@ -588,6 +596,24 @@ class OperationsTableSeeder extends Seeder
         Operation::create([
             'surgeryId' => 20,
             'name' => 'Shunt transjugular portosistèmic (TIPS)'
+        ]);        
+
+        Operation::create([
+            'surgeryId' => 12,
+            'name' => 'Artroscòpia',
+            'profilaxis' => 0
+        ]);        
+
+        Operation::create([
+            'surgeryId' => 12,
+            'name' => 'Reducció de fractura tancada sense material osteosíntesi',
+            'profilaxis' => 0
+        ]);        
+
+        Operation::create([
+            'surgeryId' => 12,
+            'name' => "Retirada d'implants ortopèdics utilitzats com tractament de fractures",
+            'profilaxis' => 0
         ]);        
     }
 }

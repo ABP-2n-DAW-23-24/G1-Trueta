@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('doses', function (Blueprint $table) {
             $table->foreign('medicationId')->references('id')->on('medications');
+            $table->softDeletes();
         });
     }
 
