@@ -31,8 +31,8 @@ class MedicationPanelController extends Controller
 
     // get dose by medication and their condition_dose, condition and criteria
     public function getDoseByMedication($medicationId) {
-        $condition = Condition::getAllConditions($medicationId);
-        return response()->json($condition);
+        $doses = Dose::getAllDoses($medicationId);
+        return response()->json($doses);
     }
 
     // delete condition_dose by condition id and dose id
@@ -42,6 +42,12 @@ class MedicationPanelController extends Controller
             ->delete();
     }
 
-   
+    // get criterias
+    public function getCriterias() {
+        $criterias = Criteria::get();
+        return response()->json($criterias);
+    }
+
+
 
 }

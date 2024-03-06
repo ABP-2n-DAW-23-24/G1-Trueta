@@ -60,7 +60,7 @@ class ConditionsTableSeeder extends Seeder
         Condition::create([
             'criteriaId' => 3,
             'min' => 15,
-            'max' => 999999
+            'max' => null
         ]);
     }
 }

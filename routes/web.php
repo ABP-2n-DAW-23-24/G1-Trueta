@@ -16,6 +16,7 @@ Route::get('/medication-panel/get-medication', [MedicationPanelController::class
 Route::post('/medication-panel/add-medication', [MedicationPanelController::class, 'addMedication'])->name('add-medication');
 Route::get('/medication-panel/get-dose-medication/{medicationId}', [MedicationPanelController::class, 'getDoseByMedication'])->name('get-dose-medication');
 Route::delete('/medication-panel/delete-condition-dose/{conditionId}/{doseId}', [MedicationPanelController::class, 'deleteConditionDose'])->name('delete-condition-dose');
+Route::get('/medication-panel/get-criterias', [MedicationPanelController::class, 'getCriterias'])->name('get-criterias');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

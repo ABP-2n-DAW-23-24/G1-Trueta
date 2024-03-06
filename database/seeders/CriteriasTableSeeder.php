@@ -14,15 +14,18 @@ class CriteriasTableSeeder extends Seeder
     public function run(): void
     {
         Criteria::create([
-            'name' => 'Pes real'
+            'name' => 'Pes real',
+            'unity' => 'kg'
         ]);
 
         Criteria::create([
-            'name' => 'Pes ajustat'
+            'name' => 'Pes ajustat',
+            'unity' => 'kg'
         ]);
 
         Criteria::create([
-            'name' => 'Filtrat glomerular'
+            'name' => 'Filtrat glomerular',
+            'unity' => 'fg'
         ]);
     }
 }
