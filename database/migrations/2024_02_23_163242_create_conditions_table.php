@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('min');
             $table->integer('max')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

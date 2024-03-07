@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('minHeight');
             $table->integer('maxHeight');
             $table->integer('weight');
+            $table->softDeletes();
         });
     }
 

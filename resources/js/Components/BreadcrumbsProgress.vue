@@ -1,5 +1,5 @@
 <script setup>
-    import { defineProps } from 'vue';
+    import { defineProps, ref } from 'vue';
 
     const props = defineProps({
         breadcrumbs: {
@@ -23,11 +23,11 @@
             v-for="(breadcrumb, index) in breadcrumbs"
             :key="index">
             <span
-                @click="() => { index <= crumb ? setCrumb(index) : setCrumb(index) }"
+                @click="() => { index <= crumb ? setCrumb(index) : null }"
                 class="breadcrumb"
                 :class="{
                     'active': index === crumb,
-                    // 'inactive': index > crumb
+                    'inactive': index > crumb
                 }"
             >{{ breadcrumb }}</span>
             <span
