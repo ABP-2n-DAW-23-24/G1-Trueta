@@ -35,19 +35,23 @@ class MedicationPanelController extends Controller
         return response()->json($doses);
     }
 
-    // delete condition_dose by condition id and dose id
-    public function deleteConditionDose($conditionId, $doseId) {
-        $conditionDose = ConditionsDose::where('conditionId', $conditionId)
-            ->where('doseId', $doseId)
-            ->delete();
-    }
-
     // get criterias
     public function getCriterias() {
         $criterias = Criteria::get();
         return response()->json($criterias);
     }
 
+      // delete dose by dose id and his condition_doses
+      public function deleteDose($doseId) {
+       $ConditionDose = ConditionsDose::where('doseId', $doseId)->delete();
+       $dose = Dose::where('id', $doseId)->delete();
+       return response()->json(['message' => 'Dose deleted successfully']);
+    }
 
+    // delete condition_dose by dose id and condition id
+    public function deleteConditionDose($doseId, $conditionId) {
+        $ConditionDose = ConditionsDose::where('doseId', $doseId)->where('conditionId', $conditionId)->delete();
+        return response()->json(['message' => 'ConditionDose deleted successfully']);
+    }
 
 }

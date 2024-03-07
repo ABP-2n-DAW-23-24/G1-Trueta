@@ -3,3 +3,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+    font-family: 'OpenSans-Medium';
+    src: url("/assets/fonts/OpenSans-Medium.ttf");
+}
+
+* {
+    font-family: 'OpenSans-Medium';
+}
