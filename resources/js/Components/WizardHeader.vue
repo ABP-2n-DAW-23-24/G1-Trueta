@@ -13,7 +13,7 @@ const props = defineProps({
   }
 });
 
-const breadcrumbs = ["Cirurgía", "Operació", "Pacient", "Resultat"];
+const breadcrumbs = ["Cirurgía", "Operació", "Antibiotic", "Resultat"];
 
 </script>
 
