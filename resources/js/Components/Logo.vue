@@ -17,4 +17,12 @@
 .logo-container img {
     height: 100%;
 }
+
+@media screen and (max-width: 768px){
+    .logo{
+        padding: 20px;
+        height: 50px;
+    }
+}
+
 </style>

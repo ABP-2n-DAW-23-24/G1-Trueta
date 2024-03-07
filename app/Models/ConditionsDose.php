@@ -10,4 +10,6 @@ class conditionsDose extends Model
         'medicationId',
         'doseId',
     ];
+
+    
 }

@@ -4,16 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Surgery;
 
-class Operation extends Model
+class ExtraDetail extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'name',
-        'profilaxis'
+        'info',
+        'operationId',
+        'surgeryId'
     ];
+
+    public function operation()
+    {
+        return $this->belongsTo(Operation::class, 'operationId');
+    }
 
     public function surgery()
     {

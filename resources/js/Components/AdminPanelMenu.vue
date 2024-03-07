@@ -1,6 +1,5 @@
 <script setup>
-    import { defineProps, ref } from 'vue';
-
+    import { defineProps } from 'vue';
     const props = defineProps({
         breadcrumbs: {
             type: Array,
@@ -19,26 +18,20 @@
 
 <template>
     <div class="breadcrumbs-progress-container">
-        <div
-            v-for="(breadcrumb, index) in breadcrumbs"
-            :key="index">
-            <span
-                @click="() => { index <= crumb ? setCrumb(index) : null }"
-                class="breadcrumb"
-                :class="{
-                    'active': index === crumb,
-                    'inactive': index > crumb
-                }"
-            >{{ breadcrumb }}</span>
-            <span
-                class="breadcrumb-separator"
-                v-if="index < breadcrumbs.length - 1"
-            >/</span>
+        <div class="is-flex separated_menu_admin" >
+            <a>USUARIOS</a>
+            <p> | </p>
+            <a>MEDICAMENTS</a>
         </div> 
     </div>
 </template>
 
 <style scoped>
+.separated_menu_admin p{
+    padding-left: 5px;
+    padding-right: 5px;
+
+}
     .breadcrumbs-progress-container {
         background: #D9D9D9;
         border-radius: 10px;

@@ -10,14 +10,4 @@ class Medication extends Model
         'name'
     ];
 
-    // get all medicaions with scope
-    public function scopeGetAllMedications($query) {
-        return $query->get();
-    }
-
-
-    // insert medication
-    public function scopeAddMedication($query, $data) {
-        return $query->insert($data);
-    }
 }

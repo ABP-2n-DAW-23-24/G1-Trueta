@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('criteriaId');
             $table->integer('min');
-            $table->integer('max');
+            $table->integer('max')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
