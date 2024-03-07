@@ -10,5 +10,5 @@ class Condition extends Model
         'criteriaId',
         'min',
         'max'
-    ];
+    ];   
 }
