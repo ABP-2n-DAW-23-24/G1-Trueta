@@ -11,7 +11,8 @@ class Surgery extends Model
 
     protected $fillable = [
         'name',
-        'surgeryId'
+        'surgeryId',
+        'color'
     ];
 
     public function operations()

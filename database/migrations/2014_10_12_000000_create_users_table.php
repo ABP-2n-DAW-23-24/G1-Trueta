@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('isAdmin')->default(0);
             $table->boolean('isManager')->default(0);
+            $table->string('language')->default('ca');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes(); 

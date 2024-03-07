@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('operations', function (Blueprint $table) {
+        Schema::create('extra_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('surgeryId');
+            $table->text('info');
+            $table->unsignedBigInteger('operationId')->nullable();
+            $table->foreign('operationId')->references('id')->on('operations');
+            $table->unsignedBigInteger('surgeryId')->nullable();
             $table->foreign('surgeryId')->references('id')->on('surgeries');
-            $table->string('name');
-            $table->boolean('profilaxis')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('more_info');
     }
 };

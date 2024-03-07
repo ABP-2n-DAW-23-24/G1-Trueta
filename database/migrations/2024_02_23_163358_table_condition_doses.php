@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('conditionId');
             $table->unsignedBigInteger('doseId');
+            $table->softDeletes();
         });
     }
 

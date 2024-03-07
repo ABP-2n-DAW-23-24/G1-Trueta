@@ -40,4 +40,28 @@ class Dose extends Model
             'glomerularFiltration' => $glomerularFiltration,
         ])[0];
     }
+
+
+    // get all doses by medication id
+    public function scopeGetAllDoses($query, $medicationId)
+    {
+        return $query
+        ->where('medicationId', $medicationId)
+        ->with(['conditions' => function ($query) {
+            $query
+                ->select(
+                    'conditions.*',
+                    'criterias.name as criteriaName',
+                    'criterias.unity as criteriaUnity'
+                    )
+                ->join('criterias', 'conditions.criteriaId', '=', 'criterias.id');
+        }])
+        ->get()
+        ->toArray();
+    }
+
+    public function conditions()
+    {
+        return $this->belongsToMany(Condition::class, 'conditions_doses', 'doseId', 'conditionId');
+    }
 }
