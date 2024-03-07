@@ -1,0 +1,38 @@
+name: laravel-build
+run-name: ${{ github.actor }} is building new app version
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+      - uses: shivammathur/setup-php@master
+        with:
+          php-version: 8.1
+          extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
+      - run: composer install --no-dev --no-interaction --prefer-dist    
+      - run: npm install
+      - run: npm run build
+      - run: rm -rf node_modules
+      - run: rm -rf storage
+      - run: tar -czf app.tgz ./*
+      - name: ssh scp ssh pipelines
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          connect_timeout: 10s
+          scp: |
+            './app.tgz' => ${{ secrets.SSH_DIR }}
+          last_ssh: |
+            cd ${{ secrets.SSH_DIR }} 
+            tar -xzf app.tgz
+            sh ./deploy/deploy.sh
