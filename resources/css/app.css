@@ -1,13 +1,5 @@
 @import 'bulma/css/bulma.css';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-    font-family: 'OpenSans-Medium';
-    src: url('../assets/fonts/OpenSans-Medium.ttf');
-}
-
-* {
-    font-family: 'OpenSans-Medium';
-}
