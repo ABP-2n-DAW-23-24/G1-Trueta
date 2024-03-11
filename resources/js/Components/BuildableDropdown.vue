@@ -3,7 +3,7 @@ import { ref, defineProps, onMounted, onUnmounted } from 'vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 
 const props = defineProps({
-  text: String,
+  user: Object,
   routes: Object
 });
 
@@ -34,7 +34,7 @@ onUnmounted(() => {
     <button
       @click="toggleDropdown"
       type="button">
-      <span>{{ text }}</span>
+      <span>{{ user.name.toUpperCase() }} {{ user.surnames.toUpperCase() }}</span>
       <img
         src="../../assets/svg/arrow.svg"
         alt="arrow"

@@ -17,9 +17,11 @@ class IndexController extends Controller
 {
     public function index() {
         $surgeries = Surgery::with('operations')->get()->toArray();
+        $user = Auth::user();
 
         return Inertia::render('Index', [
-            'surgeries' => $surgeries
+            'surgeries' => $surgeries,
+            'user' => $user
         ]);
     }
 }
