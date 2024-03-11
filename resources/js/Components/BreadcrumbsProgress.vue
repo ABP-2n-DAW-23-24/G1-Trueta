@@ -48,7 +48,7 @@
     }
 
     .breadcrumb.active {
-        color: #F55000;
+        color: #c00000;
     }
 
     .breadcrumb:not(.active) {
