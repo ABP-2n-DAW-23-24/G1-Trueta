@@ -10,8 +10,10 @@ class Adminpanel extends Controller
 {
     public function index() {
 
+        $user = Auth::user();
         return Inertia::render('AdminPanel', [
-            "users"=>User::all()
+            "users"=>User::all(),
+            'user' => $user
         ]);
     }
     public static function getAllUsers(){

@@ -7,7 +7,8 @@ import ListUsers from "@/Components/ListUsers.vue"
 import { Head } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
 let props = defineProps({
-  users:Object
+  users:Object,
+  user:Object
 })
 // 
 </script>
@@ -19,7 +20,7 @@ let props = defineProps({
       
     </div>
     <div class="col-right">
-        <AdminPanelHeader></AdminPanelHeader>
+        <AdminPanelHeader :user="props.user"></AdminPanelHeader>
     </div>
   </div>
   <div class="bg-listuser">
