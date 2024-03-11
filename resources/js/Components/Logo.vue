@@ -1,9 +1,11 @@
-<script setup></script>
+<script setup>
+import { Link } from '@inertiajs/vue3';
+</script>
 
 <template>
-    <div class="logo-container">
-        <img src="../../assets/img/logoTrueta.png" alt="Logotip de l'Hospital Trueta">
-    </div>
+    <Link href="/" class="logo-container">
+        <img src="../../assets/img/logoTrueta.png" alt="Logotip de l'Hospital Trueta" class="logo">
+    </Link>
 </template>
 
 <style scoped>
@@ -20,8 +22,7 @@
 
 @media screen and (max-width: 768px){
     .logo{
-        padding: 20px;
-        height: 50px;
+        height: 100%;
     }
 }
 
