@@ -1,5 +1,6 @@
 <script setup>
-    import { defineProps, ref } from 'vue';
+    import { defineProps } from 'vue';
+    import { ref, computed } from 'vue';
 
     const props = defineProps({
         breadcrumbs: {
@@ -14,11 +15,19 @@
             type: Function,
             required: true
         }
-    })
+    });
+
+    const goBack = () => {
+        if (props.crumb === 0) return;
+        props.setCrumb(props.crumb - 1);
+    };
 </script>
 
 <template>
     <div class="breadcrumbs-progress-container">
+        <div class="breadcrumb-container">
+            <img src="../../assets/svg/left-arrow.svg" alt="Back" @click="goBack()" class="back-button" style="width: 20px;">
+        </div>
         <div
             v-for="(breadcrumb, index) in breadcrumbs"
             :key="index">
@@ -70,5 +79,36 @@
 
     .breadcrumb-separator {
         margin: 0 5px;
+    }
+
+    .back-button {
+        color: #0239EB;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 768px) {
+        .breadcrumb-container {
+            display: flex;
+            align-items: center;
+        }
+        .breadcrumb:not(.active) {
+            display: none;
+        }
+        .breadcrumb-container:first-child {
+            display: flex;
+            align-items: center;
+        }
+        .breadcrumb-separator {
+            display: none;
+        }
+        .back-button {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+    @media screen and (min-width: 768px) {
+        .breadcrumb-container {
+            display: none;
+        }
     }
 </style>

@@ -10,6 +10,10 @@ const props = defineProps({
   setCrumb: {
     type: Function,
     required: true
+  },
+  user: {
+    type: Object,
+    required: true
   }
 });
 
@@ -22,7 +26,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Pacient", "Resultat"];
       <AdminPanelMenu
        
       />
-      <UserDropdown />
+      <UserDropdown :user="user"/>
     </div>
 </template>
 
