@@ -9,6 +9,7 @@ import Logo from '@/Components/Logo.vue';
 let props = defineProps({
   users:Object,
   traduccionjson:Object,
+  user:Object
 })
 let traduccion=JSON.parse(props.traduccionjson)
 </script>
@@ -20,7 +21,7 @@ let traduccion=JSON.parse(props.traduccionjson)
       <Logo class="logo" />
     </div>
     <div class="col-right">
-        <AdminPanelHeader></AdminPanelHeader>
+        <AdminPanelHeader :user="props.user"></AdminPanelHeader>
     </div>
   </div>
   <div class="bg-listuser">

@@ -63,6 +63,7 @@ const props = defineProps({
   opacity: 1;
   overflow: none;
   z-index: 2;
+  color: white !important;
   background: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
 }
 </style>

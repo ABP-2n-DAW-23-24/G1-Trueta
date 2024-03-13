@@ -13,7 +13,10 @@ use App\Models\ConditionsDose;
 class MedicationPanelController extends Controller
 {
     public function index() {
-        return Inertia::render('MedicationPanel');
+        $user = auth()->user();
+        return Inertia::render('MedicationPanel', [
+            'user' => $user
+        ]);
     }
 
     // get medication

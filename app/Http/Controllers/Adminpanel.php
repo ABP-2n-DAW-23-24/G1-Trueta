@@ -12,9 +12,14 @@ class Adminpanel extends Controller
     public function index() {
         
             $traduccionjson=file_get_contents("lang/".Auth::user()->language."/".Auth::user()->language.".json");     
-       return Inertia::render('AdminPanel', [
+    
+
+        $user = Auth::user();
+        return Inertia::render('AdminPanel', [
             "users"=>User::all(),
+            'user' => $user,
             "traduccionjson"=>$traduccionjson
+
         ]);
     }
     public static function getAllUsers(){
