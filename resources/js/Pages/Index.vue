@@ -7,6 +7,10 @@ import Aside from '@/Components/Aside.vue';
 import Wizard from '@/Components/Wizard.vue';
 import { Head } from '@inertiajs/vue3';
 
+const props = defineProps({
+    user: Object,
+});
+
 </script>
 <template>
   <Head title="Index" />
@@ -16,7 +20,7 @@ import { Head } from '@inertiajs/vue3';
       <Aside />
     </div>
     <div class="col-right">
-      <Wizard />
+      <Wizard :user="props.user"/>
     </div>
   </div>
 </template>

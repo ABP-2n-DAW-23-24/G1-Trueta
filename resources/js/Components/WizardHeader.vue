@@ -10,10 +10,14 @@ const props = defineProps({
   setCrumb: {
     type: Function,
     required: true
+  },
+  user: {
+    type: Object,
+    required: true
   }
 });
 
-const breadcrumbs = ["Cirurgía", "Operació", "Pacient", "Resultat"];
+const breadcrumbs = ["Cirurgía", "Operació", "Antibiotic", "Resultat"];
 
 </script>
 
@@ -24,7 +28,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Pacient", "Resultat"];
         :crumb="crumb"
         :setCrumb="setCrumb"
       />
-      <UserDropdown />
+      <UserDropdown :user="props.user" />
     </div>
 </template>
 

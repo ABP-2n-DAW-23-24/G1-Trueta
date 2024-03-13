@@ -1,15 +1,27 @@
 <script setup>
     import BuildableDropdown from "@/Components/BuildableDropdown.vue";
+
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+});
 </script>
 
 <template>
     <BuildableDropdown
       class="user-dropdown"
-      text="SILVIA LLADÓ"
+      :user="user"
       :routes="[
         {
             label: 'Panell d\'antibiòtics',
             route: 'medication-panel'
+        },
+        {
+            label: 'Pagina Inici',
+            route: 'index',
+            method: 'get'
         },
         {
             label: 'Tancar sessió',
