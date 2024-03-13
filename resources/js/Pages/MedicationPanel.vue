@@ -117,6 +117,9 @@ onMounted(() => {
         });
 });
 
+const props = defineProps({
+    user: Object,
+});
 
 const deleteDose = (doseId) => {
     const confirmDelete = confirm("Segur que vols eliminar aquesta dosi?");
@@ -186,7 +189,7 @@ const CancelEditDose = (doseId) => {
         <header class="header">
             <Logo class="logo" />
             <div class="user-dropdown">
-                <UserDropdown />
+                <UserDropdown :user="props.user" />
             </div>
         </header>
 

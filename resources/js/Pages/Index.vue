@@ -19,6 +19,9 @@ function setCrumb(value) {
   crumb.value = value;
 }
 
+const props = defineProps({
+    user: Object,
+});
 
 </script>
 <template>
@@ -38,6 +41,7 @@ function setCrumb(value) {
         :crumb="crumb"
         :selectedSurgery="selectedSurgery"
         :setSelectedSurgery="setSelectedSurgery"
+        :user="props.user"
       />
     </div>
   </div>

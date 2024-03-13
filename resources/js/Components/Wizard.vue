@@ -4,7 +4,13 @@ import WizardHeader from '@/Components/WizardHeader.vue';
 import WizardGrid from '@/Components/WizardGrid.vue';
 
 
-const props = defineProps(['setCrumb', 'crumb', 'selectedSurgery', 'setSelectedSurgery']);
+const props = defineProps(['setCrumb', 'crumb', 'selectedSurgery', 'setSelectedSurgery', {
+  user: {
+    type: Object,
+    required: true
+  }
+}]);
+
 
 
 console.log(props.setSelectedSurgery);
@@ -21,8 +27,14 @@ onUpdated(() => {
 <template>
     <div class="wizard-container">
         <WizardHeader
+<<<<<<< HEAD
             :crumb="props.crumb"
             :setCrumb="props.setCrumb"
+=======
+            :crumb="crumb"
+            :setCrumb="setCrumb"
+            :user="user"
+>>>>>>> develop
         />
         <WizardGrid
             :crumb="props.crumb"
