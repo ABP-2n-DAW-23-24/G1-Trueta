@@ -27,11 +27,18 @@ const submit = () => {
     setCrumb: {
       type: Function,
       required: true
-    }
+    },
+    setSelectedSurgery: {
+    type: Function,
+    required: true
+    },
+    selectedSurgery: {
+      type: Number,
+      required: true
+    },
   });
 
   const surgeries = ref([]);
-  const selectedSurgery = ref(0);
   const selectedOperation = ref(0);
 
   axios.get("/json/surgeriesWithOperations")
@@ -40,7 +47,7 @@ const submit = () => {
   });
 
   function handleSurgeryClick(surgery) {
-    selectedSurgery.value = surgery;
+    props.setSelectedSurgery(surgery)
     props.setCrumb(1);
   }
 
@@ -83,17 +90,17 @@ function makeDarkColor(color) {
   <div class="wizard-grid-container">
     <WizardSquare
       v-show="crumb === 1"
-      v-for="operation in surgeries.length > 0 ? surgeries[selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
+      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => handleOperationClick(operation.id)"
       :name="operation.name"
-      :color="surgeries[selectedSurgery].color"
-      :textColor="makeTextColorReadable(surgeries[selectedSurgery].color)"
+      :color="surgeries[props.selectedSurgery].color"
+      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)"
       type="operation"
     />
   </div>
 
   <!-- Verificando si hay operaciones sin profilaxis -->
-  <div v-show="crumb === 1 && surgeries.length > 0 && surgeries[selectedSurgery].operations.some(op => op.profilaxis === 0)">
+  <div v-show="crumb === 1 && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
@@ -101,10 +108,10 @@ function makeDarkColor(color) {
     <!-- Filtrando operaciones sin profilaxis -->
     <WizardSquare
       v-show="crumb === 1"
-      v-for="operation in surgeries.length > 0 ? surgeries[selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name"
-      :color="makeDarkColor(surgeries[selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(surgeries[selectedSurgery].color))"
+      :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))"
       type="operation"
     />
   </div>
