@@ -10,5 +10,10 @@ class Condition extends Model
         'criteriaId',
         'min',
         'max'
-    ];   
+    ];
+    
+    
+    public function criteria() {
+        return $this->belongsTo(Criteria::class, 'criteriaId');
+    }
 }

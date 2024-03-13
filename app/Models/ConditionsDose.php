@@ -9,7 +9,12 @@ class conditionsDose extends Model
     protected $fillable = [
         'medicationId',
         'doseId',
+        'conditionId',
     ];
 
-    
+
+    // conditions
+    public function conditions() {
+        return $this->belongsToMany(Condition::class, 'conditions_doses', 'doseId', 'conditionId');
+    }
 }

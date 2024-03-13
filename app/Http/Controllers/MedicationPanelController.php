@@ -54,4 +54,24 @@ class MedicationPanelController extends Controller
         return response()->json(['message' => 'ConditionDose deleted successfully']);
     }
 
-}
+    // add condition, if not exists, and condition_dose
+    public function addConditionDose(Request $request) {
+        $data = $request->all();
+    
+        $condition = Condition::firstOrCreate([
+            'criteriaId' => $data['criteriaId'],
+            'min' => $data['min'],
+            'max' => $data['max']
+        ]);
+    
+        $data['conditionId'] = $condition->id;
+       
+        $conditionDose = ConditionsDose::firstOrCreate([
+            
+            'doseId' => $data['doseId'],
+            'conditionId' => $data['conditionId']
+        ]);
+        
+
+    }
+}    
