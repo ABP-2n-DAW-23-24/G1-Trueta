@@ -8,6 +8,12 @@ const crumb = ref(0);
 function setCrumb(value) {
   crumb.value = value;
 }
+const props = defineProps({
+  user: {
+    type: Object,
+    required: true
+  }
+});
 
 </script>
 
@@ -16,6 +22,7 @@ function setCrumb(value) {
         <WizardHeader
             :crumb="crumb"
             :setCrumb="setCrumb"
+            :user="user"
         />
         <WizardGrid
             :crumb="crumb"
