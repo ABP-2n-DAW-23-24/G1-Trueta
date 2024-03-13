@@ -27,6 +27,7 @@ let isManager = computed({
   }
 });
 let isModalOpen = ref(props.show);
+let message=ref();
 
 function btn_editUser(params) {
    
@@ -42,10 +43,20 @@ function btn_editUser(params) {
     )
     .then(response=>{
         console.log(response)
+
         isModalOpen.value = false
 
         emit('EndEdit');
-    })
+    }).catch(error => {
+
+if (error.response && error.response.status === 422) {
+
+    message.value = error.response.data.errors;
+    console.log(message.value);
+} else {
+    console.error('Ocurrió un error inesperado:', error);
+}
+});
 }
 function closemodal(params) {
     isModalOpen.value=false
@@ -77,14 +88,35 @@ function closemodal(params) {
         </div>
      
         <div class="center_flex_modal"> 
-            <input type="text" style="    border-radius: 5px" placeholder="Nom"  :value="name" v-model="name">
+            <div>
+                <input type="text" style="    border-radius: 5px;" placeholder="Nom"  :value="name" v-model="name">
+                <div v-if="message" >
+                            <p v-if="message.name" class="text_error"  v-for=" (item,index) in message.name"> {{item }} </p>
+                        </div>
+            </div>
             <input type="text" style="    border-radius: 5px" placeholder="Cognoms"  :value="surnames" v-model="surnames">
         </div>
         <div class="correo_back center_flex" >
-            <input type="email" style="border-radius: 5px;width: 80%;" placeholder="correo electronic" :value="email" v-model="email">
+            <div style="width:100%;display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;">
+                <input type="email" style="border-radius: 5px;width: 80%;" placeholder="correo electronic" :value="email" v-model="email">
+                <div v-if="message" >
+                        <p v-if="message.email" class="text_error" v-for=" (item,index) in message.email"> {{item}} </p>
+                    </div>
+            </div>
         </div>
         <div class="correo_back center_flex" >
+            <div style="width:100%;display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;">
                 <input type="password" style="border-radius: 5px;width: 80%;" placeholder="contrasenya" v-model="pass">
+                <div v-if="message" >
+                        <p v-if="message.pass" class="text_error"  v-for=" (item,index) in message.pass"> {{item}} </p>
+                    </div>
+            </div>
         </div>
         <div class="rols"> 
             <label for="">

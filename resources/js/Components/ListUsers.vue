@@ -6,7 +6,8 @@ import { ref,defineProps } from 'vue';
 
 const isModalOpen = ref(false);
 let props = defineProps({
-  users:Object
+  users:Object,
+  traduccion:Object
 })
 const handleClose = () => {
   isModalOpen.value = false;
@@ -33,10 +34,10 @@ function getUsers(){
     justify-content: space-between;">
     <h2  style="font-size: 30px;">Llistat d’usuaris</h2>
     
-  <ModalUsers @getUser="getUsers"></ModalUsers>
+  <ModalUsers @getUser="getUsers" :traduccion="traduccion"></ModalUsers>
     </div>    
 
-    <Users @getUser="getUsers" :users="users_"></Users>
+    <Users @getUser="getUsers" :users="users_" :traduccion="traduccion"></Users>
 </div>
 
 </template>

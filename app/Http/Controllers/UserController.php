@@ -37,7 +37,8 @@ return response()->json(['message' => 'User added successfully', 'user' => $requ
     {     
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255',
         ]);
         $userModel=new User;
         $User=$userModel->find($request->id);  

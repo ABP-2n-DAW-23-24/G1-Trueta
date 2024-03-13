@@ -3,27 +3,28 @@ import { ref, defineProps } from 'vue';
 import Wizard from '@/Components/Wizard.vue';
 import AdminPanelHeader from '@/Components/AdminPanelHeader.vue';
 import ListUsers from "@/Components/ListUsers.vue"
-
 import { Head } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
+
 let props = defineProps({
-  users:Object
+  users:Object,
+  traduccionjson:Object,
 })
-// 
+let traduccion=JSON.parse(props.traduccionjson)
 </script>
 <template>
 <Head title="Index" />
   <div class="index-container">
+
     <div class="col-left">
       <Logo class="logo" />
-      
     </div>
     <div class="col-right">
         <AdminPanelHeader></AdminPanelHeader>
     </div>
   </div>
   <div class="bg-listuser">
-    <ListUsers :users="users"></ListUsers>
+    <ListUsers :users="users" :traduccion="traduccion" ></ListUsers>
   </div>
 </template>
 

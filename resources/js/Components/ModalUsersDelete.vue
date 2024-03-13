@@ -6,7 +6,9 @@ import { onMounted } from "vue";
 import axios from "axios";
 const emit = defineEmits(['endDelete'])
 let props = defineProps({
-        users:Object
+        users:Object,
+        traduccion:Object
+
 })
 let isModalOpen = ref(false);
 
