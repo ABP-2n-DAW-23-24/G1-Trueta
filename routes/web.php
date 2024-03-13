@@ -23,6 +23,7 @@ Route::post('/editUser',[UserController::class, 'editUser'] )->name('editUser');
 Route::post('/deleteUser',[UserController::class, 'deleteUser'] )->name('deleteUser');
 
 Route::post('/getUsers',[Adminpanel::class, 'getAllUsers'] )->name('getUsers');
+Route::post('/idiom_save',[UserController::class, 'setIdiom'] )->name('idiom_save');
 
 Route::get('/medication-panel/get-dose-medication/{medicationId}', [MedicationPanelController::class, 'getDoseByMedication'])->name('get-dose-medication');
 Route::get('/medication-panel/get-criterias', [MedicationPanelController::class, 'getCriterias'])->name('get-criterias');
