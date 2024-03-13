@@ -27,14 +27,9 @@ onUpdated(() => {
 <template>
     <div class="wizard-container">
         <WizardHeader
-<<<<<<< HEAD
             :crumb="props.crumb"
             :setCrumb="props.setCrumb"
-=======
-            :crumb="crumb"
-            :setCrumb="setCrumb"
-            :user="user"
->>>>>>> develop
+            :user="props.user"
         />
         <WizardGrid
             :crumb="props.crumb"
