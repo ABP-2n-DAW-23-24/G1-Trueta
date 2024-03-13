@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ideal_weights', function (Blueprint $table) {
+        Schema::create('medications_questions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('questionId');
+            $table->unsignedBigInteger('medicationId');
+            $table->foreign('questionId')->references('id')->on('questions');
+            $table->foreign('medicationId')->references('id')->on('medications');
             $table->timestamps();
-            $table->boolean('gender');
-
-
-            $table->integer('minHeight');
-            $table->integer('maxHeight');
-            $table->integer('weight');
-            $table->softDeletes();
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ideal_weights');
+        Schema::dropIfExists('medications_questions');
     }
 };
