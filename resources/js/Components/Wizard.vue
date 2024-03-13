@@ -4,12 +4,16 @@ import WizardHeader from '@/Components/WizardHeader.vue';
 import WizardGrid from '@/Components/WizardGrid.vue';
 
 
-const props = defineProps(['setCrumb', 'crumb', 'selectedSurgery', 'setSelectedSurgery', {
+const props = defineProps({
+  setCrumb: String,
+  crumb: String,
+  selectedSurgery: String,
+  setSelectedSurgery: Function,
   user: {
     type: Object,
     required: true
   }
-}]);
+});
 
 
 

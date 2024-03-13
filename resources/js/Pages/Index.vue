@@ -19,6 +19,7 @@ function setCrumb(value) {
   crumb.value = value;
 }
 
+const user = ref({})
 const props = defineProps({
     user: Object,
 });
