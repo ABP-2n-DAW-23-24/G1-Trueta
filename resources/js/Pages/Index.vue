@@ -1,12 +1,25 @@
 <script setup>
 
-import { ref, defineProps } from 'vue';
+import { ref,watch, defineProps } from 'vue';
 import Footer from '@/Components/Footer.vue';
 import Logo from '@/Components/Logo.vue';
 import Aside from '@/Components/Aside.vue';
 import Wizard from '@/Components/Wizard.vue';
 import { Head } from '@inertiajs/vue3';
 
+
+const selectedSurgery = ref(1);
+function setSelectedSurgery(value) {
+  selectedSurgery.value = value;
+}
+
+const crumb = ref(0);
+
+function setCrumb(value) {
+  crumb.value = value;
+}
+
+const user = ref({})
 const props = defineProps({
     user: Object,
 });
@@ -17,10 +30,20 @@ const props = defineProps({
   <div class="index-container">
     <div class="col-left">
       <Logo class="logo" />
-      <Aside />
+      <Aside
+        :setCrumb="setCrumb"
+        :selectedSurgery="selectedSurgery"
+        :setSelectedSurgery="setSelectedSurgery"
+      />
     </div>
     <div class="col-right">
-      <Wizard :user="props.user"/>
+      <Wizard
+        :setCrumb="setCrumb"
+        :crumb="crumb"
+        :selectedSurgery="selectedSurgery"
+        :setSelectedSurgery="setSelectedSurgery"
+        :user="props.user"
+      />
     </div>
   </div>
 </template>
