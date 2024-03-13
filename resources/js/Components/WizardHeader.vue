@@ -19,6 +19,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Antibiotic", "Resultat"];
 
 <template>
     <div class="wizard-header-container">
+      {{ props.idSurgery }}
       <BreadcrumbsProgress
         :breadcrumbs="breadcrumbs"
         :crumb="crumb"

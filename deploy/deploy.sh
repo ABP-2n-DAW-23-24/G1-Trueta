@@ -5,5 +5,3 @@ mkdir -p -m 775 ./storage/app/public ./storage/framework/cache ./storage/framewo
 (chmod -R g+rwX storage ; true)
 npm update
 composer update
-npm run dev
-php artisan serve
