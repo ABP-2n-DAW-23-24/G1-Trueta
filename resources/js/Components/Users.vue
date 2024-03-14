@@ -4,7 +4,9 @@
     import ModalUsersDelete from "./ModalUsersDelete.vue"
     
     let props = defineProps({
-        users:Object
+        users:Object,
+        traduccion:Object
+
 })
 const emit = defineEmits(['EndEdit'])
 
@@ -25,8 +27,8 @@ function endEvent(){
 
     <div clas="is-flex " style="display: flex;" >
     
-<ModalUsersDelete @endDelete="endEvent" :users="item"></ModalUsersDelete>
-      <ModalUsersEdit @EndEdit="endEvent" :users="item"></ModalUsersEdit>
+<ModalUsersDelete @endDelete="endEvent" :users="item"   :traduccion="traduccion"></ModalUsersDelete>
+      <ModalUsersEdit @EndEdit="endEvent" :users="item" :traduccion="traduccion"></ModalUsersEdit>
     </div>
 </div>
 

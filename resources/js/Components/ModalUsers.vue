@@ -1,13 +1,15 @@
 <script setup>
 import Users from "@/Components/Users.vue";
 import Modal from './Modal.vue';
-import { ref,defineEmits } from 'vue';
+import { ref,defineEmits  } from 'vue';
+
 import { onMounted } from "vue";
 import axios from "axios";
 let props = defineProps({
-    show:Boolean
-})
+    show:Boolean,
+    traduccion:Object
 
+})
 let name=ref("");
 let surnames=ref("");
 let email=ref("");
@@ -15,6 +17,7 @@ let pass=ref("");
 let isAdmin =ref("0");
 let isManager=ref("0");
 let isModalOpen = ref(props.show);
+let message=ref();
 const emit = defineEmits(['EndAdd'])
 
 function btn_add_user(params) {
@@ -29,7 +32,6 @@ function btn_add_user(params) {
     }
     )
     .then(response=>{
-
         console.log(response)
         isModalOpen.value = false
         name=ref("");
@@ -40,7 +42,16 @@ function btn_add_user(params) {
         isManager=ref("0");
         emit('getUser');
 
-    })
+    }).catch(error => {
+
+    if (error.response && error.response.status === 422) {
+
+        message.value = error.response.data.errors;
+        console.log(message.value);
+    } else {
+        console.error('Ocurrió un error inesperado:', error);
+    }
+});
 }
 function closeModal(params) {
     isModalOpen.value=false
@@ -65,8 +76,9 @@ function closeModal(params) {
 
 <Modal :show="isModalOpen" @close="closeModal">
         <div style="padding: 20px;">
+            ddd
     <!-- Contenido personalizado para el slot del modal -->
-       
+     
         <div style="display: flex;
     flex-direction: row;
     align-content: center;
@@ -79,14 +91,42 @@ function closeModal(params) {
         </div>
      
         <div class="center_flex_modal"> 
-            <input type="text" style="    border-radius: 5px" placeholder="Nom" v-model="name">
-            <input type="text" style="    border-radius: 5px" placeholder="Cognoms" v-model="surnames">
+            <div>
+                <input type="text" style="    border-radius: 5px" placeholder="Nom" v-model="name">
+                <div v-if="message" >
+                        <p v-if="message.name" class="text_error"  v-for=" (item,index) in message.name"> {{item }} </p>
+                    </div>
+            </div>
+            <div>
+                    <input type="text" style="    border-radius: 5px" placeholder="Cognoms" v-model="surnames"> 
+                    
+            </div>
+            
         </div>
         <div class="correo_back center_flex" >
-            <input type="email" style="border-radius: 5px;width: 80%;" placeholder="correo electronic" v-model="email">
+            <div style="width:100%;display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;">
+                <input type="email" style="border-radius: 5px;width: 80%;" placeholder="correo electronic" v-model="email">
+
+                <div v-if="message" >
+                        <p v-if="message.email" class="text_error" v-for=" (item,index) in message.email"> {{item}} </p>
+                    </div>
+                
+            </div>
+           
         </div>
         <div class="correo_back center_flex" >
+            <div style="width:100%;display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;">
                 <input type="password" style="border-radius: 5px;width: 80%;" placeholder="contrasenya" v-model="pass">
+                <div v-if="message" >
+                        <p v-if="message.pass" class="text_error"  v-for=" (item,index) in message.pass"> {{item}} </p>
+                    </div>
+                    </div>
         </div>
         <div class="rols"> 
             <label for="">
@@ -141,4 +181,5 @@ function closeModal(params) {
   height: auto;
   margin-right: 8px;
 }
+
 </style>
