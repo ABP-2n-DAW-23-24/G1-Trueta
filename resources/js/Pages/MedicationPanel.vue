@@ -31,6 +31,17 @@ const showModalDosis = () => {
 
 const closeModalDosis = () => {
     isAddDoseModalActive.value = false;
+    AddDose.conditions = [
+        {
+            criteriaId: '',
+            min: '',
+            max: '',
+        }
+    ];
+    AddDose.dose = '';
+    AddDose.doseId = '';
+    AddDose.conditionId = '';
+
 };
 
 const showModalCondicio = (doseId) => {
@@ -42,6 +53,8 @@ const showModalCondicio = (doseId) => {
 const closeModalCondicio = (doseId) => {
     const modal = document.getElementById('image-modal-add' + doseId);
     modal.classList.remove('is-active');
+    AddConditionDoseForm.value = [];
+
 };
 
 
@@ -54,13 +67,20 @@ const showModalEdit = (doseId) => {
 const closeModalEdit = (doseId) => {
     const modal = document.getElementById('image-modal-edit' + doseId);
     modal.classList.remove('is-active');
+    AddContitionToDelete.value = [];
+    ConditionsArray.value = [];
 };
+
 const medications = ref([]);
 
 onMounted(() => {
     axios.get('/medication-panel/get-medication')
         .then(response => {
             medications.value = response.data;
+            if (medications.value.length > 0) {
+                activeMedication.value = medications.value[0].id;
+                getDoses(activeMedication.value);
+            }
         })
         .catch(error => {
             console.log(error);
@@ -76,7 +96,6 @@ const addMedication = () => {
         onSuccess: () => {
             getMedications()
             closeModal();
-
         }
     });
 };
@@ -123,7 +142,6 @@ const props = defineProps({
 
 const deleteDose = (doseId) => {
     const confirmDelete = confirm("Segur que vols eliminar aquesta dosi?");
-
     if (confirmDelete) {
         axios.delete('/medication-panel/delete-dose/' + doseId)
             .then(response => {
@@ -136,49 +154,108 @@ const deleteDose = (doseId) => {
     }
 };
 
-// const deleteConditionDose = (conditionId, doseId) => {
-//     const confirmDelete = confirm("Segur que vols eliminar aquesta condició?");
-
-//     if (confirmDelete) {
-//         axios.delete('/medication-panel/delete-condition-dose/' + doseId + '/' + conditionId)
-//             .then(response => {
-//                 getDoses(activeMedication.value);
-//                 console.log('condition deleted');
-//             })
-//             .catch(error => {
-//                 console.log(error);
-//             });
-//     }
-// };
 
 const ConditionsToDelete = ref([]);
+const ConditionsArray = ref([]);
 
 const AddContitionToDelete = (doseId, conditionId) => {
-    ConditionsToDelete.value.push({doseId, conditionId});
+    ConditionsToDelete.value.push({ doseId, conditionId });
     console.log(ConditionsToDelete.value);
 }
 
-const editDose = (doseId) => {
+const editDose = (doseId, conditions) => {
+    console.log(conditions);
+    if (ConditionsToDelete.value.length > 0) {
+        ConditionsToDelete.value.forEach(({ conditionId, doseId }) => {
+            axios.delete('/medication-panel/delete-condition-dose/' + doseId + '/' + conditionId)
+                .then(response => {
+                    console.log('condition deleted');
+                    ConditionsToDelete.value = [];
+                    getDoses(activeMedication.value);
+                    closeModalEdit(doseId);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        });
+    } else {
+        ConditionsToDelete.value = [];
+        closeModalEdit(doseId);
+    }
 
-    
 
-    ConditionsToDelete.value.forEach(({conditionId, doseId}) => {
-        axios.delete('/medication-panel/delete-condition-dose/' + doseId + '/' + conditionId)
-            .then(response => {
-                 getDoses(activeMedication.value);
-                 console.log('condition deleted');
-                 closeModalEdit(doseId);
-                 ConditionsToDelete.value = [];
-            })
-            .catch(error => {
-                console.log(error);
-             });
-     });
 };
 
 const CancelEditDose = (doseId) => {
     ConditionsToDelete.value = [];
+    ConditionsArray.value = [];
     closeModalEdit(doseId);
+};
+
+// Conditions
+const AddConditionDoseForm = useForm({
+    criteriaId: '',
+    min: '',
+    max: '',
+    doseId: '',
+    conditionId: '',
+});
+
+const addConditionDose = () => {
+    AddConditionDoseForm.post('/medication-panel/add-condition-dose', {
+        onSuccess: () => {
+            getDoses(activeMedication.value);
+            AddConditionDoseForm.criteriaId = '';
+            AddConditionDoseForm.min = '';
+            AddConditionDoseForm.max = '';
+            closeModalCondicio(AddConditionDoseForm.doseId);
+
+        }
+    });
+};
+
+// Add doses and conditions
+const conditions = ref(['']);
+
+const addCondition = () => {
+    AddDose.conditions.push({
+        criteriaId: '',
+        min: '',
+        max: '',
+    });
+};
+
+const AddDose = useForm({
+    medicationId: '',
+    doseId: '',
+    conditionId: '',
+    dose: '',
+    conditions: [
+        {
+            criteriaId: '',
+            min: '',
+            max: '',
+        }
+    ],
+
+});
+
+const addDose = () => {
+    AddDose.medicationId = activeMedication.value;
+    AddDose.post('/medication-panel/add-dose', {
+        onSuccess: () => {
+            getDoses(activeMedication.value);
+            AddDose.dose = '';
+            AddDose.conditions = [
+                {
+                    criteriaId: '',
+                    min: '',
+                    max: '',
+                }
+            ];
+            closeModalDosis();
+        }
+    });
 };
 
 
@@ -242,21 +319,46 @@ const CancelEditDose = (doseId) => {
                         </div>
                         <div class="modal-content">
                             <div class="modal-card">
+                                <form @submit.prevent="addDose">
+                                    <section class="modal-card-body">
+                                        <div class="field">
+                                            <label class="label label-dosis">Afegir una nova dosi:</label>
+                                            <div class="control">
+                                                <input class="input" type="text" placeholder="Dosis: "
+                                                    v-model="AddDose.dose">
+                                                <label class="label label-dosis m-0" for="dosis">Condicions:</label>
+                                                <div v-for="(condition, index) in AddDose.conditions" :key="index"
+                                                    class="control-row">
+                                                    <select class="input" placeholder="Selecciona una opció"
+                                                        v-model="condition.criteriaId">
+                                                        <option disabled selected>Seleccionar opció</option>
+                                                        <option v-for="criteria in criterias" :key="criteria.id"
+                                                            :value="criteria.id">{{ criteria.name }}</option>
+                                                    </select>
+                                                    <input class="input" type="number" placeholder="Minim"
+                                                        v-model="condition.min">
+                                                    <input class="input" type="number" placeholder="Màxim"
+                                                        v-model="condition.max">
+                                                </div>
+                                                <input type="hidden" v-model="AddDose.doseId">
+                                                <input type="hidden" v-model="AddDose.conditionId">
 
-                                <section class="modal-card-body">
-                                    <div class="field">
-                                        <label class="label label-dosis">Afegir una nova dosi:</label>
-                                        <div class="control">
-                                            <input class="input" type="text" placeholder="Dosis: ">
-
-                                            <input class="input" type="text" placeholder="Condició: ">
+                                                <div class="control flex items-center">
+                                                    <button
+                                                        class="bg-transparent w-max hover:underline text-blue-500 flex items-center ml-auto"
+                                                        @click="addCondition" type="button">
+                                                        + Afegir condició
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </section>
-                                <footer class="modal-card-foot">
-                                    <button class="button is-success add-button">Afegir</button>
-                                    <button class="button-cancel" @click="closeModalDosis">Cancelar</button>
-                                </footer>
+                                    </section>
+                                    <footer class="modal-card-foot">
+                                        <button class="button is-success add-button" @click="addDose">Afegir</button>
+                                        <button class="button-cancel" @click="closeModalDosis"
+                                            type="button">Cancelar</button>
+                                    </footer>
+                                </form>
                             </div>
                         </div>
                         <button id="image-modal-close" class="modal-close" @click="closeModalDosis"></button>
@@ -306,10 +408,12 @@ const CancelEditDose = (doseId) => {
                                         <section class="modal-card-body">
                                             <div class="field">
                                                 <div class="control select-dosis">
-                                                    <label class="label label-dosis" for="dosis">Editar dosi {{ dose.dose
-                                                        }}</label>
+                                                    <label class="label label-dosis" for="dosis">Editar dosi {{
+                    dose.dose
+                }}</label>
                                                     <div class="control-editar"
                                                         v-for="doseCondition in doses[index].conditions">
+
                                                         <select class="input" placeholder="Selecciona una opció">
                                                             <option v-for="criteria in criterias" :key="criteria.id"
                                                                 :value="criteria.id"
@@ -322,7 +426,8 @@ const CancelEditDose = (doseId) => {
                                                             :value="doseCondition.min">
                                                         <input class="input" type="number" placeholder="Màxim"
                                                             :value="doseCondition.max">
-                                                        <button class="checkdelete"
+                                                        <button
+                                                            class="checkdelete hover:bg-red-500 text-white font-bold py-2 px-2 rounded"
                                                             @click="AddContitionToDelete(dose.id, doseCondition.id)"
                                                             :id="doseCondition.id">
                                                             <img src="../../assets/svg/basura.svg" alt="Drop"
@@ -333,7 +438,9 @@ const CancelEditDose = (doseId) => {
                                             </div>
                                         </section>
                                         <footer class="modal-card-foot">
-                                            <button class="button is-success add-button" @click="editDose(dose.id)">Editar</button>
+                                            <button class="button is-success add-button"
+                                                @click="editDose(dose.id, doses[index].conditions)"
+                                                :id="doses.conditions">Editar</button>
                                             <button class="button-cancel"
                                                 @click="CancelEditDose(dose.id)">Cancelar</button>
                                         </footer>
@@ -347,33 +454,43 @@ const CancelEditDose = (doseId) => {
                                     :id="'image-modal-add' + dose.id">
                                     <div class="modal-background" @click="closeModalCondicio(dose.id)"></div>
                                     <div class="modal-card modal-card-add-condition">
-                                        <section class="modal-card-body">
-                                            <div class="field">
-                                                <div class="control select-dosis">
-                                                    <label class="label label-dosis" for="dosis">Afegir Condició a {{
-                        dose.dose }}</label>
-                                                    <div class="control">
-                                                        <div class="select is-fullwidth">
-                                                            <select class="input" placeholder="Selecciona una opció">
-                                                                <option disabled selected>Selecciona una opció</option>
-                                                                <option v-for="criteria in criterias" :key="criteria.id"
-                                                                    :value="criteria.id">
-                                                                    {{ criteria.name }}
-                                                                </option>
-                                                            </select>
+                                        <form @submit.prevent="addConditionDose">
+                                            <section class="modal-card-body">
+                                                <div class="field">
+                                                    <div class="control select-dosis">
+                                                        <label class="label label-dosis" for="dosis">Afegir Condició a
+                                                            {{
+                    dose.dose }}</label>
+                                                        <div class="control">
+                                                            <div class="select is-fullwidth">
+                                                                <select class="input" placeholder="Selecciona una opció"
+                                                                    v-model="AddConditionDoseForm.criteriaId">
+                                                                    <option disabled selected>Selecciona una opció
+                                                                    </option>
+                                                                    <option v-for="criteria in criterias"
+                                                                        :key="criteria.id" :value="criteria.id">
+                                                                        {{ criteria.name }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <input class="input" type="number" placeholder="Minim"
+                                                                v-model="AddConditionDoseForm.min">
+                                                            <input class="input" type="number" placeholder="Màxim"
+                                                                v-model="AddConditionDoseForm.max">
+                                                            <input type="hidden" v-model="AddConditionDoseForm.doseId">
+                                                            <input type="hidden"
+                                                                v-model="AddConditionDoseForm.conditionId">
                                                         </div>
-                                                        <input class="input" type="number" placeholder="Minim">
-                                                        <input class="input" type="number" placeholder="Màxim">
-
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </section>
-                                        <footer class="modal-card-foot">
-                                            <button class="button is-success add-button">Afegir</button>
-                                            <button class="button-cancel"
-                                                @click="closeModalCondicio(dose.id)">Cancelar</button>
-                                        </footer>
+                                            </section>
+                                            <footer class="modal-card-foot">
+                                                <button class="button is-success add-button"
+                                                    @click="AddConditionDoseForm.doseId = dose.id; addConditionDose()">Afegir</button>
+                                                <button class="button-cancel" type="button"
+                                                    @click="closeModalCondicio(dose.id)">Cancelar</button>
+                                            </footer>
+                                        </form>
                                     </div>
                                 </div>
                                 <button class="button is-success is-outlined add-condition"
@@ -654,6 +771,14 @@ header {
 }
 
 .control-editar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.control-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
