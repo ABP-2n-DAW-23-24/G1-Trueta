@@ -9,7 +9,9 @@
     alergic: false,
     mrsa: false,
     gender: "",
-});
+  });
+
+
 
 const submit = () => {
   if (form.gender == ""){
@@ -36,10 +38,37 @@ const submit = () => {
       type: Number,
       required: true
     },
+    hoveredSurgery: {
+      type: Number,
+      required: true
+    },
+    hoveredOperation: {
+      type: Number,
+      required: true
+    },
+    toggleCollapse: {
+      type: Function,
+      required: true
+    },
+    selectedOperation: {
+      type: Number,
+      required: true
+    },
+    setSelectedOperation: {
+      type: Function,
+      required: true
+    },
+    setHoveredSurgery: {
+      type: Function,
+      required: true
+    },
+    setHoveredOperation: {
+      type: Function,
+      required: true
+    }
   });
 
   const surgeries = ref([]);
-  const selectedOperation = ref(0);
 
   axios.get("/json/surgeriesWithOperations")
   .then(response => {
@@ -49,10 +78,11 @@ const submit = () => {
   function handleSurgeryClick(surgery) {
     props.setSelectedSurgery(surgery)
     props.setCrumb(1);
+    props.toggleCollapse(surgery + 1);
   }
 
   function handleOperationClick(operation) {
-    selectedOperation.value = operation;
+    props.setSelectedOperation(operation);
     props.setCrumb(2);
   }
 
@@ -70,14 +100,23 @@ function makeDarkColor(color) {
     return `#${darkRgb.map(x => x.toString(16).padStart(2, '0')).join('')}`;
   }
 
+
+
+
+
 </script>
 <template>
 
   <div class="wizard-grid-container">
-    <!-- Mostrando todas las cirugías -->
+    <!-- All surgeries -->
     <WizardSquare
       v-show="crumb === 0"
       v-for="(surgery, index) in surgeries"
+      :class="{
+        'hover': props.hoveredSurgery == surgery.id,
+      }"
+      @mouseover="props.setHoveredSurgery(surgery.id)"
+      @mouseleave="props.setHoveredSurgery(-1)"
       @click="() => handleSurgeryClick(index)"
       :name="surgery.name"
       :color="surgery.color"
@@ -86,9 +125,14 @@ function makeDarkColor(color) {
     />
   </div>
 
-  <!-- Filtrando operaciones con el atributo 'profilaxis' en 1 -->    
+  <!-- All operations with profilaxis -->
   <div class="wizard-grid-container">
     <WizardSquare
+      :class="{
+        'hover': props.hoveredOperation == operation.id,
+      }"
+      @mouseover="props.setHoveredOperation(operation.id)"
+      @mouseleave="props.setHoveredOperation(-1)"
       v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => handleOperationClick(operation.id)"
@@ -99,14 +143,20 @@ function makeDarkColor(color) {
     />
   </div>
 
-  <!-- Verificando si hay operaciones sin profilaxis -->
+  <!-- Text separator for operations without profilaxis -->
   <div v-show="crumb === 1 && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
+
+  <!-- All operations without profilaxis -->
   <div class="wizard-grid-container">
-    <!-- Filtrando operaciones sin profilaxis -->
     <WizardSquare
+      :class="{
+        'hover': props.hoveredOperation == operation.id,
+      }"
+      @mouseover="props.setHoveredOperation(operation.id)"
+      @mouseleave="props.setHoveredOperation(-1)"
       v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name"
