@@ -21,6 +21,9 @@ Route::get('/admin-panel', [Adminpanel::class, 'index'])->name('admin_panel');
 Route::post('/adduser',[UserController::class, 'createUser'] )->name('adduser');
 Route::post('/editUser',[UserController::class, 'editUser'] )->name('editUser');
 Route::post('/deleteUser',[UserController::class, 'deleteUser'] )->name('deleteUser');
+Route::post('/searchUser',[UserController::class, 'searchUser'] )->name('searchUser');
+
+
 
 Route::post('/getUsers',[Adminpanel::class, 'getAllUsers'] )->name('getUsers');
 Route::post('/idiom_save',[UserController::class, 'setIdiom'] )->name('idiom_save');
