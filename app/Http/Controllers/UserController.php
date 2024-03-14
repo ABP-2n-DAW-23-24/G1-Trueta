@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -69,5 +71,11 @@ return response()->json(['message' => 'User added successfully', 'user' => $requ
         $userModel=new User;
         $User=$userModel->find($request->id);
         $User->delete();  
+    }
+    public static function setIdiom(Request $request){
+        $userModel=new User;
+        $user=$userModel->find(Auth::user()->id);  
+        $user->language=$request->idiomSelect;
+        $user->save();
     }
 }
