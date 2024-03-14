@@ -56,7 +56,9 @@ const props = defineProps({
   height: 100%;
 }
 
-.square:hover {
+.square:hover,
+.square-container.hover .square
+{
   cursor: pointer;
   transform: scale(1.05);
   transition: 0.3s;
@@ -66,4 +68,5 @@ const props = defineProps({
   color: white !important;
   background: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
 }
+
 </style>

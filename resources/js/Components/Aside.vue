@@ -6,18 +6,46 @@ const surgeries = ref(null);
 
 
 const props = defineProps({
-  setCrumb: {
-    type: Function,
-    required: true
-  },
-  setSelectedSurgery: {
-    type: Function,
-    required: true
-  },
   selectedSurgery: {
     type: Number,
     required: true
   },
+  setHoveredSurgery: {
+    type: Function,
+    required: true
+  },
+  setHoveredOperation: {
+    type: Function,
+    required: true
+  },
+  collapsed: {
+    type: Number,
+    required: true
+  },
+  toggleCollapse: {
+    type: Function,
+    required: true
+  },
+  setCrumb: {
+    type: Function,
+    required: true
+  },
+  setSelectedOperation: {
+    type: Function,
+    required: true
+  },
+  selectedOperation: {
+    type: Number,
+    required: true
+  },
+  hoveredSurgery: {
+    type: Number,
+    required: true
+  },
+  hoveredOperation: {
+    type: Number,
+    required: true
+  }
 });
 
 
@@ -26,37 +54,46 @@ axios.get("/json/surgeriesWithOperations")
   surgeries.value = response.data;
 });
 
-const collapsed = ref(null);
+
+function handleOperationClick(operationId) {
+  console.log(operationId);
+  props.setCrumb(2);
+  props.setSelectedOperation(operationId);
+}
 
 
-
-const toggleCollapse = (id) => {
-  if (collapsed.value == id) {
-    collapsed.value = null;
-    props.setCrumb(0);
-    return;
-  }
-  
-  props.setSelectedSurgery(id - 1);
-  collapsed.value = id;
-  props.setCrumb(1);
-};
 
 </script>
 <template>
   <ul class="menu-list" style="margin-bottom: 20px;">
-    <li v-for="surgery in surgeries" :key="surgery.id">
-      <div class="title" @click="toggleCollapse(surgery.id)">
+    <li
+      v-for="surgery in surgeries"
+      @mouseover="props.setHoveredSurgery(surgery.id)"
+      @mouseleave="props.setHoveredSurgery(-1)"
+      :class="{
+        'hovered': surgery.id == props.hoveredSurgery && props.collapsed != surgery.id,
+      }"
+      :key="surgery.id">
+      <div class="title" @click="props.toggleCollapse(surgery.id)">
         <a class="name">{{ surgery.name }}</a>
         <img
           src="../../assets/svg/arrow.svg"
           alt="arrow"
           class="arrow"
-          :class="{ 'arrow-rotated': collapsed == surgery.id }"
+          :class="{ 'arrow-rotated': props.collapsed == surgery.id }"
         />
       </div>
-      <ul class="name-list" v-if="collapsed == surgery.id" >
-        <li v-for="operation in surgery.operations" :key="operation">
+      <ul v-if="props.collapsed == surgery.id" >
+        <li
+          v-for="operation in surgery.operations"
+          :class="{
+            'active': operation.id == props.selectedOperation,
+            'hovered': operation.id == props.hoveredOperation
+          }"
+          @mouseover="props.setHoveredOperation(operation.id)"
+          @mouseleave="props.setHoveredOperation(-1)"
+          @click="handleOperationClick(operation.id)"
+          :key="operation">
           <a>{{ operation.name }}</a>
         </li>
       </ul>
@@ -96,4 +133,19 @@ const toggleCollapse = (id) => {
 .arrow-rotated {
   transform: rotate(180deg);
 }
+
+
+li.active a {
+  background-color: #00599c;
+  color: white !important;
+  border-radius: 7.5px;
+}
+
+
+li.hovered:not(.active) a {
+  background-color: #f0f0f0;
+  color: #363636;
+  border-radius: 7.5px;
+}
+
 </style>

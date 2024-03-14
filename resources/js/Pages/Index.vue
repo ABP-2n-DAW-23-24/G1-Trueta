@@ -13,16 +13,62 @@ function setSelectedSurgery(value) {
   selectedSurgery.value = value;
 }
 
+
+const collapsed = ref(null);
+
+const toggleCollapse = (id) => {
+  if (collapsed.value == id) {
+    collapsed.value = null;
+    setCrumb(0);
+    return;
+  }
+  
+  setSelectedSurgery(id - 1);
+  collapsed.value = id;
+  setCrumb(1);
+};
+
 const crumb = ref(0);
 
 function setCrumb(value) {
   crumb.value = value;
+  if (value == 0) {
+    collapsed.value = null;
+    selectedOperation.value = 0;
+  }
+  if (value == 1) {
+    selectedOperation.value = 0;
+  }
 }
 
 const user = ref({})
 const props = defineProps({
     user: Object,
 });
+
+const hoveredSurgery = ref(-1);
+const hoveredOperation = ref(-1);
+
+const selectedOperation = ref(0);
+
+function setSelectedOperation(value) {
+  console.log(value, "aaa");
+  selectedOperation.value = value;
+}
+
+
+// funcio toggleHoverOperation: passar id de la operació
+
+// funcio toggleHoverSurgery: passar id de la cirurgia
+function setHoveredSurgery(id) {
+  hoveredSurgery.value = id;
+}
+
+function setHoveredOperation(id) {
+  hoveredOperation.value = id;
+}
+
+
 
 </script>
 <template>
@@ -34,6 +80,14 @@ const props = defineProps({
         :setCrumb="setCrumb"
         :selectedSurgery="selectedSurgery"
         :setSelectedSurgery="setSelectedSurgery"
+        :setHoveredSurgery="setHoveredSurgery"
+        :setHoveredOperation="setHoveredOperation"
+        :collapsed="collapsed"
+        :toggleCollapse="toggleCollapse"
+        :setSelectedOperation="setSelectedOperation"
+        :selectedOperation="selectedOperation"
+        :hoveredSurgery="hoveredSurgery"
+        :hoveredOperation="hoveredOperation"
       />
     </div>
     <div class="col-right">
@@ -41,8 +95,15 @@ const props = defineProps({
         :setCrumb="setCrumb"
         :crumb="crumb"
         :selectedSurgery="selectedSurgery"
+        :hoveredSurgery="hoveredSurgery"
+        :hoveredOperation="hoveredOperation"
+        :setHoveredOperation="setHoveredOperation"
+        :setHoveredSurgery="setHoveredSurgery"
         :setSelectedSurgery="setSelectedSurgery"
         :user="props.user"
+        :toggleCollapse="toggleCollapse"
+        :setSelectedOperation="setSelectedOperation"
+        :selectedOperation="selectedOperation"
       />
     </div>
   </div>
