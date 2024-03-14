@@ -57,4 +57,46 @@ class MedicationPanelController extends Controller
         return response()->json(['message' => 'ConditionDose deleted successfully']);
     }
 
-}
+    // add condition, if not exists, and condition_dose
+    public function addConditionDose(Request $request) {
+        $data = $request->all();
+    
+        $condition = Condition::firstOrCreate([
+            'criteriaId' => $data['criteriaId'],
+            'min' => $data['min'],
+            'max' => $data['max']
+        ]);
+        $data['conditionId'] = $condition->id;
+        $conditionDose = ConditionsDose::firstOrCreate([
+            
+            'doseId' => $data['doseId'],
+            'conditionId' => $data['conditionId']
+        ]);
+    }
+
+    // add dose and their condition, if not exists, and condition_doses
+    public function addDose(Request $request) {
+        $data = $request->all();
+        
+        $dose = Dose::create([
+            'medicationId' => $data['medicationId'],
+            'dose' => $data['dose']
+        ]);
+       
+        $data['doseId'] = $dose->id;
+        
+        for ($i = 0; $i < count($data['conditions']); $i++) {
+            $condition = Condition::firstOrCreate([
+                'criteriaId' => $data['conditions'][$i]['criteriaId'],
+                'min' => $data['conditions'][$i]['min'],
+                'max' => $data['conditions'][$i]['max']
+            ]);
+            $data['conditionId'] = $condition->id;
+
+            $conditionDose = ConditionsDose::firstOrCreate([
+                'doseId' => $data['doseId'],
+                'conditionId' => $data['conditionId']
+            ]);
+        }
+    }
+}    
