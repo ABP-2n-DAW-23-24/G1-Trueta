@@ -99,4 +99,22 @@ class MedicationPanelController extends Controller
             ]);
         }
     }
-}    
+
+    // edit condition by condition id, if already exists, it will put error message
+    public function editCondition(Request $request) {
+        $data = $request->all();
+        for ($i = 0; $i < count($data['conditions']); $i++) {
+            $condition = Condition::where('id', $data['conditions'][$i]['conditionId'])->first();
+            if ($condition) {
+                $condition->update([
+                    'criteriaId' => $data['conditions'][$i]['criteriaId'],
+                    'min' => $data['conditions'][$i]['min'],
+                    'max' => $data['conditions'][$i]['max']
+                ]);
+            } else {
+                return response()->json(['message' => 'Condition not found']);
+            }
+        }   
+    
+    }
+}
