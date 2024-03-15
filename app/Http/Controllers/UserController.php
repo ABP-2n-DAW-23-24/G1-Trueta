@@ -78,4 +78,8 @@ return response()->json(['message' => 'User added successfully', 'user' => $requ
         $user->language=$request->idiomSelect;
         $user->save();
     }
+    public static function searchUser(Request $request){
+        $users = User::where('name', 'like', $request->name.'%')->get();
+        return $users;
+    }
 }

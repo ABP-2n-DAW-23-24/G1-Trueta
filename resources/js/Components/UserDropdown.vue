@@ -16,7 +16,18 @@ const props = defineProps({
       :routes="[
         {
             label: 'Panell d\'antibiòtics',
-            route: 'medication-panel'
+            route: 'medication-panel',
+            
+
+        },
+        {
+            label: 'Perfil',
+            route: 'profile.edit'
+
+        },
+        {
+            label: 'Panell administració',
+            route: 'admin_panel'
         },
         {
             label: 'Pagina Inici',
