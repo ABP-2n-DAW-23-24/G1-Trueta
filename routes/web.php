@@ -34,6 +34,7 @@ Route::delete('/medication-panel/delete-dose/{doseId}', [MedicationPanelControll
 Route::delete('/medication-panel/delete-condition-dose/{doseId}/{conditionId}', [MedicationPanelController::class, 'deleteConditionDose'])->name('delete-condition-dose');
 Route::post('/medication-panel/add-condition-dose', [MedicationPanelController::class, 'addConditionDose'])->name('add-condition-dose');
 Route::post('/medication-panel/add-dose', [MedicationPanelController::class, 'addDose'])->name('add-dose');
+Route::post('/medication-panel/edit-dose-condition', [MedicationPanelController::class, 'editCondition'])->name('edit-dose-condition');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
