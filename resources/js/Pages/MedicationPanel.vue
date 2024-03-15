@@ -312,7 +312,7 @@ const addDose = () => {
                                             <label class="label">Nom del medicament:</label>
                                             <div class="control">
                                                 <input class="input input-add-medication" type="text"
-                                                    placeholder="Nom del medicament..."
+                                                    placeholder="Nom del medicament..." title="Nom del medicament..."
                                                     v-model="addMedicationForm.name">
                                             </div>
                                         </div>
@@ -324,7 +324,7 @@ const addDose = () => {
                                     </footer>
                                 </div>
                             </div>
-                            <button id="image-modal-close" class="modal-close" @click="closeModal"></button>
+                            <button id="image-modal-close" class="modal-close" title="Close" @click="closeModal"></button>
                         </form>
                     </div>
                     <button class="add-button" id="showModal" @click="showModal">
@@ -347,20 +347,20 @@ const addDose = () => {
                                         <div class="field">
                                             <label class="label label-dosis">Afegir una nova dosi:</label>
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="Dosis: "
+                                                <input class="input" type="text" placeholder="Dosis: " title="Dosis:"
                                                     v-model="AddDose.dose">
                                                 <label class="label label-dosis m-0" for="dosis">Condicions:</label>
                                                 <div v-for="(condition, index) in AddDose.conditions" :key="index"
                                                     class="control-row">
-                                                    <select class="input" placeholder="Selecciona una opció"
+                                                    <select class="input" placeholder="Selecciona una opció" title="Selecciona una opció"
                                                         v-model="condition.criteriaId">
                                                         <option disabled selected>Seleccionar opció</option>
                                                         <option v-for="criteria in criterias" :key="criteria.id"
                                                             :value="criteria.id">{{ criteria.name }}</option>
                                                     </select>
-                                                    <input class="input" type="number" placeholder="Minim"
+                                                    <input class="input" type="number" placeholder="Minim" title="Minim"
                                                         v-model="condition.min">
-                                                    <input class="input" type="number" placeholder="Màxim"
+                                                    <input class="input" type="number" placeholder="Màxim" title="Màxim"
                                                         v-model="condition.max">
                                                 </div>
                                                 <input type="hidden" v-model="AddDose.doseId">
@@ -384,7 +384,7 @@ const addDose = () => {
                                 </form>
                             </div>
                         </div>
-                        <button id="image-modal-close" class="modal-close" @click="closeModalDosis"></button>
+                        <button id="image-modal-closed" class="modal-close" title="Cerrar Afegir Dosis" @click="closeModalDosis"></button>
                     </div>
                     <button class="add-dose" id="showModalDosis" @click="showModalDosis">
                         + Afegir dosi
@@ -440,7 +440,7 @@ const addDose = () => {
                                                             <div v-if="!IsConditionDelete(dose.id, doseCondition.id)"
                                                                 class="control-row">
                                                                 <select class="input"
-                                                                    placeholder="Selecciona una opción"
+                                                                    placeholder="Selecciona una opción" title="Selecciona una opció"
                                                                     v-model="doseCondition.criteriaId">
                                                                     <option v-for="criteria in criterias"
                                                                         :key="criteria.id" :value="criteria.id"
@@ -448,14 +448,14 @@ const addDose = () => {
                                                                         {{ criteria.name }}
                                                                     </option>
                                                                 </select>
-                                                                <input class="input" type="number" placeholder="Minim"
+                                                                <input class="input" type="number" placeholder="Minim" title="Minim"
                                                                     v-model="doseCondition.min">
-                                                                <input class="input" type="number" placeholder="Màxim"
+                                                                <input class="input" type="number" placeholder="Màxim" title="Màxim"
                                                                     v-model="doseCondition.max">
                                                                 <button
                                                                     class="checkdelete hover:bg-red-500 text-white font-bold py-2 px-2 rounded"
                                                                     @click="AddContitionToDelete(dose.id, doseCondition.id)"
-                                                                    :id="doseCondition.id">
+                                                                    :id="doseCondition.id + 'delete' + dose.id">
                                                                     <img src="../../assets/svg/basura.svg" alt="Drop"
                                                                         width="20px" height="20px">
                                                                 </button>
@@ -475,7 +475,7 @@ const addDose = () => {
                                     </div>
                                 </div>
                                 <button class="button is-success is-outlined editar" @click="showModalEdit(dose.id)"
-                                    :id="dose.id">
+                                    :id="dose.id + 'edit'">
                                     <img src="../../assets/svg/lapiz.svg" alt="Editar" width="20px" height="20px">
                                 </button>
                                 <div class="modal" :class="{ 'is-active': isAddConditionModalActive }"
@@ -491,7 +491,7 @@ const addDose = () => {
                     dose.dose }}</label>
                                                         <div class="control">
                                                             <div class="select is-fullwidth">
-                                                                <select class="input" placeholder="Selecciona una opció"
+                                                                <select class="input" placeholder="Selecciona una opció" title="Selecciona una opció"
                                                                     v-model="AddConditionDoseForm.criteriaId">
                                                                     <option disabled selected>Selecciona una opció
                                                                     </option>
@@ -501,9 +501,9 @@ const addDose = () => {
                                                                     </option>
                                                                 </select>
                                                             </div>
-                                                            <input class="input" type="number" placeholder="Minim"
+                                                            <input class="input" type="number" placeholder="Minim" title="Minim"
                                                                 v-model="AddConditionDoseForm.min">
-                                                            <input class="input" type="number" placeholder="Màxim"
+                                                            <input class="input" type="number" placeholder="Màxim" title="Màxim"
                                                                 v-model="AddConditionDoseForm.max">
                                                             <input type="hidden" v-model="AddConditionDoseForm.doseId">
                                                             <input type="hidden"
@@ -741,7 +741,7 @@ header {
 
 .button-cancel {
     padding: 8px;
-    background-color: #838383;
+    background-color:  #767676;
     color: #ffffff;
     border: none;
     border-radius: 15px;
