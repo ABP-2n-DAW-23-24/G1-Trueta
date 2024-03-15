@@ -6,6 +6,8 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
 import { useForm } from "@inertiajs/vue3";
+import Footer from '@/Components/Footer.vue';
+
 let form = useForm({
     idiomSelect: "",
 });
@@ -97,4 +99,5 @@ console.log(props.language)
             </div>
         </div>
     </AuthenticatedLayout>
+    <Footer />
 </template>
