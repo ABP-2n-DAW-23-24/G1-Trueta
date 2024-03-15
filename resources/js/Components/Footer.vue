@@ -3,7 +3,7 @@
         <footer class="has-background-light">
             <div class="columns">
                 <div class="column  is-flex is-justify-content-center">
-                    <img src="https://icsgirona.cat/adjunts/images/LOGO%20HORITZ%20COLOR%20RGB.png" width="100px" height="200px">
+                    <img src="../../assets/img/logoTrueta.png" width="100px" height="200px">
                 </div>
                 
                 <div class="column has-text-centered">© Fet per alumnes de l'Institut Cendrassos</div>

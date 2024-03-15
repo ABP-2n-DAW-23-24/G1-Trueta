@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useForm, router } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
 import UserDropdown from '@/Components/UserDropdown.vue';
+import Footer from '@/Components/Footer.vue';
 
 // Medications
 const activeMedication = ref(1);
@@ -537,6 +538,7 @@ const addDose = () => {
             </div>
         </div>
     </div>
+    <Footer />
 </template>
 
 <style scoped>
