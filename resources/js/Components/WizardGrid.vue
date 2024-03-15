@@ -104,11 +104,16 @@ const currentOperation = computed(() => {
 
 </script>
 <template>
-
-  <div class="wizard-grid-container">
     <!-- All surgeries -->
+
+
+
+
+  <div
+    v-show="crumb === 0"
+    class="wizard-grid-container">
     <WizardSquare
-      v-show="crumb === 0 && surgery.operations.length > 0"
+      v-show="surgery.operations.length > 0"
       v-for="(surgery, index) in surgeries"
       :class="{
         'hover': props.hoveredSurgery == surgery.id,
@@ -124,14 +129,15 @@ const currentOperation = computed(() => {
   </div>
 
   <!-- All operations with profilaxis -->
-  <div class="wizard-grid-container">
+  <div
+    v-show="crumb === 1"
+    class="wizard-grid-container">
     <WizardSquare
       :class="{
         'hover': props.hoveredOperation === operation.id,
       }"
       @mouseover="props.setHoveredOperation(operation.id)"
       @mouseleave="props.setHoveredOperation(-1)"
-      v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => handleOperationClick(operation.id)"
       :name="operation.name"
@@ -148,14 +154,15 @@ const currentOperation = computed(() => {
 
 
   <!-- All operations without profilaxis -->
-  <div class="wizard-grid-container">
+  <div
+    v-show="crumb === 1"
+    class="wizard-grid-container">
     <WizardSquare
       :class="{
         'hover': props.hoveredOperation == operation.id,
       }"
       @mouseover="props.setHoveredOperation(operation.id)"
       @mouseleave="props.setHoveredOperation(-1)"
-      v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name"
       :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
