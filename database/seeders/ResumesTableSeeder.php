@@ -36,7 +36,7 @@ class ResumesTableSeeder extends Seeder
 
         // 4
         Resume::create([
-            '{{10}} 800 mg ev previ implant i posteriorment seguir amb dues dosis de 400
+            'resume' => '{{10}} 800 mg ev previ implant i posteriorment seguir amb dues dosis de 400
             mg/12h ev (total 3 dosis en 24 hores).
             +
             {{11}} 2g previ implant i posteriorment seguir amb dues dosis de 2g/8h (total 3
@@ -45,7 +45,7 @@ class ResumesTableSeeder extends Seeder
 
         // 5
         Resume::create([
-            '{{1}} 2g + {{4}} 15 mg/kg
+            'resume' => '{{1}} 2g + {{4}} 15 mg/kg
             Si accés via femoral cal cobrir flora genitourinària i digestiva (Enteroccoc faecalis i
             Enterobacteries).
             Es pot prolongar la profilaxi fins 24h post procediment segons indicacions metge prescriptor
@@ -54,161 +54,161 @@ class ResumesTableSeeder extends Seeder
 
         // 6
         Resume::create([
-            '{{4}} 15 mg/Kg + {{9}} 2g'
+            'resume' => '{{4}} 15 mg/Kg + {{9}} 2g'
         ]);
 
         // 7
         Resume::create([
-            '{{7}} 3-5 mg/Kg'
+            'resume' => '{{7}} 3-5 mg/Kg'
         ]);
 
         // 8
         Resume::create([
-            '{{7}} 3-5 mg/kg + {{8}} 1g'
+            'resume' => '{{7}} 3-5 mg/kg + {{8}} 1g'
         ]);
 
         // 9
         Resume::create([
-            '{{12}} 3g vo o {{7}} 3-5 mg/Kg ev'
+            'resume' => '{{12}} 3g vo o {{7}} 3-5 mg/Kg ev'
         ]);
 
         // 10
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/Kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/Kg'
         ]);
 
         // 11
         Resume::create([
-            '{{8}} 1g + {{7}} 3-5 mg/kg'
+            'resume' => '{{8}} 1g + {{7}} 3-5 mg/kg'
         ]);
 
         // 12
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/kg'
         ]);
 
         // 13
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/kg'
         ]);
 
         // 14
         Resume::create([
-            '{{13}} 160 mcg / 0,1 ml injecció intravítria'
+            'resume' => '{{13}} 160 mcg / 0,1 ml injecció intravítria'
         ]);
 
         // 15
         Resume::create([
-            '{{4}} 15 mg/kg'
+            'resume' => '{{4}} 15 mg/kg'
         ]);
 
         // 16
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 17
         Resume::create([
-            '{{5}} 900mg'
+            'resume' => '{{5}} 900mg'
         ]);
 
         // 18
         Resume::create([
-            '{{1}} 2g + {{4}} 15 mg/kg'
+            'resume' => '{{1}} 2g + {{4}} 15 mg/kg'
         ]);
 
         // 19
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 20
         Resume::create([
-            '{{5}} 900 mg'
+            'resume' => '{{5}} 900 mg'
         ]);
 
         // 21
         Resume::create([
-            'Afegir {{4}} 15mg/kg (màxim 2 grams) al tractament amb {{1}}.
+            'resume' => 'Afegir {{4}} 15mg/kg (màxim 2 grams) al tractament amb {{1}}.
             Si al·lèrgia a penicil·lina: {{4}}.'
         ]);
 
         // 22
         Resume::create([
-            '{{6}} 2g'
+            'resume' => '{{6}} 2g'
         ]);
 
         // 23
         Resume::create([
-            '{{5}} 900 mg + {{7}} 5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 5 mg/kg'
         ]);
 
         // 24
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 25
         Resume::create([
-            '{{5}} 900 mg'
+            'resume' => '{{5}} 900 mg'
         ]);
 
         // 26
         Resume::create([
-            '{{6}} 2g'
+            'resume' => '{{6}} 2g'
         ]);
 
         // 27
         Resume::create([
-            '{{5}} 900mg'
+            'resume' => '{{5}} 900mg'
         ]);
 
         // 28
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 29
         Resume::create([
-            '{{5}} 900mg'
+            'resume' => '{{5}} 900mg'
         ]);
 
         // 30
         Resume::create([
-            '{{6}} 2g'
+            'resume' => '{{6}} 2g'
         ]);
 
         // 31
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/kg'
         ]);
 
         // 32
         Resume::create([
-            '{{6}} 2g'
+            'resume' => '{{6}} 2g'
         ]);
 
         // 33
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/kg'
         ]);
 
         // 34
         Resume::create([
-            '{{1}} 2g
+            'resume' => '{{1}} 2g
              Si hi ha implantació de material protètic, prolongar la profilaxi fins 24 h post
             intervenció.'
         ]);
 
         // 35
         Resume::create([
-            '{{4}} 15 mg/kg
+            'resume' => '{{4}} 15 mg/kg
              S’aconsella afegir {{7}} si existeix risc d’exposició a microbiota intestinal.'
         ]);
 
         // 36
         Resume::create([
-            'Si procediment amb col·locació de material protètic:
+            'resume' => 'Si procediment amb col·locació de material protètic:
             {{1}} 2g + {{4}} 15 mg/Kg
             Si Al·lèrgia a Peni: {{4}}
              S’aconsella afegir {{7}} si existeix risc d’exposició a microbiota intestinal.'
@@ -216,115 +216,115 @@ class ResumesTableSeeder extends Seeder
 
         // 37
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 38
         Resume::create([
-            '{{5}} 900mg'
+            'resume' => '{{5}} 900mg'
         ]);
 
         // 39
         Resume::create([
-            '{{1}} 2g + {{4}} 15 mg/kg
+            'resume' => '{{1}} 2g + {{4}} 15 mg/kg
             Al·lèrgia a Penicil·lina: {{4}} 15 mg/kg'
         ]);
 
         // 40
         Resume::create([
-            '{{1}} 2g + {{7}} 3-5 mg/Kg'
+            'resume' => '{{1}} 2g + {{7}} 3-5 mg/Kg'
         ]);
 
         // 41
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/Kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/Kg'
         ]);
 
         // 42
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 43
         Resume::create([
-            '{{5}} 900 mg'
+            'resume' => '{{5}} 900 mg'
         ]);
 
         // 44
         Resume::create([
-            'Afegir {{4}}. En cas que s’utilitzi {{5}}, no cal afegir {{4}}.'
+            'resume' => 'Afegir {{4}}. En cas que s’utilitzi {{5}}, no cal afegir {{4}}.'
         ]);
 
         // 45
         Resume::create([
-            'Sense obstrucció: {{1}} 2g
+            'resume' => 'Sense obstrucció: {{1}} 2g
             Amb obstrucció: {{6}} 2g'
         ]);
 
         // 46
         Resume::create([
-            'Sense obstrucció.: {{5}} 900 mg + {{7}} *
+            'resume' => 'Sense obstrucció.: {{5}} 900 mg + {{7}} *
             Si FG < 20: {{7}} 2 mg/Kg
             Amb obstrucció: {{7}} + {{8}} 1g'
         ]);
 
         // 47
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 48
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/kg'
         ]);
 
         // 49
         Resume::create([
-            '{{1}} 2g'
+            'resume' => '{{1}} 2g'
         ]);
 
         // 50
         Resume::create([
-            '{{5}} 900 mg + {{7}} 3-5 mg/kg'
+            'resume' => '{{5}} 900 mg + {{7}} 3-5 mg/kg'
         ]);
 
         // 51
         Resume::create([
-            '{{6}} 2g 
+            'resume' => '{{6}} 2g 
             En cas de lesió víscera buida, es pot prolongar profilaxi 24h.'
         ]);
 
         // 52
         Resume::create([
-            '{{8}} 1g + {{7}} 3-5 mg/Kg'
+            'resume' => '{{8}} 1g + {{7}} 3-5 mg/Kg'
         ]);
 
         // 53
         Resume::create([
-            '{{6}} 2g'
+            'resume' => '{{6}} 2g'
         ]);
 
         // 54
         Resume::create([
-            '{{8}} 1g + {{7}} 3-5 mg/Kg'
+            'resume' => '{{8}} 1g + {{7}} 3-5 mg/Kg'
         ]);
         
         // 55
         Resume::create([
-            'Previ a la cirurgia cal tractament amb {{14}} 400 mg/12h oral +/- {{15}} 50
+            'resume' => 'Previ a la cirurgia cal tractament amb {{14}} 400 mg/12h oral +/- {{15}} 50
             mg/Kg/dia oral des de 2-4 setm abans del procediment i fins 1-3 mesos després.
             {{1}} 2g'
         ]);
 
         // 56
         Resume::create([
-            '{{5}} 900 + {{7}} 3-5 mg/kg
+            'resume' => '{{5}} 900 + {{7}} 3-5 mg/kg
             A part de la profilaxi, es recomana una bona antisèpsia del lloc d’implantació.'
         ]);
 
         // 57
         Resume::create([
-            '{{4}} 15 mg/Kg + {{7}} 3-5 mg/Kg'
+            'resume' => '{{4}} 15 mg/Kg + {{7}} 3-5 mg/Kg'
         ]);
     }
 }
