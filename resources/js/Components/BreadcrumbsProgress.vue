@@ -1,32 +1,32 @@
 <script setup>
-    import { defineProps } from 'vue';
-    import { ref, computed } from 'vue';
+import { defineProps } from 'vue';
+import { ref, computed } from 'vue';
 
-    const props = defineProps({
-        breadcrumbs: {
-            type: Array,
-            required: true
-        },
-        crumb: {
-            type: Number,
-            required: true
-        },
-        setCrumb: {
-            type: Function,
-            required: true
-        }
-    });
+const props = defineProps({
+    breadcrumbs: {
+        type: Array,
+        required: true
+    },
+    crumb: {
+        type: Number,
+        required: true
+    },
+    setCrumb: {
+        type: Function,
+        required: true
+    }
+});
 
-    const goBack = () => {
-        if (props.crumb === 0) return;
-        props.setCrumb(props.crumb - 1);
-    };
+const goBack = () => {
+    if (props.crumb === 0) return;
+    props.setCrumb(props.crumb - 1);
+};
 </script>
 
 <template>
     <div class="breadcrumbs-progress-container">
         <div class="breadcrumb-container">
-            <img src="../../assets/svg/left-arrow.svg" alt="Back" @click="goBack()" class="back-button" style="width: 20px;">
+            <img src="../../assets/svg/left-arrow.svg" alt="Back" @click="goBack()" class="back-button">
         </div>
         <div
             v-for="(breadcrumb, index) in breadcrumbs"
@@ -40,75 +40,75 @@
                 }"
             >{{ breadcrumb }}</span>
             <span
-                class="breadcrumb-separator"
                 v-if="index < breadcrumbs.length - 1"
-            >/</span>
+                class="breadcrumb-separator"
+            >
+                /
+            </span>
         </div> 
     </div>
 </template>
 
 <style scoped>
-    .breadcrumbs-progress-container {
-        background: #D9D9D9;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-    }
+.breadcrumbs-progress-container {
+    background: #D9D9D9;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+}
 
-    .breadcrumb.active {
-        color: #c00000;
-    }
+.breadcrumb.active {
+    color: #c00000;
+}
+
+.breadcrumb:not(.active) {
+    color: #0239EB;
+}
+
+.breadcrumb.inactive {
+    opacity: 0.5;
+}
+
+.breadcrumb {
+    height: 100%;
+}
+
+.breadcrumb:not(.inactive):hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    margin: 0 5px;
+}
+
+.back-button {
+    color: #0239EB;
+    cursor: pointer;
+    width: 100%;
+}
+
+.breadcrumb-container {
+    width: 20px;
+}
+
+@media screen and (max-width: 890px) {
 
     .breadcrumb:not(.active) {
-        color: #0239EB;
+        display: none;
     }
-
-    .breadcrumb.inactive {
-        opacity: 0.5;
-    }
-
-    .breadcrumb {
-        height: 100%;
-    }
-
-    .breadcrumb:not(.inactive):hover {
-        cursor: pointer;
-        text-decoration: underline;
-    }
-
     .breadcrumb-separator {
-        margin: 0 5px;
+        display: none;
     }
-
     .back-button {
-        color: #0239EB;
-        cursor: pointer;
+        display: inline-block;
     }
-
-    @media screen and (max-width: 768px) {
-        .breadcrumb-container {
-            display: flex;
-            align-items: center;
-        }
-        .breadcrumb:not(.active) {
-            display: none;
-        }
-        .breadcrumb-container:first-child {
-            display: flex;
-            align-items: center;
-        }
-        .breadcrumb-separator {
-            display: none;
-        }
-        .back-button {
-            display: inline-block;
-            margin-right: 10px;
-        }
+}
+@media screen and (min-width: 890px) {
+    .breadcrumb-container {
+        display: none;
     }
-    @media screen and (min-width: 768px) {
-        .breadcrumb-container {
-            display: none;
-        }
-    }
+}
 </style>

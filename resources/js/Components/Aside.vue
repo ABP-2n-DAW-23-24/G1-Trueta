@@ -70,6 +70,7 @@ function handleOperationClick(operationId) {
       v-for="surgery in surgeries"
       @mouseover="props.setHoveredSurgery(surgery.id)"
       @mouseleave="props.setHoveredSurgery(-1)"
+      v-show="surgery.operations.length > 0"
       :class="{
         'hovered': surgery.id == props.hoveredSurgery && props.collapsed != surgery.id,
       }"
@@ -146,6 +147,13 @@ li.hovered:not(.active) a {
   background-color: #f0f0f0;
   color: #363636;
   border-radius: 7.5px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .menu-list {
+    display: none;
+  }
 }
 
 </style>
