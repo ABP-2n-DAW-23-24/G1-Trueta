@@ -20,8 +20,8 @@ class Operation extends Model
         return $this->belongsTo(Surgery::class, 'surgeryId');
     }
 
-    public function QuestionOperation()
+    public function QuestionsOperation()
     {
-        return $this->hasMany(QuestionOperation::class, 'questionId', 'id');
+        return $this->hasMany(QuestionsOperation::class, 'questionId', 'id');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('questionOperationId');
             $table->unsignedBigInteger('resumeId');
-            $table->foreign('questionOperationId')->references('questionId')->on('questions_operations');
+            $table->foreign('questionOperationId')->references('id')->on('questions_operations');
             $table->foreign('resumeId')->references('id')->on('resumes');
             $table->timestamps();
         });
