@@ -28,24 +28,13 @@ const goBack = () => {
         <div class="breadcrumb-container">
             <img src="../../assets/svg/left-arrow.svg" alt="Back" @click="goBack()" class="back-button">
         </div>
-        <div
-            v-for="(breadcrumb, index) in breadcrumbs"
-            :key="index">
-            <span
-                @click="() => { index <= crumb ? setCrumb(index) : null }"
-                class="breadcrumb"
-                :class="{
-                    'active': index === crumb,
-                    'inactive': index > crumb
-                }"
-            >{{ breadcrumb }}</span>
-            <span
-                v-if="index < breadcrumbs.length - 1"
-                class="breadcrumb-separator"
-            >
-                /
-            </span>
-        </div> 
+        <div v-for="(breadcrumb, index) in breadcrumbs" :key="index">
+            <span @click="() => { index <= crumb ? setCrumb(index) : null }" class="breadcrumb" :class="{
+                'active': index === crumb,
+                'inactive': index > crumb
+            }">{{ breadcrumb }}</span>
+        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">/</span>
+        </div>
     </div>
 </template>
 
@@ -56,7 +45,6 @@ const goBack = () => {
     display: flex;
     align-items: center;
     padding: 0 20px;
-    gap: 10px;
 }
 
 .breadcrumb.active {
@@ -99,13 +87,20 @@ const goBack = () => {
     .breadcrumb:not(.active) {
         display: none;
     }
+
     .breadcrumb-separator {
         display: none;
     }
+
     .back-button {
         display: inline-block;
     }
+
+    .breadcrumbs-progress-container {
+        gap: 10px;
+    }
 }
+
 @media screen and (min-width: 890px) {
     .breadcrumb-container {
         display: none;
