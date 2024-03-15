@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\QuestionOperation;
+use App\Models\QuestionsOperation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -11,945 +11,945 @@ class QuestionsOperationsTableSeeder extends Seeder
     public function run(): void
     {
         // 1
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 1,
+            'operationId' => 1,
         ]);
 
         // 2
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 2,
+            'operationId' => 2,
         ]);
 
         // 3
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 3,
+            'operationId' => 3,
         ]);
 
         // 4
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 1,
+            'operationId' => 1,
         ]);
 
         // 5
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 2,
+            'operationId' => 2,
         ]);
 
         // 6
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 3,
+            'operationId' => 3,
         ]);
 
         // 7
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 1,
+            'operationId' => 1,
         ]);
 
         // 8
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 2,
+            'operationId' => 2,
         ]);
 
         // 9
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 3,
+            'operationId' => 3,
         ]);
 
         // 10
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 4,
+            'operationId' => 4,
         ]);
 
         // 11
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 5,
+            'operationId' => 5,
         ]);
 
         // 12
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 6,
+            'operationId' => 6,
         ]);
 
         // 13
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 5,
+            'operationId' => 5,
         ]);
 
         // 14
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 6,
+            'operationId' => 6,
         ]);
 
         // 15
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 7,
+            'operationId' => 7,
         ]);
 
         // 16
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 8,
+            'operationId' => 8,
         ]);
         
         // 17
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 10,
+            'operationId' => 10,
         ]);
 
         // 18
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 17,
+            'operationId' => 17,
         ]);
 
         // 19
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 18,
+            'operationId' => 18,
         ]);
 
         // 20
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 19,
+            'operationId' => 19,
         ]);
 
         // 21
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 20,
+            'operationId' => 20,
         ]);
 
         // 22
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 21,
+            'operationId' => 21,
         ]);
 
         // 23
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 22,
+            'operationId' => 22,
         ]);
 
         // 24
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 23,
+            'operationId' => 23,
         ]);
 
         // 25
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 24,
+            'operationId' => 24,
         ]);
 
         // 26
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 25,
+            'operationId' => 25,
         ]);
 
         // 27
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 26,
+            'operationId' => 26,
         ]);
 
         // 28
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 27,
+            'operationId' => 27,
         ]);
 
         // 29
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 28,
+            'operationId' => 28,
         ]);
 
         // 30
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 29,
+            'operationId' => 29,
         ]);
 
         // 31
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 31,
+            'operationId' => 31,
         ]);
 
         // 32
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 32,
+            'operationId' => 32,
         ]);
 
         // 33
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 31,
+            'operationId' => 31,
         ]);
 
         // 34
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 32,
+            'operationId' => 32,
         ]);
 
         // 35
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 31,
+            'operationId' => 31,
         ]);
 
         // 36
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 32,
+            'operationId' => 32,
         ]);
 
         // 37
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 33,
+            'operationId' => 33,
         ]);
 
         // 38
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 34,
+            'operationId' => 34,
         ]);
 
         // 39
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 35,
+            'operationId' => 35,
         ]);
 
         // 40
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 36,
+            'operationId' => 36,
         ]);
 
         // 41
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 37,
+            'operationId' => 37,
         ]);
 
         // 42
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 33,
+            'operationId' => 33,
         ]);
 
         // 43
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 34,
+            'operationId' => 34,
         ]);
 
         // 44
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 35,
+            'operationId' => 35,
         ]);
 
         // 45
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 36,
+            'operationId' => 36,
         ]);
 
         // 46
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 37,
+            'operationId' => 37,
         ]);
 
         // 47
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 33,
+            'operationId' => 33,
         ]);
 
         // 48
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 34,
+            'operationId' => 34,
         ]);
 
         // 49
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 35,
+            'operationId' => 35,
         ]);
 
         // 50
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 36,
+            'operationId' => 36,
         ]);
 
         // 51
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 37,
+            'operationId' => 37,
         ]);
 
         // 52
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 38,
+            'operationId' => 38,
         ]);
 
         // 53
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 38,
+            'operationId' => 38,
         ]);
 
         // 54
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 39,
+            'operationId' => 39,
         ]);
 
         // 55
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 40,
+            'operationId' => 40,
         ]);
 
         // 56
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 41,
+            'operationId' => 41,
         ]);
 
         // 57
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 42,
+            'operationId' => 42,
         ]);
 
         // 58
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 43,
+            'operationId' => 43,
         ]);
 
         // 59
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 39,
+            'operationId' => 39,
         ]);
 
         // 60
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 40,
+            'operationId' => 40,
         ]);
 
         // 61       
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 41,
+            'operationId' => 41,
         ]);
 
         // 62
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 42,
+            'operationId' => 42,
         ]);
 
         // 63
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 43,
+            'operationId' => 43,
         ]);
 
         // 64
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 44,
+            'operationId' => 44,
         ]);
 
         // 65
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 45,
+            'operationId' => 45,
         ]);
 
         // 66
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 46,
+            'operationId' => 46,
         ]);
 
         // 67
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 47,
+            'operationId' => 47,
         ]);
 
         // 68
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 48,
+            'operationId' => 48,
         ]);
 
         // 69
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 44,
+            'operationId' => 44,
         ]);
 
         // 70
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 45,
+            'operationId' => 45,
         ]);
 
         // 71
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 46,
+            'operationId' => 46,
         ]);
 
         // 72
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 47,
+            'operationId' => 47,
         ]);
 
         // 73
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 48,
+            'operationId' => 48,
         ]);
 
         // 74
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 49,
+            'operationId' => 49,
         ]);
 
         // 75
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 50,
+            'operationId' => 50,
         ]);
 
         // 76
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 51,
+            'operationId' => 51,
         ]);
 
         // 77
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 49,
+            'operationId' => 49,
         ]);
 
         // 78
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 50,
+            'operationId' => 50,
         ]);
 
         // 79
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 51,
+            'operationId' => 51,
         ]);
 
         // 80
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 52,
+            'operationId' => 52,
         ]);
 
         // 81
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 53,
+            'operationId' => 53,
         ]);
 
         // 82
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 54,
+            'operationId' => 54,
         ]);
 
         // 83
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 55,
+            'operationId' => 55,
         ]);
 
         // 84
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 56,
+            'operationId' => 56,
         ]);
 
         // 85
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 57,
+            'operationId' => 57,
         ]);
 
         // 86
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 58,
+            'operationId' => 58,
         ]);
 
         // 87
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 59,
+            'operationId' => 59,
         ]);
 
         // 88
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 52,
+            'operationId' => 52,
         ]);
 
         // 89
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 53,
+            'operationId' => 53,
         ]);
 
         // 90
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 54,
+            'operationId' => 54,
         ]);
 
         // 91
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 55,
+            'operationId' => 55,
         ]);
 
         // 92
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 56,
+            'operationId' => 56,
         ]);
 
         // 93
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 57,
+            'operationId' => 57,
         ]);
 
         // 94
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 58,
+            'operationId' => 58,
         ]);
 
         // 95
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 59,
+            'operationId' => 59,
         ]);
 
         // 96
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 60,
+            'operationId' => 60,
         ]);
 
         // 97
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 61,
+            'operationId' => 61,
         ]);
 
         // 98
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 62,
+            'operationId' => 62,
         ]);
 
         // 99
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 63,
+            'operationId' => 63,
         ]);
 
         // 100
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 64,
+            'operationId' => 64,
         ]);
 
         // 101        
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 60,
+            'operationId' => 60,
         ]);
 
         // 102
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 61,
+            'operationId' => 61,
         ]);
 
         // 103
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 62,
+            'operationId' => 62,
         ]);
 
         // 104
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 63,
+            'operationId' => 63,
         ]);
 
         // 105
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 64,
+            'operationId' => 64,
         ]);
 
         // 106
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 65,
+            'operationId' => 65,
         ]);
 
         // 107
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 66,
+            'operationId' => 66,
         ]);
 
         // 108
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 67,
+            'operationId' => 67,
         ]);
 
         // 109
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 68,
+            'operationId' => 68,
         ]);
 
         // 110
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 65,
+            'operationId' => 65,
         ]);
 
         // 111
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 66,
+            'operationId' => 66,
         ]);
 
         // 112
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 67,
+            'operationId' => 67,
         ]);
 
         // 113
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 68,
+            'operationId' => 68,
         ]);
 
         // 114
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 65,
+            'operationId' => 65,
         ]);
 
         // 115
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 66,
+            'operationId' => 66,
         ]);
 
         // 116
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 67,
+            'operationId' => 67,
         ]);
 
         // 117
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 68,
+            'operationId' => 68,
         ]);
 
         // 118
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 69,
+            'operationId' => 69,
         ]);
 
         // 119
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 70,
+            'operationId' => 70,
         ]);
 
         // 120
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 71,
+            'operationId' => 71,
         ]);
 
         // 121
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 72,
+            'operationId' => 72,
         ]);
 
         // 122
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 73,
+            'operationId' => 73,
         ]);
 
         // 123
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 74,
+            'operationId' => 74,
         ]);
 
         // 124
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 69,
+            'operationId' => 69,
         ]);
 
         // 125
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 70,
+            'operationId' => 70,
         ]);
 
         // 126
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 71,
+            'operationId' => 71,
         ]);
 
         // 127
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 72,
+            'operationId' => 72,
         ]);
 
         // 128
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 73,
+            'operationId' => 73,
         ]);
 
         // 129
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 74,
+            'operationId' => 74,
         ]);
 
         // 130
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 69,
+            'operationId' => 69,
         ]);
 
         // 131
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 70,
+            'operationId' => 70,
         ]);
 
         // 132
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 71,
+            'operationId' => 71,
         ]);
 
         // 133
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 72,
+            'operationId' => 72,
         ]);
 
         // 134
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 73,
+            'operationId' => 73,
         ]);
 
         // 135
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 74,
+            'operationId' => 74,
         ]);
 
         // 136
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 75,
+            'operationId' => 75,
         ]);
 
         // 137
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 75,
+            'operationId' => 75,
         ]);
 
         // 138
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 78,
+            'operationId' => 78,
         ]);
 
         // 139
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 78,
+            'operationId' => 78,
         ]);
 
         // 140
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 3,
-            'operatonId' => 78,
+            'operationId' => 78,
         ]);
 
         // 141
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 79,
+            'operationId' => 79,
         ]);
 
         // 142
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 79,
+            'operationId' => 79,
         ]);
 
         // 143
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 80,
+            'operationId' => 80,
         ]);
 
         // 144
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 81,
+            'operationId' => 81,
         ]);
 
         // 145
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 82,
+            'operationId' => 82,
         ]);
 
         // 146
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 80,
+            'operationId' => 80,
         ]);
 
         // 147
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 81,
+            'operationId' => 81,
         ]);
 
         // 148
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 82,
+            'operationId' => 82,
         ]);
 
         // 149
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 83,
+            'operationId' => 83,
         ]);
 
         // 150
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 83,
+            'operationId' => 83,
         ]);
 
         // 151
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 84,
+            'operationId' => 84,
         ]);
 
         // 152
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 84,
+            'operationId' => 84,
         ]);
 
         // 153
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 85,
+            'operationId' => 85,
         ]);
 
         // 154
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 85,
+            'operationId' => 85,
         ]);
 
         // 155
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 1,
-            'operatonId' => 89,
+            'operationId' => 89,
         ]);
 
         // 156
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 90,
+            'operationId' => 90,
         ]);
 
         // 157
-        QuestionOperation::create([
+        QuestionsOperation::create([
             'questionId' => 2,
-            'operatonId' => 93,
+            'operationId' => 93,
         ]);
     }
 }
