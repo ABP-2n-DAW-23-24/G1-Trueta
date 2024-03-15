@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medications_questions', function (Blueprint $table) {
+        Schema::create('resumes_questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('questionId');
-            $table->unsignedBigInteger('medicationId');
-            $table->foreign('questionId')->references('id')->on('questions');
-            $table->foreign('medicationId')->references('id')->on('medications');
+            $table->unsignedBigInteger('questionOperationId');
+            $table->unsignedBigInteger('resumeId');
+            $table->foreign('questionOperationId')->references('questionId')->on('questions_operations');
+            $table->foreign('resumeId')->references('id')->on('resumes');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('medications_questions');
+        Schema::dropIfExists('resumes_questions');
     }
 };
