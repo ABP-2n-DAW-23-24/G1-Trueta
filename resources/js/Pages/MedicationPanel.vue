@@ -5,13 +5,14 @@ import { useForm, router } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
 import UserDropdown from '@/Components/UserDropdown.vue';
 
+// Medications
 const activeMedication = ref(1);
-
+// Toggle medication table
 const toggleMedication = (medicationId) => {
     activeMedication.value = medicationId;
     getDoses(medicationId);
 };
-
+// Modals
 const isAddMedicationModalActive = ref(false);
 const isAddDoseModalActive = ref(false);
 const isAddConditionModalActive = ref(false);
@@ -69,8 +70,7 @@ const closeModalEdit = (doseId) => {
     AddContitionToDelete.value = [];
     ConditionsArray.value = [];
 };
-
-
+// Get medications
 const medications = ref([]);
 
 onMounted(() => {
@@ -90,7 +90,7 @@ onMounted(() => {
 const addMedicationForm = useForm({
     name: '',
 });
-
+// Add medication
 const addMedication = () => {
     addMedicationForm.post('/medication-panel/add-medication', {
         onSuccess: () => {
@@ -99,7 +99,7 @@ const addMedication = () => {
         }
     });
 };
-
+// Get medications
 function getMedications() {
     axios.get('/medication-panel/get-medication')
         .then(response => {
@@ -110,9 +110,9 @@ function getMedications() {
         });
 
 }
-
+// Doses
 const doses = ref([]);
-
+// Get doses by medication id
 function getDoses(medicationId) {
     axios.get('/medication-panel/get-dose-medication/' + medicationId)
         .then(response => {
@@ -123,7 +123,7 @@ function getDoses(medicationId) {
             console.log(error);
         });
 }
-
+// get criterias
 const criterias = ref([]);
 
 onMounted(() => {
@@ -139,7 +139,7 @@ onMounted(() => {
 const props = defineProps({
     user: Object,
 });
-
+// Delete dose
 const deleteDose = (doseId) => {
     const confirmDelete = confirm("Segur que vols eliminar aquesta dosi?");
     if (confirmDelete) {
@@ -153,11 +153,10 @@ const deleteDose = (doseId) => {
             });
     }
 };
-
-
+// Edit dose
 const ConditionsToDelete = ref([]);
 const ConditionsArray = ref([]);
-
+// Add condition to delete
 const AddContitionToDelete = (doseId, conditionId) => {
     ConditionsToDelete.value.push({ doseId, conditionId });
     console.log(ConditionsToDelete.value);
@@ -178,10 +177,8 @@ const EditDoseForm = useForm({
             max: '',
         }
     ],
-   
 });
-
-
+// Edit dose
 const editDose = (doseId, conditions) => {
 
     // edit
@@ -198,7 +195,6 @@ const editDose = (doseId, conditions) => {
             }
         });
     }
-
     // delete
     if (ConditionsToDelete.value.length > 0) {
         ConditionsToDelete.value.forEach(({ conditionId, doseId }) => {
@@ -217,14 +213,6 @@ const editDose = (doseId, conditions) => {
         ConditionsToDelete.value = [];
         closeModalEdit(doseId);
     }
-
-
-};
-
-const CancelEditDose = (doseId) => {
-    ConditionsToDelete.value = [];
-    ConditionsArray.value = [];
-    closeModalEdit(doseId);
 };
 
 // Conditions
@@ -235,7 +223,7 @@ const AddConditionDoseForm = useForm({
     doseId: '',
     conditionId: '',
 });
-
+// Add condition to dose
 const addConditionDose = () => {
     AddConditionDoseForm.post('/medication-panel/add-condition-dose', {
         onSuccess: () => {
@@ -272,7 +260,6 @@ const AddDose = useForm({
             max: '',
         }
     ],
-
 });
 
 const addDose = () => {
@@ -481,7 +468,7 @@ const addDose = () => {
                                                     @click="editDose(dose.id, doses[index].conditions)"
                                                     :id="doses.conditions">Editar</button>
                                                 <button class="button-cancel"
-                                                    @click="CancelEditDose(dose.id)">Cancelar</button>
+                                                    @click="closeModalEdit(dose.id)">Cancelar</button>
                                             </footer>
                                         </form>
                                     </div>
@@ -543,13 +530,17 @@ const addDose = () => {
                         </tr>
                     </tbody>
                 </table>
-                <p v-else>No hi han dosis disponibles per aquest medicament</p>
+                <div v-else class="no-medicaments">
+                    <img src="../../assets/svg/img.svg" alt="No hi ha medicaments" width="230px" height="230px">
+                    <p class="text-color-gray text-bold">No hi ha dosis per aquest medicament...</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+
 .medication-panel-container {
     padding: 30px;
     display: grid;
@@ -562,12 +553,10 @@ const addDose = () => {
     gap: 60px;
 }
 
-
 .medication-content {
     display: flex;
     flex-direction: column;
     gap: 15px;
-
 }
 
 .medications {
@@ -586,7 +575,6 @@ const addDose = () => {
     display: flex;
     flex-direction: column;
 }
-
 
 .medication-button {
     padding: 10px 15px;
@@ -667,7 +655,6 @@ const addDose = () => {
 
 .table-header .right-align{
     text-align: right;
-
 }
 
 .right-align {
@@ -677,7 +664,6 @@ const addDose = () => {
 
 .afegirmedicament {
     margin-top: 20px;
-
 }
 
 .add-button {
@@ -691,7 +677,6 @@ const addDose = () => {
     transition: 0.3s;
     width: 100%;
     text-align: center;
-
 }
 
 .add-button:hover {
@@ -710,7 +695,6 @@ const addDose = () => {
     transition: 0.3s;
     width: 100%;
     text-align: center;
-
 }
 
 .add-button-delete:hover {
@@ -731,7 +715,6 @@ const addDose = () => {
 .select-dosis {
     text-align: left;
 }
-
 
 .checkdelete img {
     width: 75px;
@@ -816,5 +799,14 @@ header {
     justify-content: space-between;
     gap: 10px;
     align-items: center;
+}
+
+.no-medicaments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
 }
 </style>
