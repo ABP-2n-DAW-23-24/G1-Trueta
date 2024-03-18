@@ -6,16 +6,17 @@ import { useForm } from "@inertiajs/vue3";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 let form = useForm({
-  alergic: false,
-  mrsa: false,
-  gender: "",
+  question_0: false, //Profilaxi quirúrgica d’elecció
+  question_1: false, //Al·lèrgia a Penicil·lina
+  question_2: false, //Pacients colonitzats per MARSA
+  //gender: "", //Home: false - Dona: true
 });
 
 const submit = () => {
-  if (form.gender == ""){
+  /*if (form.gender == ""){
     alert("Selecciona un género");
     return;
-  }
+  }*/
   console.log(form);
 };
 
@@ -67,10 +68,15 @@ const props = defineProps({
 });
 
 const surgeries = ref([]);
+var questions = ref([]);
+var isLoading = ref();
 
+isLoading.value = true;
 axios.get("/json/surgeriesWithOperations")
 .then(response => {
   surgeries.value = response.data;
+}).finally(() => {
+  isLoading.value = false;
 });
 
 function handleSurgeryClick(surgery) {
@@ -79,8 +85,21 @@ function handleSurgeryClick(surgery) {
   props.toggleCollapse(surgery + 1);
 }
 
-function handleOperationClick(operation) {
-  props.setSelectedOperation(operation);
+function handleOperationClick(operationId) {
+  questions.value = [];
+  form.question_0 = false;
+  form.question_1 = false;
+  form.question_2 = false;
+  form.gender = "";
+  isLoading.value = true;
+  axios.get(`/get-questions/${operationId}`)
+    .then(response => {
+      questions.value = response.data.questionsOperation;
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+  props.setSelectedOperation(operationId);
   props.setCrumb(2);
 }
 
@@ -110,7 +129,7 @@ const currentOperation = computed(() => {
 
 
   <div
-    v-show="crumb === 0"
+    v-show="crumb === 0 && !isLoading"
     class="wizard-grid-container">
     <WizardSquare
       v-show="surgery.operations.length > 0"
@@ -130,7 +149,7 @@ const currentOperation = computed(() => {
 
   <!-- All operations with profilaxis -->
   <div
-    v-show="crumb === 1"
+    v-show="crumb === 1  && !isLoading"
     class="wizard-grid-container">
     <WizardSquare
       :class="{
@@ -148,14 +167,14 @@ const currentOperation = computed(() => {
   </div>
 
   <!-- Text separator for operations without profilaxis -->
-  <div v-show="crumb === 1 && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
+  <div v-show="crumb === 1 && !isLoading && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
 
   <!-- All operations without profilaxis -->
   <div
-    v-show="crumb === 1"
+    v-show="crumb === 1 && !isLoading"
     class="wizard-grid-container">
     <WizardSquare
       :class="{
@@ -171,33 +190,26 @@ const currentOperation = computed(() => {
     />
   </div>
 
-  <div v-show="crumb === 2" class="rectangle">
+  <!-- Questions for the operation -->
+  <div v-show="crumb === 2 && !isLoading" class="rectangle">
     <div class="wrapper">
       <div class="grid">
         <form @submit.prevent="submit">
           <legend>{{ currentOperation && currentOperation.name  }}</legend>
-          <div class="form__group">
+          <div class="form__group" v-for="(question, index) in questions" :key="index">
             <div class="checkbox-wrapper-46">
-              <input type="checkbox" id="alergic" class="inp-cbx" value="alergic" name="alergic" v-model="form.alergic"/>
-              <label for="alergic" class="cbx larger-label"
-                ><span>
-                  <svg viewBox="0 0 12 10" height="10px" width="12px">
-                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-                ><span>Al·lergic a la penicilina</span>
+              <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" v-model="form['question_' + index]"/>
+              <label :for="'question_' + index" class="cbx larger-label">
+                <span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg>
+              </span>
+              <span>{{question.question}}</span>
               </label>
             </div>
           </div>
-          <div class="form__group">
-            <div class="checkbox-wrapper-46">
-              <input type="checkbox" id="mrsa" class="inp-cbx" value="mrsa" name="mrsa" v-model="form.mrsa"/>
-              <label for="mrsa" class="cbx larger-label"
-                ><span>
-                  <svg viewBox="0 0 12 10" height="10px" width="12px">
-                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-                ><span>Operat per MRSA</span>
-              </label>
-            </div>
-          </div>
+          <!--
           <legend>Gènere del pacient</legend>
           <div class="mydict">
             <div class="form__group">
@@ -211,10 +223,14 @@ const currentOperation = computed(() => {
               </label>
             </div>
           </div>
+          -->
           <PrimaryButton type="submit">Consultar</PrimaryButton>
         </form>
       </div>
     </div>
+  </div>
+  <div class="spinner-container" v-if="isLoading">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
   </div>
 </template>
 
@@ -400,6 +416,52 @@ input[type="radio"] {
 
 .radio:last-child span {
   border-radius: 0 .375em .375em 0;
+}
+
+
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #000;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #000 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 </style>
