@@ -1,0 +1,17 @@
+{
+    "error_name": "Nombre no válido",
+    "error_email": "Correo electrónico no válido",
+    "error_pass": "Contraseña no válida",
+    "profile": "Perfil",
+    "name": "Nombre",
+    "surname": "Apellido",
+    "email": "Correo",
+    "save": "Guardar",
+    "profile_information": "Información del perfil",
+    "profile_update_information": "Información básica de la cuenta.",
+    "password_information": "Actualizar Contraseña",
+    "password_update_information": "Asegúrate de que tu cuenta utilice una contraseña larga y aleatoria para mantenerla segura.",
+    "current_password": "Contraseña Actual",
+    "new_password": "Nueva Contraseña",
+    "confirm_password": "Confirmar Contraseña"
+}
