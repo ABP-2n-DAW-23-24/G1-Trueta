@@ -1,17 +1,15 @@
 <script setup>
-  import { ref } from 'vue';
-  import axios from 'axios';
-  import WizardSquare from '@/Components/WizardSquare.vue';
-  import { useForm } from "@inertiajs/vue3";
-  import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import WizardSquare from '@/Components/WizardSquare.vue';
+import { useForm } from "@inertiajs/vue3";
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
-  let form = useForm({
-    alergic: false,
-    mrsa: false,
-    gender: "",
-  });
-
-
+let form = useForm({
+  alergic: false,
+  mrsa: false,
+  gender: "",
+});
 
 const submit = () => {
   if (form.gender == ""){
@@ -21,96 +19,101 @@ const submit = () => {
   console.log(form);
 };
 
-  const props = defineProps({
-    crumb: {
-      type: Number,
-      required: true
-    },
-    setCrumb: {
-      type: Function,
-      required: true
-    },
-    setSelectedSurgery: {
+const props = defineProps({
+  crumb: {
+    type: Number,
+    required: true
+  },
+  setCrumb: {
     type: Function,
     required: true
-    },
-    selectedSurgery: {
-      type: Number,
-      required: true
-    },
-    hoveredSurgery: {
-      type: Number,
-      required: true
-    },
-    hoveredOperation: {
-      type: Number,
-      required: true
-    },
-    toggleCollapse: {
-      type: Function,
-      required: true
-    },
-    selectedOperation: {
-      type: Number,
-      required: true
-    },
-    setSelectedOperation: {
-      type: Function,
-      required: true
-    },
-    setHoveredSurgery: {
-      type: Function,
-      required: true
-    },
-    setHoveredOperation: {
-      type: Function,
-      required: true
-    }
-  });
-
-  const surgeries = ref([]);
-
-  axios.get("/json/surgeriesWithOperations")
-  .then(response => {
-    surgeries.value = response.data;
-  });
-
-  function handleSurgeryClick(surgery) {
-    props.setSelectedSurgery(surgery)
-    props.setCrumb(1);
-    props.toggleCollapse(surgery + 1);
+  },
+  setSelectedSurgery: {
+    type: Function,
+    required: true
+  },
+  selectedSurgery: {
+    type: Number,
+    required: true
+  },
+  hoveredSurgery: {
+    type: Number,
+    required: true
+  },
+  hoveredOperation: {
+    type: Number,
+    required: true
+  },
+  toggleCollapse: {
+    type: Function,
+    required: true
+  },
+  selectedOperation: {
+    type: Number,
+    required: true
+  },
+  setSelectedOperation: {
+    type: Function,
+    required: true
+  },
+  setHoveredSurgery: {
+    type: Function,
+    required: true
+  },
+  setHoveredOperation: {
+    type: Function,
+    required: true
   }
+});
 
-  function handleOperationClick(operation) {
-    props.setSelectedOperation(operation);
-    props.setCrumb(2);
-  }
+const surgeries = ref([]);
 
-  //Modifica el color del texto para hacerlo mas legible
-  function makeTextColorReadable(backgroundColor) {
-    const rgb = backgroundColor.match(/\w\w/g).map(x => parseInt(x, 16));
-    const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
-    return luminance > 0.5 ? '#000000' : '#ffffff';
+axios.get("/json/surgeriesWithOperations")
+.then(response => {
+  surgeries.value = response.data;
+});
+
+function handleSurgeryClick(surgery) {
+  props.setSelectedSurgery(surgery)
+  props.setCrumb(1);
+  props.toggleCollapse(surgery + 1);
 }
 
-//Modifica el color para hacerlo mas oscuro
+function handleOperationClick(operation) {
+  props.setSelectedOperation(operation);
+  props.setCrumb(2);
+}
+
+// Modifica el color del text per fer-lo més llegible
+function makeTextColorReadable(backgroundColor) {
+  const rgb = backgroundColor.match(/\w\w/g).map(x => parseInt(x, 16));
+  const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+  return luminance > 0.5 ? '#000000' : '#ffffff';
+}
+
+//Modifica el color per fer-lo més fosc
 function makeDarkColor(color) {
-    const rgb = color.match(/\w\w/g).map(x => parseInt(x, 16));
-    const darkRgb = rgb.map(x => Math.round(x * 0.6));
-    return `#${darkRgb.map(x => x.toString(16).padStart(2, '0')).join('')}`;
-  }
+  const rgb = color.match(/\w\w/g).map(x => parseInt(x, 16));
+  const darkRgb = rgb.map(x => Math.round(x * 0.6));
+  return `#${darkRgb.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+}
 
-
-
-
+const currentOperation = computed(() => {
+  return surgeries.value.length > 0 ? surgeries.value[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
+});
 
 </script>
 <template>
-
-  <div class="wizard-grid-container">
     <!-- All surgeries -->
+
+
+
+
+  <div
+    v-show="crumb === 0"
+    class="wizard-grid-container">
     <WizardSquare
-      v-show="crumb === 0"
+      v-show="surgery.operations.length > 0"
       v-for="(surgery, index) in surgeries"
       :class="{
         'hover': props.hoveredSurgery == surgery.id,
@@ -126,14 +129,15 @@ function makeDarkColor(color) {
   </div>
 
   <!-- All operations with profilaxis -->
-  <div class="wizard-grid-container">
+  <div
+    v-show="crumb === 1"
+    class="wizard-grid-container">
     <WizardSquare
       :class="{
-        'hover': props.hoveredOperation == operation.id,
+        'hover': props.hoveredOperation === operation.id,
       }"
       @mouseover="props.setHoveredOperation(operation.id)"
       @mouseleave="props.setHoveredOperation(-1)"
-      v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => handleOperationClick(operation.id)"
       :name="operation.name"
@@ -150,14 +154,15 @@ function makeDarkColor(color) {
 
 
   <!-- All operations without profilaxis -->
-  <div class="wizard-grid-container">
+  <div
+    v-show="crumb === 1"
+    class="wizard-grid-container">
     <WizardSquare
       :class="{
         'hover': props.hoveredOperation == operation.id,
       }"
       @mouseover="props.setHoveredOperation(operation.id)"
       @mouseleave="props.setHoveredOperation(-1)"
-      v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name"
       :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
@@ -167,102 +172,102 @@ function makeDarkColor(color) {
   </div>
 
   <div v-show="crumb === 2" class="rectangle">
-  <div class="wrapper">
-    <div class="grid">
-      <form @submit.prevent="submit">
-        <legend>Preguntes</legend>
-        <div class="form__group">
-          <div class="checkbox-wrapper-46">
-            <input type="checkbox" id="alergic" class="inp-cbx" value="alergic" name="alergic" v-model="form.alergic"/>
-            <label for="alergic" class="cbx larger-label"
-              ><span>
-                <svg viewBox="0 0 12 10" height="10px" width="12px">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-              ><span>Al·lergic a la penicilina</span>
-            </label>
-          </div>
-        </div>
-        <div class="form__group">
-          <div class="checkbox-wrapper-46">
-            <input type="checkbox" id="mrsa" class="inp-cbx" value="mrsa" name="mrsa" v-model="form.mrsa"/>
-            <label for="mrsa" class="cbx larger-label"
-              ><span>
-                <svg viewBox="0 0 12 10" height="10px" width="12px">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-              ><span>Operat per MRSA</span>
-            </label>
-          </div>
-        </div>
-        <legend>Genero del pacient</legend>
-        <div class="mydict">
+    <div class="wrapper">
+      <div class="grid">
+        <form @submit.prevent="submit">
+          <legend>{{ currentOperation && currentOperation.name  }}</legend>
           <div class="form__group">
-            <label class="radio">
-              <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
-              <span>Home</span>
-            </label>
-            <label class="radio">
-              <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
-              <span>Dona</span>
-            </label>
+            <div class="checkbox-wrapper-46">
+              <input type="checkbox" id="alergic" class="inp-cbx" value="alergic" name="alergic" v-model="form.alergic"/>
+              <label for="alergic" class="cbx larger-label"
+                ><span>
+                  <svg viewBox="0 0 12 10" height="10px" width="12px">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+                ><span>Al·lergic a la penicilina</span>
+              </label>
+            </div>
           </div>
-        </div>
-        <PrimaryButton type="submit">Consultar</PrimaryButton>
-      </form>
+          <div class="form__group">
+            <div class="checkbox-wrapper-46">
+              <input type="checkbox" id="mrsa" class="inp-cbx" value="mrsa" name="mrsa" v-model="form.mrsa"/>
+              <label for="mrsa" class="cbx larger-label"
+                ><span>
+                  <svg viewBox="0 0 12 10" height="10px" width="12px">
+                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
+                ><span>Operat per MRSA</span>
+              </label>
+            </div>
+          </div>
+          <legend>Gènere del pacient</legend>
+          <div class="mydict">
+            <div class="form__group">
+              <label class="radio">
+                <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
+                <span>Home</span>
+              </label>
+              <label class="radio">
+                <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
+                <span>Dona</span>
+              </label>
+            </div>
+          </div>
+          <PrimaryButton type="submit">Consultar</PrimaryButton>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <style scoped>
-  .wizard-grid-container {
-    display: grid;
-    gap: 15px;
-    grid-template-columns: repeat(auto-fit, minmax(230px, auto));
-  }
-  .larger-label {
-    font-size: 1.2em;
-  }
-  .rectangle {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border: 2px solid #333;
-    border-radius: 10px;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    gap: 3rem;
-  }
+.wizard-grid-container {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, auto));
+}
+.larger-label {
+  font-size: 1.2em;
+}
+.rectangle {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 10px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 3rem;
+}
 
-  .wrapper {
-    max-width: 75rem;
-    width: 100%;
-    padding: min(3rem, 5vw);
-  }
+.wrapper {
+  max-width: 75rem;
+  width: 100%;
+  padding: min(3rem, 5vw);
+}
 
-  legend {
-    font-weight: 900;
-    font-size: 1.5em;
-  }
+legend {
+  font-weight: 900;
+  font-size: 1.5em;
+}
 
-  form > * + * {
-    margin-top: 1.5rem;
-  }
+form > * + * {
+  margin-top: 1.5rem;
+}
 
-  .form__group {
-    display: flex;
-    align-items: center;
-  }
+.form__group {
+  display: flex;
+  align-items: center;
+}
 
-  input[type="checkbox"],
-  input[type="radio"] {
-    width: 1.5em;
-    height: 1.5em;
-    margin-right: 0.65rem;
-  }
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.65rem;
+}
 
 
-  .checkbox-wrapper-46 input[type="checkbox"] {
+.checkbox-wrapper-46 input[type="checkbox"] {
   display: none;
   visibility: hidden;
 }

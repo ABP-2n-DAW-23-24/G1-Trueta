@@ -107,6 +107,7 @@ function setHoveredOperation(id) {
       />
     </div>
   </div>
+  <Footer />
 </template>
 
 <style scoped>
@@ -130,5 +131,15 @@ function setHoveredOperation(id) {
 
 .col-right {
   padding: 30px;
+}
+
+@media (max-width: 768px) {
+  .index-container {
+    grid-template-columns: none;
+  }
+
+  .col-right {
+    padding-top: 0px;
+  }
 }
 </style>

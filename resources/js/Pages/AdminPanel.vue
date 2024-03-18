@@ -5,40 +5,43 @@ import AdminPanelHeader from '@/Components/AdminPanelHeader.vue';
 import ListUsers from "@/Components/ListUsers.vue"
 import { Head } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
+import Footer from '@/Components/Footer.vue';
 
 let props = defineProps({
-  users:Object,
-  traduccionjson:Object,
-  user:Object
+  users: Object,
+  traduccionjson: Object,
+  user: Object
 })
-let traduccion=JSON.parse(props.traduccionjson)
+let traduccion = JSON.parse(props.traduccionjson)
 </script>
 <template>
-<Head title="Index" />
+
+  <Head title="Index" />
   <div class="index-container">
 
     <div class="col-left">
       <Logo class="logo" />
     </div>
     <div class="col-right">
-        <AdminPanelHeader :user="props.user"></AdminPanelHeader>
+      <AdminPanelHeader :user="props.user"></AdminPanelHeader>
     </div>
   </div>
   <div class="bg-listuser">
-    <ListUsers :users="users" :traduccion="traduccion" ></ListUsers>
+    <ListUsers :users="users" :traduccion="traduccion"></ListUsers>
   </div>
+  <Footer />
 </template>
 
 <style>
-
-.bg-listuser{
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
+.bg-listuser {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
+
 .logo {
   height: 50px;
 }
@@ -47,6 +50,7 @@ let traduccion=JSON.parse(props.traduccionjson)
   display: grid;
   grid-template-columns: 300px auto;
   margin: 0;
+  height: 100%;
 }
 
 .col-left {

@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { ref, defineProps } from 'vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import Footer from '@/Components/Footer.vue';
 
 import { Head } from '@inertiajs/vue3';
 
@@ -67,4 +68,5 @@ console.log(props.language)
             </div>
         </div>
     </AuthenticatedLayout>
+    <Footer />
 </template>
