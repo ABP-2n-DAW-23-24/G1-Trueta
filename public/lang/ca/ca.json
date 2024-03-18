@@ -1,6 +1,21 @@
 
     {
-        "error_name":"Nom no valid",
-        "error_email":"Email no valid",
-        "error_pass":"Contrasenya no valida"
+            "error_name":"Nom no valid",
+            "error_email":"Email no valid",
+            "error_pass":"Contrasenya no valida",
+            "listUser":"Llistat d’usuaris",
+            "usernotfound":"Usuari no trobat",
+            "findUser":"Buscar Usuari",
+            "addUserTitle":"Afegir Usuaris",
+            "name":"Nom",
+            "surnames":"Cognoms",
+            "email":"Correu electrònic",
+            "pass":"Contrasenya",
+            "Admin":"Admin",
+            "Manager":"Gestor",
+            "add":"Afegir",
+            "editUserTitle":"Editar usuari",
+            "editText":"Ediar",
+            "textDeleteConfirm":"Estas segur de eliminar l'usauri?",
+            "deleteText":"Eliminar"
     }

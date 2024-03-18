@@ -1,6 +1,21 @@
 
     {
-        "error_name":"Nom no valid",
-        "error_email":"Email no valid",
-        "error_pass":"Contrasenya no valida"
+        "error_name": "Invalid name",
+        "error_email": "Invalid email",
+        "error_pass": "Invalid password",
+        "listUser": "List of users",
+        "usernotfound": "User not found",
+        "findUser": "Search User",
+        "addUserTitle": "Add Users",
+        "name": "Name",
+        "surnames": "Surnames",
+        "email": "Email",
+        "pass": "Password",
+        "Admin": "Admin",
+        "Manager": "Manager",
+        "add": "Add",
+        "editUserTitle": "Edit user",
+        "editText": "Edit",
+        "textDeleteConfirm": "Are you sure you want to delete the user?",
+        "deleteText": "Delete"
     }
