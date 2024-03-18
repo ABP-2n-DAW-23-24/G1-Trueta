@@ -24,4 +24,13 @@ class IndexController extends Controller
             'user' => $user
         ]);
     }
+
+    public function getQuestions($operationId) {
+        $operation = Operation::with('questions')->findOrFail($operationId);
+        $questionsOperation = $operation->questions;
+        
+        return response()->json([
+            'questionsOperation' => $questionsOperation
+        ]);
+    }
 }

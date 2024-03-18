@@ -46,8 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/', [IndexController::class, 'index'])->name('index');
 });
-
-
+Route::get('/get-questions/{operationId}', [IndexController::class, 'getQuestions'])->name('getQuestions');
 Route::get('/json/surgeriesWithOperations', [SurgeriesController::class, 'surgeriesWithOperations'])->name('surgeriesWithOperations');
 
 require __DIR__.'/auth.php';
