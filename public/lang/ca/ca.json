@@ -2,5 +2,19 @@
     {
         "error_name":"Nom no valid",
         "error_email":"Email no valid",
-        "error_pass":"Contrasenya no valida"
+        "error_pass":"Contrasenya no valida",
+        "profile":"Perfil",
+        "name":"Nom",
+        "surname":"Cognom",
+        "email":"Correu",
+        "save":"Desar",
+        "profile_information":"Informacio del perfil",
+        "profile_update_information":"Informació bàsica del compte.",
+        "password_information":"Actualitza la Contrasenya",
+        "password_update_information":"Assegura't que el teu compte utilitzi una contrasenya llarga i aleatòria per mantenir-lo segur.",
+        "current_password":"Contrasenya Actual",
+        "new_password":"Nova Contrasenya",
+        "confirm_password":"Confirmar Contrasenya"
     }
+
+
