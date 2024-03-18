@@ -42,7 +42,7 @@ const submit = () => {
 
             <form @submit.prevent="submit" class="form">
                 <div class="flex-column">
-                    <label>Nom d'usuari</label>
+                    <label>Correu electrònic</label>
                 </div>
 
                 <div class="inputForm">
@@ -53,12 +53,12 @@ const submit = () => {
                     </svg>
                     <input
                         autofocus
-                        title="Nom d'usuari"
+                        title="Correu Electrònic"
                         type="text"
                         class="input" 
                         v-model="form.email"
                         required
-                        placeholder="El teu nom d'usuari"
+                        placeholder="El teu correu electrònic"
                     >
                 </div>
                 <InputError class="mt-2" :message="form.errors.email" />
