@@ -77,6 +77,7 @@ return response()->json(['message' => 'User added successfully', 'user' => $requ
         $user=$userModel->find(Auth::user()->id);  
         $user->language=$request->idiomSelect;
         $user->save();
+        return redirect('/');
     }
     public static function searchUser(Request $request){
         $users = User::where('name', 'like', $request->name.'%')->get();
