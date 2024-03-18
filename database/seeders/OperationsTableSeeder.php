@@ -110,12 +110,6 @@ class OperationsTableSeeder extends Seeder
             'surgeryId' => 3,
             'name' => 'Cirurgia laparotòmica SENSE entrada a vagina i amb baix ris de lesió intestinal'
         ]);
-
-        Operation::create([
-            'surgeryId' => 3,
-            'name' => 'Cirurgia laparoscòpica (amb assistència robòtica o no) que inclou'
-        ]);
-
         
         Operation::create([
             'surgeryId' => 3,

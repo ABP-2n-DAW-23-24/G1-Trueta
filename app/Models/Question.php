@@ -14,5 +14,9 @@ class Question extends Model
     {
         return $this->hasMany(QuestionOpMed::class, 'Q_id', 'id');
     }
+
+    public function QuestionsOperation(){
+        return $this->belongsTo(Operation::class, 'operation_id', 'id');
+    }
     use HasFactory;
 }

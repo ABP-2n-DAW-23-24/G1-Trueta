@@ -19,4 +19,9 @@ class Operation extends Model
     {
         return $this->belongsTo(Surgery::class, 'surgeryId');
     }
+
+    public function QuestionsOperation()
+    {
+        return $this->hasMany(QuestionsOperation::class, 'questionId', 'id');
+    }
 }

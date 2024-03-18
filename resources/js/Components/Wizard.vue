@@ -8,14 +8,13 @@ const props = defineProps({
     setCrumb: {
         type: Function,
         required: true
-
-  },
-  crumb: Number,
-  selectedSurgery: Number,
-  setSelectedSurgery: Function,
-  user: {
-    type: Object,
-    required: true
+    },
+    crumb: Number,
+    selectedSurgery: Number,
+    setSelectedSurgery: Function,
+    user: {
+        type: Object,
+        required: true
     },
     hoveredSurgery: Number,
     hoveredOperation: Number,
