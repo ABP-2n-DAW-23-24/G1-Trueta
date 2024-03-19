@@ -16,7 +16,7 @@ class Adminpanel extends Controller
 
         $user = Auth::user();
         return Inertia::render('AdminPanel', [
-            "users"=>User::all(),
+            "users_main"=>User::all(),
             'user' => $user,
             "traduccionjson"=>$traduccionjson
 
