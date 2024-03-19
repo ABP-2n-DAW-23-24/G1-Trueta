@@ -1,6 +1,7 @@
 <script setup>
 import UserDropdown from "@/Components/UserDropdown.vue";
 import AdminPanelMenu from "@/Components/AdminPanelMenu.vue";
+import Logo from "@/Components/Logo.vue";
 
 const props = defineProps({
   crumb: {
@@ -22,21 +23,29 @@ const breadcrumbs = ["Cirurgía", "Operació", "Pacient", "Resultat"];
 </script>
 
 <template>
-    <div class="wizard-header-container">
-      <AdminPanelMenu
-       
-      />
-      <UserDropdown :user="user"/>
+  <div class="wizard-header-container">
+    <Logo class="logo" />
+    <div class="dropdown-div">
+      <UserDropdown :user="user" class="user-dropdown" />
     </div>
+  </div>
 </template>
 
 <style scoped>
-
 .wizard-header-container {
-  display: grid;
-  grid-template-columns: auto 175px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   height: 50px;
-  gap: 15px;
+}
+
+.user-dropdown {
+  height: 100%;
+  width: 175px;
+}
+
+.logo {
+  height: 50px;
 }
 
 </style>
