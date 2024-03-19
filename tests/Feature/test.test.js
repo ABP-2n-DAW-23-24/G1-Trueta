@@ -1,29 +1,42 @@
-// MyComponent.test.js
-import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi } from 'vitest';
-import ListUsers from '@/Components/ListUsers.vue';
+import axios from 'axios';
+import { fetchUsers } from './users.service';
+import { shallowMount } from '@vue/test-utils';
+import Login from '@/Pages/Auth/Login.vue';
 
-// Importar la librería o componente que ejecuta el fetch
-import { useFetch } from '@vueuse/core';
+vi.mock('axios', () => {
+  return {
+    default: {
+      post: vi.fn(() => Promise.resolve({ data: 'mocked data' }))
+    }
+  };
+});
 
-// Si es necesario, realiza mock a los composables o librerías usadas
-vi.mock('@vueuse/core', () => ({
-  useFetch: vi.fn(),
-}));
+describe('fetchUsers', () => {
+  it('Test de axios para los usuarios getUsers', async () => {
+    // Datos de prueba que nuestra función mock retornará
+    const usersMock = [{ id: 1, name: 'Alice' }];
 
-describe('ListUsers', () => {
-  it('should display data when fetched', async () => {
-    // Configura el mock de useFetch() para que devuelva datos simulados
-    useFetch.mockReturnValue({
-      execute: vi.fn(() => Promise.resolve({ data: 'mocked data' })),
-    });
+    // Configurar la función mock para resolver con los datos de prueba
+    axios.post.mockResolvedValue({ data: usersMock });
 
-    const wrapper = mount(ListUsers);
+    // Llamar a la función `fetchUsers` que estamos probando
+    const users = await fetchUsers();
 
-    // Espera a que se resuelva la lógica del componente
-    await wrapper.vm.$nextTick();
-
-    // Verifica que el texto de 'mocked data' esté presente en el componente
-    expect(wrapper.text()).toContain('mocked data');
+    // Verificar que la funcionalidad es la esperada
+    expect(axios.post).toHaveBeenCalledWith('/getUsers');
+    expect(users).toEqual(usersMock);
   });
+
+// test de texto
+
+it('El componente contiene un título', async () => {
+
+  const wrapper = shallowMount(Login);
+  await wrapper.vm.$nextTick();
+  const componentText = wrapper.text();
+  expect(componentText).toContain('Nom');
+});
+
+
 });
