@@ -20,43 +20,56 @@ function endEvent() {
     justify-content: space-between;">
 
     </div>
-
+    <div class="user-box">
     <div class="User is-flex" style="flex-direction: row;
     justify-content: space-between;" v-for="(item, index) in users">
+    <div class="user-content">
         <p> {{ item.email }}
         </p>
-
+        <p> {{ item.name }} {{ item.surnames }}
+        </p>
+        
+    </div>
         <div clas="is-flex " style="display: flex;">
 
             <ModalUsersDelete @endDelete="endEvent" :users="item" :traduccion="traduccion"></ModalUsersDelete>
             <ModalUsersEdit @EndEdit="endEvent" :users="item" :traduccion="traduccion"></ModalUsersEdit>
         </div>
-
+    </div>
     </div>
 
 </template>
 
 <style>
 .User {
-    background-color: #ffffff;
+    background-color: #ececec;
     width: 100%;
     padding: 20px;
     border-radius: 10px;
-    margin-top: 20px;
 }
 
-.User:hover {
-   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+
+
+.user-box{
+    display: grid;
+    gap: 15px;
 }
+
+
 
 .icons {
     height: 20px;
 }
 
-.line {
+.user-content {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
     width: 100%;
-    height: 1px;
-    background-color: #e8e8e8;
-    margin-top: 20px;
+   
+}
+
+.user-content p {
+    width: 250px;
 }
 </style>

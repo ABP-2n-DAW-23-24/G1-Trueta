@@ -67,6 +67,7 @@ function closeModal(params) {
 </script>
 
 <template>
+  <div class="bg-users-add-btn">
     <button class="btn_add" @click=" isModalOpen = true">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
             <path
@@ -74,6 +75,7 @@ function closeModal(params) {
         </svg>
         <span>Afegir Usuaris</span>
     </button>
+  </div>
 
     <Modal :show="isModalOpen" @close="closeModal">
         <div style="padding: 30px;">
@@ -94,12 +96,12 @@ function closeModal(params) {
 <div class="box-modal-inputs">
             <div class="center_flex_modal">
                
-                    <input class="input-model"  type="text" style="    border-radius: 5px" placeholder="Nom" v-model="name">
+                    <input class="input-model"  type="text" style="    border-radius: 10px" placeholder="Nom" v-model="name">
                     <div v-if="message">
                         <p v-if="message.name" class="text_error" v-for=" (item, index) in message.name"> {{ item }} </p>
                     </div>
                 
-                    <input class="input-model" type="text" style="    border-radius: 5px" placeholder="Cognoms" v-model="surnames">
+                    <input class="input-model" type="text" style="    border-radius: 10px" placeholder="Cognoms" v-model="surnames">
 
               
 
@@ -109,7 +111,7 @@ function closeModal(params) {
     flex-direction: column;
     align-content: center;
     align-items: center;">
-                    <input type="email" style="border-radius: 5px;width: 100%;" placeholder="correo electronic"
+                    <input type="email" style="border-radius: 10px;width: 100%;" placeholder="correo electronic"
                         v-model="email">
 
                     <div v-if="message">
@@ -124,7 +126,7 @@ function closeModal(params) {
     flex-direction: column;
     align-content: center;
     align-items: center;">
-                    <input type="password" style="border-radius: 5px;width: 100%;" placeholder="contrasenya"
+                    <input type="password" style="border-radius: 10px;width: 100%;" placeholder="contrasenya"
                         v-model="pass">
                     <div v-if="message">
                         <p v-if="message.pass" class="text_error" v-for=" (item, index) in message.pass"> {{ item }} </p>
@@ -192,11 +194,13 @@ function closeModal(params) {
     border: none;
     background-color: transparent;
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 5px 10px;
     outline: none;
-    border-radius: 5px;
+    border-radius: 10px !important;
     background-color: black;
     color: white;
+    height: 50px;
+    width: 175px;
 }
 
 .btn_add svg {
@@ -304,5 +308,7 @@ function closeModal(params) {
     color: white ;
     margin-bottom: 10px;
 }
+
+
 
 </style>

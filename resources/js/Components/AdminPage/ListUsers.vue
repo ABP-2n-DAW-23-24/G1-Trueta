@@ -1,7 +1,6 @@
   <script setup>
   import Users from "@/Components/Users.vue";
   import ModalUsers from '../ModalUsers.vue';
-
   import { ref,defineProps,watch  } from 'vue';
 
   const isModalOpen = ref(false);
@@ -12,7 +11,7 @@
   const handleClose = () => {
     isModalOpen.value = false;
   };
-  let users_=ref(props.users)
+  const users_=ref(props.users)
   function getUsers(){
       axios.post("getUsers")
       .then(response=>{
@@ -31,39 +30,23 @@ const doSomething = (value) => {
         console.log(response)
       }) 
 };
-
+watch(() => props.users, (newValue) => {
+  users_.value = newValue;
+});
 watch(name, (newValue) => {
+  props.users=users_.value
   doSomething(newValue);
 });
 
   </script>
   <template>
   <div class="bg-users">
-
     <!-- El componente Modal -->
   <UserDropdown :show="isModalOpen"></UserDropdown>
       <div style="
       margin-bottom: 25px;    display: flex;
       flex-direction: row;
       justify-content: space-between;">
-      <h2 class="title-admin" style="font-size: 30px;">Llistat d’usuaris</h2>
-
-      <search class="search">
-      <button title="Search" type="submit">
-          <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search" title="Search">
-              <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-      </button>
-      <input class="input" placeholder="Buscar usuaris..." required="" type="text" v-model="name" title="Search">
-      <button class="reset" type="reset" title="Reset">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-      </button>
-        </search>
-
-
-    <ModalUsers class="modal-users-button" @getUser="getUsers" :traduccion="traduccion"></ModalUsers>
       </div>    
       <Users @getUser="getUsers" :users="users_" :traduccion="traduccion"></Users>
       <p v-if="users_.length==0">Usuari no trobat</p>
@@ -77,9 +60,8 @@ watch(name, (newValue) => {
       padding: 10px 20px 10px 20px;
   }
   .bg-users{
-      background-color: #e8e8e8ad;
+      background-color: #ffffff;
       width: 100%;
-      padding: 30px;
       border-radius: 10px;
   }
   .correo_back{

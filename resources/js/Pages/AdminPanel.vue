@@ -8,19 +8,25 @@ import Logo from '@/Components/Logo.vue';
 import Footer from '@/Components/Footer.vue';
 
 let props = defineProps({
-  users: Object,
+  users_main: Object,
   traduccionjson: Object,
   user: Object
 })
 let traduccion = JSON.parse(props.traduccionjson)
+let users = ref(props.users_main);
+function endSearchUser(data) {
+  
+  users.value=data
+}
 </script>
 <template>
 <div class="container-admin">
   <Head title="Index" />
  
-      <AdminPanelHeader :user="props.user"></AdminPanelHeader>
+      <AdminPanelHeader @searched-user="endSearchUser" :user="props.user"></AdminPanelHeader>
 
   <div class="bg-listuser">
+     
     <ListUsers :users="users" :traduccion="traduccion"></ListUsers>
   </div>
   </div>
