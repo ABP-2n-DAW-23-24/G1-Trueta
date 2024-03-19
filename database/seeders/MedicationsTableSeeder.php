@@ -94,5 +94,25 @@ class MedicationsTableSeeder extends Seeder
         Medication::create([
             'name' => 'NEOMICINA'
         ]);
+
+        // 17
+        Medication::create([
+            'name' => 'DOXICICLINA'
+        ]);
+
+        // 18
+        Medication::create([
+            'name' => 'CEFOXITINA'
+        ]);
+
+        // 19
+        Medication::create([
+            'name' => 'CIPROFLOXACI'
+        ]);
+
+        // 20
+        Medication::create([
+            'name' => 'PIPERACIL.LINA-TAZOBACTAM'
+        ]);
     }
 }

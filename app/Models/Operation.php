@@ -20,8 +20,8 @@ class Operation extends Model
         return $this->belongsTo(Surgery::class, 'surgeryId');
     }
 
-    public function questions()
+    public function resume()
     {
-        return $this->belongsToMany(Question::class, 'questions_operations', 'operationId', 'questionId');
+        return $this->hasMany(Resume::class);
     }
 }

@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('resumes', function (Blueprint $table) {
             $table->id();
             $table->text('resume');
+            $table->unsignedBigInteger('questionId');
+            $table->unsignedBigInteger('operationId');
+            $table->foreign('questionId')->references('id')->on('questions');
+            $table->foreign('operationId')->references('id')->on('operations');
             $table->softDeletes();
             $table->timestamps();
         });
