@@ -7,7 +7,9 @@ import axios from "axios";
 const emit = defineEmits(['EndEdit'])
 
 let props = defineProps({
-        users:Object
+        users:Object,
+        traduccion:Object
+
 })
 let name=ref(props.users.name);
 console.log(name.value)
@@ -81,7 +83,7 @@ function closemodal(params) {
     align-content: center;
     justify-content: space-between;
     align-items: baseline;">
-            <h2 style="font-size: 20px;margin-bottom: 20px;">Editar usuari</h2>
+            <h2 style="font-size: 20px;margin-bottom: 20px;">{{props.traduccion["editUserTitle"]}}</h2>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="height: 20px;cursor:pointer;" @click="closemodal">
                     <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
                 </svg>
@@ -89,19 +91,19 @@ function closemodal(params) {
      
         <div class="center_flex_modal"> 
             <div>
-                <input type="text" style="    border-radius: 5px;" placeholder="Nom"  :value="name" v-model="name">
+                <input type="text" style="    border-radius: 5px;" :placeholder="props.traduccion['name']"   :value="name" v-model="name">
                 <div v-if="message" >
                             <p v-if="message.name" class="text_error"  v-for=" (item,index) in message.name"> {{item }} </p>
                         </div>
             </div>
-            <input type="text" style="    border-radius: 5px" placeholder="Cognoms"  :value="surnames" v-model="surnames">
+            <input type="text" style="    border-radius: 5px" :placeholder="props.traduccion['surnames']"  :value="surnames" v-model="surnames">
         </div>
         <div class="correo_back center_flex" >
             <div style="width:100%;display: flex;
     flex-direction: column;
     align-content: center;
     align-items: center;">
-                <input type="email" style="border-radius: 5px;width: 80%;" placeholder="correo electronic" :value="email" v-model="email">
+                <input type="email" style="border-radius: 5px;width: 80%;" :placeholder="props.traduccion['email']" :value="email" v-model="email">
                 <div v-if="message" >
                         <p v-if="message.email" class="text_error" v-for=" (item,index) in message.email"> {{item}} </p>
                     </div>
@@ -112,7 +114,7 @@ function closemodal(params) {
     flex-direction: column;
     align-content: center;
     align-items: center;">
-                <input type="password" style="border-radius: 5px;width: 80%;" placeholder="contrasenya" v-model="pass">
+                <input type="password" style="border-radius: 5px;width: 80%;" :placeholder="props.traduccion['pass']" v-model="pass">
                 <div v-if="message" >
                         <p v-if="message.pass" class="text_error"  v-for=" (item,index) in message.pass"> {{item}} </p>
                     </div>
@@ -120,13 +122,13 @@ function closemodal(params) {
         </div>
         <div class="rols"> 
             <label for="">
-            <input type="checkbox" name="" id=""  v-model="isAdmin" >Admin</label>
+            <input type="checkbox" name="" id=""  v-model="isAdmin" >{{ props.traduccion['Admin'] }}</label>
             <label for="">
-            <input type="checkbox" name="" id=""    v-model="isManager">Gestor</label>
+            <input type="checkbox" name="" id=""    v-model="isManager">{{ props.traduccion['Manager'] }}</label>
         </div>
     </div>
     <div class="center_flex" style="padding: 20px;">
-        <button class="btn_add_user"  @click="btn_editUser">Editar</button>
+        <button class="btn_add_user"  @click="btn_editUser">{{ props.traduccion['editText'] }}</button>
     </div>
 </Modal>
 </template>
