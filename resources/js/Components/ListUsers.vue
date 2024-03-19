@@ -46,15 +46,15 @@ watch(name, (newValue) => {
       margin-bottom: 25px;    display: flex;
       flex-direction: row;
       justify-content: space-between;">
-      <h2  style="font-size: 30px;">Llistat d’usuaris</h2>
+      <h2  style="font-size: 30px;">{{ props.traduccion["listUser"] }}</h2>
 
       <input type="text" v-model="name" style="    width: 50%;
-    border-radius: 10px;">
+    border-radius: 10px;" :placeholder="props.traduccion['findUser'] ">
 
     <ModalUsers @getUser="getUsers" :traduccion="traduccion"></ModalUsers>
       </div>    
       <Users @getUser="getUsers" :users="users_" :traduccion="traduccion"></Users>
-      <p v-if="users_.length==0">Usuari no trobat</p>
+      <p v-if="users_.length==0">{{ props.traduccion["usernotfound"] }}</p>
 
   </div>
 

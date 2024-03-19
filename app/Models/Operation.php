@@ -19,4 +19,9 @@ class Operation extends Model
     {
         return $this->belongsTo(Surgery::class, 'surgeryId');
     }
+
+    public function resume()
+    {
+        return $this->hasMany(Resume::class);
+    }
 }

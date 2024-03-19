@@ -34,6 +34,7 @@ Route::delete('/medication-panel/delete-dose/{doseId}', [MedicationPanelControll
 Route::delete('/medication-panel/delete-condition-dose/{doseId}/{conditionId}', [MedicationPanelController::class, 'deleteConditionDose'])->name('delete-condition-dose');
 Route::post('/medication-panel/add-condition-dose', [MedicationPanelController::class, 'addConditionDose'])->name('add-condition-dose');
 Route::post('/medication-panel/add-dose', [MedicationPanelController::class, 'addDose'])->name('add-dose');
+Route::post('/medication-panel/edit-dose-condition', [MedicationPanelController::class, 'editCondition'])->name('edit-dose-condition');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -45,8 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/', [IndexController::class, 'index'])->name('index');
 });
-
-
+Route::get('/get-questions/{operationId}', [IndexController::class, 'getQuestions'])->name('getQuestions');
 Route::get('/json/surgeriesWithOperations', [SurgeriesController::class, 'surgeriesWithOperations'])->name('surgeriesWithOperations');
 
 require __DIR__.'/auth.php';

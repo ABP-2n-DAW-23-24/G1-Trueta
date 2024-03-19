@@ -1,116 +1,136 @@
 <script setup>
-  import { ref } from 'vue';
-  import axios from 'axios';
-  import WizardSquare from '@/Components/WizardSquare.vue';
-  import { useForm } from "@inertiajs/vue3";
-  import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { ref, computed } from 'vue';
+import axios from 'axios';
+import WizardSquare from '@/Components/WizardSquare.vue';
+import { useForm } from "@inertiajs/vue3";
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
+import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
 
-  let form = useForm({
-    alergic: false,
-    mrsa: false,
-    gender: "",
-  });
-
-
+let form = useForm({
+  question_0: false, //Profilaxi quirúrgica d’elecció
+  question_1: false, //Al·lèrgia a Penicil·lina
+  question_2: false, //Pacients colonitzats per MARSA
+  //gender: "", //Home: false - Dona: true
+});
 
 const submit = () => {
-  if (form.gender == ""){
+  /*if (form.gender == ""){
     alert("Selecciona un género");
     return;
-  }
+  }*/
   console.log(form);
 };
 
-  const props = defineProps({
-    crumb: {
-      type: Number,
-      required: true
-    },
-    setCrumb: {
-      type: Function,
-      required: true
-    },
-    setSelectedSurgery: {
+const props = defineProps({
+  crumb: {
+    type: Number,
+    required: true
+  },
+  setCrumb: {
     type: Function,
     required: true
-    },
-    selectedSurgery: {
-      type: Number,
-      required: true
-    },
-    hoveredSurgery: {
-      type: Number,
-      required: true
-    },
-    hoveredOperation: {
-      type: Number,
-      required: true
-    },
-    toggleCollapse: {
-      type: Function,
-      required: true
-    },
-    selectedOperation: {
-      type: Number,
-      required: true
-    },
-    setSelectedOperation: {
-      type: Function,
-      required: true
-    },
-    setHoveredSurgery: {
-      type: Function,
-      required: true
-    },
-    setHoveredOperation: {
-      type: Function,
-      required: true
-    }
-  });
-
-  const surgeries = ref([]);
-
-  axios.get("/json/surgeriesWithOperations")
-  .then(response => {
-    surgeries.value = response.data;
-  });
-
-  function handleSurgeryClick(surgery) {
-    props.setSelectedSurgery(surgery)
-    props.setCrumb(1);
-    props.toggleCollapse(surgery + 1);
+  },
+  setSelectedSurgery: {
+    type: Function,
+    required: true
+  },
+  selectedSurgery: {
+    type: Number,
+    required: true
+  },
+  hoveredSurgery: {
+    type: Number,
+    required: true
+  },
+  hoveredOperation: {
+    type: Number,
+    required: true
+  },
+  toggleCollapse: {
+    type: Function,
+    required: true
+  },
+  selectedOperation: {
+    type: Number,
+    required: true
+  },
+  setSelectedOperation: {
+    type: Function,
+    required: true
+  },
+  setHoveredSurgery: {
+    type: Function,
+    required: true
+  },
+  setHoveredOperation: {
+    type: Function,
+    required: true
   }
+});
 
-  function handleOperationClick(operation) {
-    props.setSelectedOperation(operation);
-    props.setCrumb(2);
-  }
+const surgeries = ref([]);
+var questions = ref([]);
+var isLoading = ref();
 
-  //Modifica el color del texto para hacerlo mas legible
-  function makeTextColorReadable(backgroundColor) {
-    const rgb = backgroundColor.match(/\w\w/g).map(x => parseInt(x, 16));
-    const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
-    return luminance > 0.5 ? '#000000' : '#ffffff';
+isLoading.value = true;
+axios.get("/json/surgeriesWithOperations")
+.then(response => {
+  surgeries.value = response.data;
+}).finally(() => {
+  isLoading.value = false;
+});
+
+function handleSurgeryClick(surgery) {
+  props.setSelectedSurgery(surgery)
+  props.setCrumb(1);
+  props.toggleCollapse(surgery + 1);
 }
 
-//Modifica el color para hacerlo mas oscuro
+function handleOperationClick(operationId) {
+  questions.value = [];
+  form.question_0 = false;
+  form.question_1 = false;
+  form.question_2 = false;
+  form.gender = "";
+  isLoading.value = true;
+  axios.get(`/get-questions/${operationId}`)
+    .then(response => {
+      questions.value = response.data.questionsOperation;
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
+  props.setSelectedOperation(operationId);
+  props.setCrumb(2);
+}
+
+// Modifica el color del text per fer-lo més llegible
+function makeTextColorReadable(backgroundColor) {
+  const rgb = backgroundColor.match(/\w\w/g).map(x => parseInt(x, 16));
+  const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+  return luminance > 0.5 ? '#000000' : '#ffffff';
+}
+
+//Modifica el color per fer-lo més fosc
 function makeDarkColor(color) {
-    const rgb = color.match(/\w\w/g).map(x => parseInt(x, 16));
-    const darkRgb = rgb.map(x => Math.round(x * 0.6));
-    return `#${darkRgb.map(x => x.toString(16).padStart(2, '0')).join('')}`;
-  }
+  const rgb = color.match(/\w\w/g).map(x => parseInt(x, 16));
+  const darkRgb = rgb.map(x => Math.round(x * 0.6));
+  return `#${darkRgb.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+}
 
-
-
-
+const currentOperation = computed(() => {
+  return surgeries.value.length > 0 ? surgeries.value[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
+});
 
 </script>
 <template>
-
-  <div class="wizard-grid-container">
-    <!-- All surgeries -->
+  <!-- All surgeries -->
+  <div
+    v-show="crumb === 0 && !isLoading"
+    class="wizard-grid-container">
     <WizardSquare
-      v-show="crumb === 0"
+      v-show="surgery.operations.length > 0"
       v-for="(surgery, index) in surgeries"
       :class="{
         'hover': props.hoveredSurgery == surgery.id,
@@ -126,14 +146,15 @@ function makeDarkColor(color) {
   </div>
 
   <!-- All operations with profilaxis -->
-  <div class="wizard-grid-container">
+  <div
+    v-show="crumb === 1  && !isLoading"
+    class="wizard-grid-container">
     <WizardSquare
       :class="{
-        'hover': props.hoveredOperation == operation.id,
+        'hover': props.hoveredOperation === operation.id,
       }"
       @mouseover="props.setHoveredOperation(operation.id)"
       @mouseleave="props.setHoveredOperation(-1)"
-      v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => handleOperationClick(operation.id)"
       :name="operation.name"
@@ -144,20 +165,21 @@ function makeDarkColor(color) {
   </div>
 
   <!-- Text separator for operations without profilaxis -->
-  <div v-show="crumb === 1 && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
+  <div v-show="crumb === 1 && !isLoading && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
 
   <!-- All operations without profilaxis -->
-  <div class="wizard-grid-container">
+  <div
+    v-show="crumb === 1 && !isLoading"
+    class="wizard-grid-container">
     <WizardSquare
       :class="{
         'hover': props.hoveredOperation == operation.id,
       }"
       @mouseover="props.setHoveredOperation(operation.id)"
       @mouseleave="props.setHoveredOperation(-1)"
-      v-show="crumb === 1"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name"
       :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
@@ -166,103 +188,126 @@ function makeDarkColor(color) {
     />
   </div>
 
-  <div v-show="crumb === 2" class="rectangle">
-  <div class="wrapper">
-    <div class="grid">
-      <form @submit.prevent="submit">
-        <legend>Preguntes</legend>
-        <div class="form__group">
-          <div class="checkbox-wrapper-46">
-            <input type="checkbox" id="alergic" class="inp-cbx" value="alergic" name="alergic" v-model="form.alergic"/>
-            <label for="alergic" class="cbx larger-label"
-              ><span>
+  <!-- Questions for the operation -->
+  <div v-show="crumb === 2 && !isLoading" class="questions-container">
+        <form @submit.prevent="submit" class="questions-manager-container">
+          <h2>{{ currentOperation && currentOperation.name }}</h2>
+          <div class="form__group" v-for="(question, index) in questions" :key="index">
+            <div class="checkbox-wrapper-46">
+              <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" v-model="form['question_' + index]"/>
+              <label :for="'question_' + index" class="cbx larger-label">
+                <span>
                 <svg viewBox="0 0 12 10" height="10px" width="12px">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-              ><span>Al·lergic a la penicilina</span>
-            </label>
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg>
+              </span>
+              <span>{{question.question}}</span>
+              </label>
+            </div>
           </div>
-        </div>
-        <div class="form__group">
-          <div class="checkbox-wrapper-46">
-            <input type="checkbox" id="mrsa" class="inp-cbx" value="mrsa" name="mrsa" v-model="form.mrsa"/>
-            <label for="mrsa" class="cbx larger-label"
-              ><span>
-                <svg viewBox="0 0 12 10" height="10px" width="12px">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-              ><span>Operat per MRSA</span>
-            </label>
+          <!--
+          <legend>Gènere del pacient</legend>
+          <div class="mydict">
+            <div class="form__group">
+              <label class="radio">
+                <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
+                <span>Home</span>
+              </label>
+              <label class="radio">
+                <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
+                <span>Dona</span>
+              </label>
+            </div>
           </div>
-        </div>
-        <legend>Genero del pacient</legend>
-        <div class="mydict">
-          <div class="form__group">
-            <label class="radio">
-              <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
-              <span>Home</span>
-            </label>
-            <label class="radio">
-              <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
-              <span>Dona</span>
-            </label>
+          -->
+          <PrimaryButton type="submit">Consultar</PrimaryButton>
+        </form>
+        <div class="questions-manager-container">
+          <h2>Gestor de condicions</h2>
+          <div class="manager-inputs">
+            <input type="text" placeholder="Nom de la condició">
+            <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
+            <div class="ck-medications-editor">
+              <SelectOnSteroids>
+                <option value="1">Opció 1</option>
+                <option value="2">Opció 2</option>
+                <option value="3">Opció 3</option>
+              </SelectOnSteroids>
+              <TextAreaOnSteroids placeholder="Instruccions de la condició">
+              </TextAreaOnSteroids>
+            </div>
           </div>
+          <button>Afegir condició</button>
         </div>
-        <PrimaryButton type="submit">Consultar</PrimaryButton>
-      </form>
-    </div>
   </div>
-</div>
+  <div class="spinner-container" v-if="isLoading">
+    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+  </div>
 </template>
 
 <style scoped>
-  .wizard-grid-container {
-    display: grid;
-    gap: 15px;
-    grid-template-columns: repeat(auto-fit, minmax(230px, auto));
-  }
-  .larger-label {
-    font-size: 1.2em;
-  }
-  .rectangle {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border: 2px solid #333;
-    border-radius: 10px;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-    gap: 3rem;
-  }
+.wizard-grid-container {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, auto));
+}
+.larger-label {
+  font-size: 1.2em;
+}
 
-  .wrapper {
-    max-width: 75rem;
-    width: 100%;
-    padding: min(3rem, 5vw);
-  }
+.questions-container {
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  gap: 15px;
+}
 
-  legend {
-    font-weight: 900;
-    font-size: 1.5em;
-  }
+.questions-operation-container,
+.questions-manager-container {
+  background-color: #f0f0f0;
+  padding: 30px 40px;
+  border-radius: 10px;
+}
 
-  form > * + * {
-    margin-top: 1.5rem;
-  }
+.questions-container h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
 
-  .form__group {
-    display: flex;
-    align-items: center;
-  }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 3rem;
+}
 
-  input[type="checkbox"],
-  input[type="radio"] {
-    width: 1.5em;
-    height: 1.5em;
-    margin-right: 0.65rem;
-  }
+.wrapper {
+  max-width: 75rem;
+  width: 100%;
+  padding: min(3rem, 5vw);
+}
+
+legend {
+  font-weight: 900;
+  font-size: 1.5em;
+}
+
+form > * + * {
+  margin-top: 1.5rem;
+}
+
+.form__group {
+  display: flex;
+  align-items: center;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 0.65rem;
+}
 
 
-  .checkbox-wrapper-46 input[type="checkbox"] {
+.checkbox-wrapper-46 input[type="checkbox"] {
   display: none;
   visibility: hidden;
 }
@@ -303,6 +348,34 @@ function makeDarkColor(color) {
   transition-delay: 0.1s;
   transform: translate3d(0, 0, 0);
 }
+
+.manager-inputs {
+  display: grid;
+  gap: 15px;
+}
+.manager-inputs > * {
+  display: block;
+  resize: none;
+  width: 100%;
+}
+
+input,
+textarea {
+  border: none;
+  border-radius: 5px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: inherit;
+  box-shadow: none;
+}
+
+/* textarea:active, input:active{
+  outline: none;
+  border: none;
+}  */
+
 .checkbox-wrapper-46 .cbx span:first-child:before {
   content: "";
   width: 100%;
@@ -395,6 +468,52 @@ function makeDarkColor(color) {
 
 .radio:last-child span {
   border-radius: 0 .375em .375em 0;
+}
+
+
+.spinner-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #000;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #000 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 </style>

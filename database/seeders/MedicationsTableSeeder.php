@@ -58,5 +58,61 @@ class MedicationsTableSeeder extends Seeder
         Medication::create([
             'name' => 'AZTREONAM'
         ]);
+
+        // 10
+        Medication::create([
+            'name' => 'TEICOPLANINA'
+        ]);
+
+        // 11
+        Medication::create([
+            'name' => 'CEFTAZIDIMA'
+        ]);
+
+        // 12
+        Medication::create([
+            'name' => 'FOSFOMICINA TROMETAMOL'
+        ]);
+
+        // 13
+        Medication::create([
+            'name' => 'MOXIFLOXACINO'
+        ]);
+
+        
+        // 14
+        Medication::create([
+            'name' => 'ALBENDAZOL'
+        ]);
+
+        // 15
+        Medication::create([
+            'name' => 'PRAZIQUANTEL'
+        ]);
+
+        // 16
+        Medication::create([
+            'name' => 'NEOMICINA'
+        ]);
+
+        // 17
+        Medication::create([
+            'name' => 'DOXICICLINA'
+        ]);
+
+        // 18
+        Medication::create([
+            'name' => 'CEFOXITINA'
+        ]);
+
+        // 19
+        Medication::create([
+            'name' => 'CIPROFLOXACI'
+        ]);
+
+        // 20
+        Medication::create([
+            'name' => 'PIPERACIL.LINA-TAZOBACTAM'
+        ]);
     }
 }

@@ -110,12 +110,6 @@ class OperationsTableSeeder extends Seeder
             'surgeryId' => 3,
             'name' => 'Cirurgia laparotòmica SENSE entrada a vagina i amb baix ris de lesió intestinal'
         ]);
-
-        Operation::create([
-            'surgeryId' => 3,
-            'name' => 'Cirurgia laparoscòpica (amb assistència robòtica o no) que inclou'
-        ]);
-
         
         Operation::create([
             'surgeryId' => 3,
@@ -509,7 +503,8 @@ class OperationsTableSeeder extends Seeder
 
         Operation::create([
             'surgeryId' => 20,
-            'name' => 'Biòpsia d’òrgan procediment net'
+            'name' => 'Biòpsia d’òrgan procediment net',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
@@ -529,18 +524,21 @@ class OperationsTableSeeder extends Seeder
 
         Operation::create([
             'surgeryId' => 20,
-            'name' => 'Inserció filtre VCI'
+            'name' => 'Inserció filtre VCI',
+            'profilaxis' => 0
         ]);
 
         
         Operation::create([
             'surgeryId' => 20,
-            'name' => 'Angiografia Angioplàstia Inserció stent coronari i altres territoris'
+            'name' => 'Angiografia Angioplàstia Inserció stent coronari i altres territoris',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 20,
-            'name' => 'Inserció catèter venós central no tunelitzat'
+            'name' => 'Inserció catèter venós central no tunelitzat',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
@@ -550,12 +548,14 @@ class OperationsTableSeeder extends Seeder
 
         Operation::create([
             'surgeryId' => 20,
-            'name' => 'Embolització aneurisme amb inserció de “coil”'
+            'name' => 'Embolització aneurisme amb inserció de “coil”',
+            'profilaxis' => 0
         ]);
 
         Operation::create([
             'surgeryId' => 20,
-            'name' => 'Embolització per control sagnat (ex politraumàtic)'
+            'name' => 'Embolització per control sagnat (ex politraumàtic)',
+            'profilaxis' => 0
         ]);
 
         Operation::create([

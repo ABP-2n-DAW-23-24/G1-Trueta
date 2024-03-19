@@ -17,7 +17,7 @@ const props = defineProps({
   }
 });
 
-const breadcrumbs = ["Cirurgía", "Operació", "Antibiotic", "Resultat"];
+const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 
 </script>
 
@@ -28,6 +28,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Antibiotic", "Resultat"];
         :breadcrumbs="breadcrumbs"
         :crumb="crumb"
         :setCrumb="setCrumb"
+        class="breadcrumbs"
       />
       <UserDropdown :user="props.user" />
     </div>
@@ -38,8 +39,19 @@ const breadcrumbs = ["Cirurgía", "Operació", "Antibiotic", "Resultat"];
 .wizard-header-container {
   display: grid;
   grid-template-columns: auto 175px;
-  height: 50px;
+  min-height: 50px;
   gap: 15px;
+}
+
+@media (max-width: 425px) {
+  .wizard-header-container {
+    grid-template-columns: auto;
+    grid-template-rows: 50px 50px;
+  }
+
+  .breadcrumbs {
+    grid-row: 2;
+  }
 }
 
 </style>

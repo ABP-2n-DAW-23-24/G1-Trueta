@@ -1,8 +1,4 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -13,6 +9,10 @@ const form = useForm({
     current_password: '',
     password: '',
     password_confirmation: '',
+});
+
+let props=defineProps({
+    traductions:Object
 });
 
 const updatePassword = () => {
@@ -34,72 +34,126 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Ensure your account is using a long, random password to stay secure.
+    <section class="profile-section">
+        <header class="profile-header">
+            <h2 class="profile-title">{{ props.traductions.password_information }}</h2>
+            <p class="profile-description">
+                {{ props.traductions.password_update_information }}
             </p>
         </header>
 
-        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
-
-                <TextInput
+        <form @submit.prevent="updatePassword" class="password-form">
+            <div class="form-group">
+                <label for="current_password" class="label">{{ props.traductions.current_password }}</label>
+                <input
                     id="current_password"
                     ref="currentPasswordInput"
                     v-model="form.current_password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input"
                     autocomplete="current-password"
                 />
-
-                <InputError :message="form.errors.current_password" class="mt-2" />
+                <span class="error">{{ form.errors.current_password }}</span>
             </div>
 
-            <div>
-                <InputLabel for="password" value="New Password" />
-
-                <TextInput
+            <div class="form-group">
+                <label for="password" class="label">{{ props.traductions.new_password }}</label>
+                <input
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input"
                     autocomplete="new-password"
                 />
-
-                <InputError :message="form.errors.password" class="mt-2" />
+                <span class="error">{{ form.errors.password }}</span>
             </div>
 
-            <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
+            <div class="form-group">
+                <label for="password_confirmation" class="label">{{ props.traductions.confirm_password }}</label>
+                <input
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input"
                     autocomplete="new-password"
                 />
-
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                <span class="error">{{ form.errors.password_confirmation }}</span>
             </div>
 
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
-                </Transition>
+            <div class="button-group">
+                <button :disabled="form.processing" class="button">{{ props.traductions.save }}</button>
+                <p v-if="form.recentlySuccessful" class="success-message">Guardado.</p>
             </div>
         </form>
     </section>
 </template>
+
+<style scoped>
+.profile-section {
+  padding: 1rem;
+
+}
+
+.profile-header {
+  margin-bottom: 1rem;
+}
+
+.profile-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.profile-description {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.password-form {
+  margin-top: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.error {
+  color: red;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #fbc000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.success-message {
+  font-size: 0.875rem;
+  color: #4caf50;
+}
+</style>

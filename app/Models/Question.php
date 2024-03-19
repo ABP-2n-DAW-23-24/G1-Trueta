@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $fillable = ['question'];
+    protected $fillable = [
+        'question'
+    ];
 
-    // Relación uno a muchos inversa desde QuestionOpMed hacia Question
-    public function questionOpMed()
+    public function resume()
     {
-        return $this->hasMany(QuestionOpMed::class, 'Q_id', 'id');
+        return $this->hasMany(Resume::class);
     }
     use HasFactory;
 }

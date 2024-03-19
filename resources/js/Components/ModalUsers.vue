@@ -71,12 +71,12 @@ function closeModal(params) {
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
     <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
   </svg>
-  <span>Afegir Usuaris</span>
+  <span>{{ props.traduccion["addUserTitle"] }} </span>
 </button>
 
 <Modal :show="isModalOpen" @close="closeModal">
         <div style="padding: 20px;">
-            ddd
+            
     <!-- Contenido personalizado para el slot del modal -->
      
         <div style="display: flex;
@@ -84,7 +84,7 @@ function closeModal(params) {
     align-content: center;
     justify-content: space-between;
     align-items: baseline;">
-            <h2 style="font-size: 20px;margin-bottom: 20px;">Afegir usuari</h2>
+            <h2 style="font-size: 20px;margin-bottom: 20px;">{{ props.traduccion["addUserTitle"] }}</h2>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="height: 20px;cursor:pointer;" @click="closeModal">
                     <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
                 </svg>
@@ -92,13 +92,13 @@ function closeModal(params) {
      
         <div class="center_flex_modal"> 
             <div>
-                <input type="text" style="    border-radius: 5px" placeholder="Nom" v-model="name">
+                <input type="text" style="    border-radius: 5px" :placeholder="props.traduccion['name']" v-model="name">
                 <div v-if="message" >
                         <p v-if="message.name" class="text_error"  v-for=" (item,index) in message.name"> {{item }} </p>
                     </div>
             </div>
             <div>
-                    <input type="text" style="    border-radius: 5px" placeholder="Cognoms" v-model="surnames"> 
+                    <input type="text" style="    border-radius: 5px" :placeholder="props.traduccion['surnames']" v-model="surnames"> 
                     
             </div>
             
@@ -108,7 +108,7 @@ function closeModal(params) {
     flex-direction: column;
     align-content: center;
     align-items: center;">
-                <input type="email" style="border-radius: 5px;width: 80%;" placeholder="correo electronic" v-model="email">
+                <input type="email" style="border-radius: 5px;width: 80%;" :placeholder="props.traduccion['email']" v-model="email">
 
                 <div v-if="message" >
                         <p v-if="message.email" class="text_error" v-for=" (item,index) in message.email"> {{item}} </p>
@@ -122,7 +122,7 @@ function closeModal(params) {
     flex-direction: column;
     align-content: center;
     align-items: center;">
-                <input type="password" style="border-radius: 5px;width: 80%;" placeholder="contrasenya" v-model="pass">
+                <input type="password" style="border-radius: 5px;width: 80%;" :placeholder="props.traduccion['pass']" placeholder="contrasenya" v-model="pass">
                 <div v-if="message" >
                         <p v-if="message.pass" class="text_error"  v-for=" (item,index) in message.pass"> {{item}} </p>
                     </div>
@@ -130,13 +130,13 @@ function closeModal(params) {
         </div>
         <div class="rols"> 
             <label for="">
-            <input type="checkbox" name="" id=""  v-model="isAdmin" >Admin</label>
+            <input type="checkbox" name="" id=""  v-model="isAdmin" >{{ props.traduccion['Admin'] }}</label>
             <label for="">
-            <input type="checkbox" name="" id=""  v-model="isManager">Gestor</label>
+            <input type="checkbox" name="" id=""  v-model="isManager">{{ props.traduccion['Manager'] }} </label>
         </div>
     </div>
     <div class="center_flex" style="padding: 20px;">
-        <button class="btn_add_user"  @click="btn_add_user">Afegir</button>
+        <button class="btn_add_user"  @click="btn_add_user">{{ props.traduccion['add'] }}</button>
     </div>
 </Modal>
 </template>

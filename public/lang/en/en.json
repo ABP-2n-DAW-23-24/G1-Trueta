@@ -1,6 +1,30 @@
-
-    {
-        "error_name":"Nom no valid",
-        "error_email":"Email no valid",
-        "error_pass":"Contrasenya no valida"
-    }
+{
+    "pass": "Password",
+    "Admin": "Admin",
+    "Manager": "Manager",
+    "add": "Add",
+    "editUserTitle": "Edit user",
+    "editText": "Edit",
+    "textDeleteConfirm": "Are you sure you want to delete the user?",
+    "deleteText": "Delete",
+    "error_name": "Invalid name",
+    "error_email": "Invalid email",
+    "error_pass": "Invalid password",
+    "profile": "Profile",
+    "name": "Name",
+    "surname": "Surname",
+    "email": "Email",
+    "save": "Save",
+    "profile_information": "Profile information",
+    "profile_update_information": "Basic account information.",
+    "password_information": "Update password",
+    "password_update_information": "Make sure your account uses a long, random password to stay secure.",
+    "current_password": "Current password",
+    "new_password": "New password",
+    "confirm_password": "Confirm password",
+    "listUser": "List of users",
+    "usernotfound": "User not found",
+    "findUser": "Find user",
+    "addUserTitle": "Add users",
+    "surnames": "Surnames"
+  }
