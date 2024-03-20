@@ -9,7 +9,6 @@ checkMigrationStatus() {
     echo "[ OK ] Migracions completades amb èxit."
   fi
 }
-
 # Create the database using the MySQL container
 echo "[ INFO ] Eliminant la base de dades antiga..."
 mysql -u aescribano -paescribano -e "DROP DATABASE IF EXISTS trueta;"
