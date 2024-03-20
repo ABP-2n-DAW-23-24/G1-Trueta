@@ -19,6 +19,8 @@ class UsersTableSeeder extends Seeder
             'surnames' => 'admin',
             'email' => 'administrador@trueta.cat',
             'password' => Hash::make('administrador'),
+            'isAdmin' => '1',
+            'isManager' => '1',
         ]);
 
         DB::table('users')->insert([

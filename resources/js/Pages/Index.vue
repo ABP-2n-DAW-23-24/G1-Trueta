@@ -52,7 +52,6 @@ const hoveredOperation = ref(-1);
 const selectedOperation = ref(0);
 
 function setSelectedOperation(value) {
-  console.log(value, "aaa");
   selectedOperation.value = value;
 }
 
