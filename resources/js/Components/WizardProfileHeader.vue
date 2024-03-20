@@ -18,7 +18,7 @@ const props = defineProps({
 
 <template>
   <div class="wizard-header-container">
-    <Logo/>
+    <Logo style="height: 50px;"/>
     <div class="breadcrumbs-progress-container">
     
       <a href="/" class="breadcrumb-link">Pagina d'inici</a>
@@ -34,7 +34,7 @@ const props = defineProps({
 .wizard-header-container {
   padding: 20px; /* Reducir el espacio entre los elementos */
   display: grid;
-  grid-template-columns: 20% 60% 20%; 
+  grid-template-columns: 15% 60% 20%; 
   align-items: center; 
   height: 50px; 
   gap: 15px;
@@ -56,11 +56,7 @@ const props = defineProps({
 }
 
 .language-select {
-  font-size: 14px; /* Reducir el tamaño de fuente */
-}
-
-.user-dropdown {
-  font-size: 14px; /* Reducir el tamaño de fuente */
+  height: 70px; /* Reducir el tamaño de fuente */
 }
 
 @media (max-width: 425px) {
