@@ -6,6 +6,7 @@ import { useForm } from "@inertiajs/vue3";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
 import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
+import Button from '@/Components/Button.vue';
 
 let form = useForm({
   question_0: false, //Profilaxi quirúrgica d’elecció
@@ -220,7 +221,9 @@ const currentOperation = computed(() => {
             </div>
           </div>
           -->
-          <PrimaryButton type="submit">Consultar</PrimaryButton>
+          <div class="button-btn-div">
+         <Button text="Consultar" @click="submit" class="button-btn"/>
+        </div>
         </form>
         <div class="questions-manager-container">
           <h2>Gestor de condicions</h2>
@@ -516,4 +519,15 @@ textarea:focus {
   }
 }
 
+.button-btn-div {
+  display: flex;
+  justify-content:center;
+  margin-top: 20px;
+ 
+}
+
+.button-btn{
+  height: 40px;
+  width: 100px;
+}
 </style>
