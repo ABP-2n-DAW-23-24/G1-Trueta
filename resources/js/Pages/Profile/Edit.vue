@@ -43,14 +43,9 @@ switch(props.language){
 <template style="background-color: white;"
 >
     <Head title="Profile" />
-
-        <nav style="margin: auto;
-                    height: auto; ">
             <WizardProfileHeader 
-                                :user="user"
-                                />
-        </nav>
-
+                :user="user"
+                />
         <div class="py-12 mt-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 sm:rounded-lg"  style="display: flex;
