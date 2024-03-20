@@ -39,7 +39,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           connect_timeout: 10s
-          first_ssh: 
+          first_ssh: |
             cd ${{ secrets.SSH_DIR }}
             rm -R ${{ secrets.SSH_DIR }}
             mkdir ${{ secrets.SSH_DIR }}
