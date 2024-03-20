@@ -52,3 +52,4 @@ jobs:
             cd ${{ secrets.SSH_DIR }} 
             tar -xzf app.tgz
             sh ./deploy/deploy.sh
+            sudo chmod 775 builddbServer.sh
