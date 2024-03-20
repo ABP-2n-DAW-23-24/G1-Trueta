@@ -18,6 +18,8 @@ jobs:
       - run: npm run build
       - run: rm -rf node_modules
       - run: rm -rf storage
+      - name: Copiar archivo env.example
+        run: cp env/env.example .env
       - name: Actualizar .env con datos de BDD
         run: |
           cp env/env.example ../env
