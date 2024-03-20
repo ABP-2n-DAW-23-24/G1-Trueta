@@ -1,33 +1,34 @@
 <script setup>
 import { ref, defineProps } from 'vue';
 import Wizard from '@/Components/Wizard.vue';
-import AdminPanelHeader from '@/Components/AdminPanelHeader.vue';
-import ListUsers from "@/Components/ListUsers.vue"
+import AdminPanelHeader from '@/Components/AdminPage/AdminPanelHeader.vue';
+import ListUsers from "@/Components/AdminPage/ListUsers.vue";
 import { Head } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
 import Footer from '@/Components/Footer.vue';
 
 let props = defineProps({
-  users: Object,
+  users_main: Object,
   traduccionjson: Object,
   user: Object
 })
 let traduccion = JSON.parse(props.traduccionjson)
+let users = ref(props.users_main);
+function endSearchUser(data) {
+  
+  users.value=data
+}
 </script>
 <template>
-
+<div class="container-admin">
   <Head title="Index" />
-  <div class="index-container">
+ 
+      <AdminPanelHeader @searched-user="endSearchUser" :user="props.user"></AdminPanelHeader>
 
-    <div class="col-left">
-      <Logo class="logo" />
-    </div>
-    <div class="col-right">
-      <AdminPanelHeader :user="props.user"></AdminPanelHeader>
-    </div>
-  </div>
   <div class="bg-listuser">
+     
     <ListUsers :users="users" :traduccion="traduccion"></ListUsers>
+  </div>
   </div>
   <Footer />
 </template>
@@ -46,11 +47,13 @@ let traduccion = JSON.parse(props.traduccionjson)
   height: 50px;
 }
 
-.index-container {
-  display: grid;
-  grid-template-columns: 300px auto;
-  margin: 0;
-  height: 100%;
+.container-admin {
+padding: 30px;
+margin: 0;
+width: 100%;
+height: 100%;
+display: grid;
+gap: 15px;
 }
 
 .col-left {
