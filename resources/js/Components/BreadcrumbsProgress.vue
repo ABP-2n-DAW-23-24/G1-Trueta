@@ -33,7 +33,7 @@ const goBack = () => {
                 'active': index === crumb,
                 'inactive': index > crumb
             }">{{ breadcrumb }}</span>
-        <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">/</span>
+            <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-separator">/</span>
         </div>
     </div>
 </template>
