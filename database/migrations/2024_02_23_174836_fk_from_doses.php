@@ -25,5 +25,8 @@ return new class extends Migration
         Schema::table('doses', function (Blueprint $table) {
             //
         });
+
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('doses');
     }
 };
