@@ -4,7 +4,8 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 
 const props = defineProps({
   user: Object,
-  routes: Object
+  routes: Object,
+
 });
 
 const isDropdownUnfolded = ref(false);
@@ -45,14 +46,19 @@ onUnmounted(() => {
     
     v-show="isDropdownUnfolded"
     class="dropdown-options">
+    <div  v-for="dropdownRoute in routes">
+      
       <DropdownLink
-        v-for="dropdownRoute in routes"
+       
         class="dropdown-link"
         :href="route(dropdownRoute.route)"
         :method="dropdownRoute.method ?? 'GET'"
-        as="button"> {{ dropdownRoute.label }}
+        as="button"   v-if="(user.isAdmin==true) || (dropdownRoute.isManager==1 && user.isManager==true) 
+        || (dropdownRoute.isManager==0  && dropdownRoute.isAdmin==0 )"   
+> {{ dropdownRoute.label }}
       </DropdownLink>
     </div>
+  </div>
   </div>
 </template>
 
