@@ -4,6 +4,10 @@ import { ref, defineProps } from 'vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import Footer from '@/Components/Footer.vue';
+import Logo from '@/Components/Logo.vue';
+import WizardProfileHeader from '@/Components/WizardProfileHeader.vue';
+
+
 
 import { Head } from '@inertiajs/vue3';
 
@@ -15,7 +19,9 @@ let props=defineProps({
         type: String,
     },
     language:Object,
-    traduction:Object
+    traduction:Object,
+    user: Object
+
 });
 let idiomDefault=ref("");
 
@@ -32,21 +38,22 @@ switch(props.language){
         idiomDefault.value='Angles'
     break;
 }
-console.log(idiomDefault.value)
-console.log(props.language)
 </script>
 
-<template>
+<template style="background-color: white;"
+>
     <Head title="Profile" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ traductions.profile }}</h2>
-        </template>
+        <nav style="margin: auto;
+                    height: auto; ">
+            <WizardProfileHeader 
+                                :user="user"
+                                />
+        </nav>
 
-        <div class="py-12">
+        <div class="py-12 mt-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"  style="    display: flex;
+                <div class="p-4 sm:p-8 sm:rounded-lg"  style="display: flex;
                     justify-content: space-around;">
 
                     <div>
@@ -67,6 +74,5 @@ console.log(props.language)
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
     <Footer />
 </template>
