@@ -22,7 +22,7 @@ jobs:
       - name: Entrar a env
         run: cd env/
       - name: Copiar archivo env.example
-        run: cp env.example ../env
+        run: cp env.example ../.env
       - name: Actualizar .env con datos de BDD
         run: |
           sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" env
