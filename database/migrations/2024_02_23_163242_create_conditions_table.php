@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('conditions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('criteriaId');
+            $table->foreign('criteriaId')->references('id')->on('criterias');
             $table->integer('min');
             $table->integer('max')->nullable();
             $table->timestamps();
