@@ -43,7 +43,7 @@ jobs:
             cd ${{ secrets.SSH_DIR }}
             sudo rm -R ${{ secrets.SSH_DIR }}
             sudo mkdir -p ${{ secrets.SSH_DIR }}
-            sudo chown -R www-data:ww-data ${{ secrets.SSH_DIR }}
+            sudo chown -R www-data:www-data ${{ secrets.SSH_DIR }}
             cd ${{ secrets.SSH_DIR }}
           scp: |
             './app.tgz' => ${{ secrets.SSH_DIR }}
