@@ -2,7 +2,7 @@
 import Users from "@/Components/Users.vue";
 import Modal from './Modal.vue';
 import { ref, defineEmits } from 'vue';
-
+import Button from '@/Components/Button.vue';
 import { onMounted } from "vue";
 import axios from "axios";
 let props = defineProps({
@@ -64,17 +64,12 @@ function closeModal(params) {
     nager = ref("0");
 }
 
+
 </script>
 
 <template>
   <div class="bg-users-add-btn">
-    <button class="btn_add" @click=" isModalOpen = true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-            <path
-                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
-        </svg>
-        <span>Afegir Usuaris</span>
-    </button>
+    <Button text="+ Afegir Usuaris" @click=" isModalOpen = true" class="add-btn-users" />
   </div>
 
     <Modal :show="isModalOpen" @close="closeModal">
@@ -306,6 +301,15 @@ function closeModal(params) {
     margin-bottom: 10px;
 }
 
+.add-btn-users{
+  height: 50px !important;
+  width: 175px !important;
+}
 
+.bg-users-add-btn{
+  display: flex;
+  width: 175px;
+ height: 50px;
+}
 
 </style>

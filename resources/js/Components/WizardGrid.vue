@@ -1,11 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import WizardSquare from '@/Components/WizardSquare.vue';
 import { useForm } from "@inertiajs/vue3";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
 import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
+import Button from '@/Components/Button.vue';
 
 let form = useForm({
   question_0: false, //Profilaxi quirúrgica d’elecció
@@ -123,6 +124,18 @@ const currentOperation = computed(() => {
   return surgeries.value.length > 0 ? surgeries.value[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
 });
 
+// Get medications
+const medications = ref([]);
+
+onMounted(() => {
+  axios.get('/medication-panel/get-medication')
+    .then(response => {
+      medications.value = response.data;
+
+      console.log(medications.value);
+    });
+});
+
 </script>
 <template>
   <!-- All surgeries -->
@@ -220,7 +233,9 @@ const currentOperation = computed(() => {
             </div>
           </div>
           -->
-          <PrimaryButton type="submit">Consultar</PrimaryButton>
+          <div class="button-btn-div">
+         <Button text="Consultar" @click="submit" class="button-btn"/>
+        </div>
         </form>
         <div class="questions-manager-container">
           <h2>Gestor de condicions</h2>
@@ -228,11 +243,11 @@ const currentOperation = computed(() => {
             <input type="text" placeholder="Nom de la condició">
             <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
             <div class="ck-medications-editor">
-              <SelectOnSteroids>
-                <option value="1">Opció 1</option>
-                <option value="2">Opció 2</option>
-                <option value="3">Opció 3</option>
-              </SelectOnSteroids>
+              <div class="select-options">
+                <SelectOnSteroids>
+                  <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
+                </SelectOnSteroids>
+              </div>
               <TextAreaOnSteroids placeholder="Instruccions de la condició">
               </TextAreaOnSteroids>
             </div>
@@ -299,13 +314,16 @@ form > * + * {
   align-items: center;
 }
 
+.select-options {
+  max-width: fit-content;
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   width: 1.5em;
   height: 1.5em;
   margin-right: 0.65rem;
 }
-
 
 .checkbox-wrapper-46 input[type="checkbox"] {
   display: none;
@@ -516,4 +534,15 @@ textarea:focus {
   }
 }
 
+.button-btn-div {
+  display: flex;
+  justify-content:center;
+  margin-top: 20px;
+ 
+}
+
+.button-btn{
+  height: 40px;
+  width: 100px;
+}
 </style>

@@ -4,6 +4,7 @@ import Modal from './Modal.vue';
 import { ref, defineProps, computed, defineEmits } from 'vue';
 import { onMounted } from "vue";
 import axios from "axios";
+import Button from '@/Components/Button.vue';
 const emit = defineEmits(['EndEdit'])
 
 let props = defineProps({
@@ -149,8 +150,8 @@ function closemodal(params) {
                     </div>
                 </div>
             </div>
-            <div class="center_flex" style="">
-                <button class="btn_add_user" @click="btn_editUser">{{ props.traduccion['editText'] }}</button>
+            <div class="center_flex button-edit-user" style="">
+                <Button :text="props.traduccion['editText']" @click="btn_editUser" class="button-editar-user" />
             </div>
         </div>
     </Modal>
@@ -300,4 +301,17 @@ function closemodal(params) {
         transform: scale(0.9);
     }
 }
+
+.button-editar-user{
+   height: 50px !important;
+    width: 100px !important;
+}
+
+.text_error {
+    color: red;
+    font-size: 12px;
+    margin: 0;
+}
+
+
 </style>
