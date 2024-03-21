@@ -11,11 +11,11 @@ checkMigrationStatus() {
 }
 # Create the database using the MySQL container
 echo "[ INFO ] Eliminant la base de dades antiga..."
-mysql -u aescribano -paescribano -e "DROP DATABASE IF EXISTS trueta;"
+mysql -u aescribano -paescribano -e 'DROP DATABASE IF EXISTS trueta;'
 echo "[ OK ] Base de dades eliminada."
 
 echo "[ INFO ] Creant la base de dades..."
-mysql -u aescribano -paescribano -e "CREATE DATABASE trueta;"
+mysql -u aescribano -paescribano -e 'CREATE DATABASE trueta;'
 echo "[ OK ] Base de dades creada."
 
 echo "[ INFO ] Executant les migracions..."
