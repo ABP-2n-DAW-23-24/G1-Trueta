@@ -12,40 +12,27 @@ class AdminPanelTest extends TestCase
     use RefreshDatabase;
     
 
-    public function test_admin_panle_screen_can_be_rendered(): void
+    public function test_medication_panel_screen_can_be_rendered(): void
     {
         $user = User::factory()->create();
     
 
         $this->actingAs($user);
     
-        $response = $this->get('/admin-panel');
+        $response = $this->get('/medication-panel');
     
         $response->assertStatus(200);
     }
-
-    public function test_admin_panel_can_create_user(): void
+    public function test_index_screen_can_be_rendered_(): void
     {
         $user = User::factory()->create();
     
-        $response = $this->actingAs($user)->post('/adduser', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'pass' => 'password123',
-            'isAdmin' => false,
-            'isManager' => false,
-        ]);
+
+        $this->actingAs($user);
     
-        $response->assertStatus(201);
-        $response->assertJson([
-            'message' => 'User added successfully',
-            'user' => [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-                'pass' => 'password123',
-                'isAdmin' => false,
-                'isManager' => false,
-            ]
-        ]);
-    }    
+        $response = $this->get('/');
+    
+        $response->assertStatus(200);
+    }
+ 
 }

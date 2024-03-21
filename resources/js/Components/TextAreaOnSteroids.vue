@@ -11,7 +11,6 @@
 
 <template>
     <div contenteditable="true" :placeholder="props.placeholder">
-        <slot />
     </div>
 </template>
 
