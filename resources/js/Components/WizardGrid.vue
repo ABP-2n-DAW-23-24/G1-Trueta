@@ -103,11 +103,14 @@ function handleSurgeryClick(surgery) {
   props.setSelectedSurgery(surgery)
   props.setCrumb(1);
   props.toggleCollapse(surgery + 1);
+  QuestionSelected.value = [];
+  resumes.value = [];
 }
 
 function handleOperationClick(operationId) {
   questions.value = [];
   QuestionSelected.value = [];
+  resumes.value = [];
   isLoading.value = true;
   axios.get(`/get-questions/${operationId}`)
     .then(response => {
