@@ -34,4 +34,17 @@ class IndexController extends Controller
             'questionsOperation' => $questionsOperation
         ]);
     }
+
+    // get resumes by operationId and questionId
+    public function getResume($operationId, $questionId) {
+      
+        $resume = Resume::where('operationId', $operationId)->where('questionId', $questionId)->get()->toArray();
+        return response()->json([
+            'resume' => $resume
+        ]);
+    }
+
 }
+       
+    
+        
