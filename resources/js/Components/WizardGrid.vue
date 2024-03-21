@@ -90,6 +90,7 @@ const surgeries = ref([]);
 var questions = ref([]);
 var isLoading = ref();
 
+
 isLoading.value = true;
 axios.get("/json/surgeriesWithOperations")
   .then(response => {
@@ -144,10 +145,33 @@ onMounted(() => {
   axios.get('/medication-panel/get-medication')
     .then(response => {
       medications.value = response.data;
-
       console.log(medications.value);
     });
 });
+
+function addAntibioticToTextarea(e) {
+  const div = document.getElementById("textAreaOnSteroids");
+
+  if (div.innerText.length > 0) {
+    div.innerHTML += "&nbsp;";
+  }
+  div.innerHTML += `<span style="color: white; background: #eb4034; padding: 0 8px; border-radius: 5px" length='${e.text.length}' class="dynamic-span" value='${e.value}'>${e.text}</span>&nbsp;`;
+
+  div.focus();
+  window.getSelection().collapse(div, div.childNodes.length);
+}
+
+function handleTextAreaOnSteroidsInput() {
+  const spans = document.querySelectorAll("#textAreaOnSteroids span");
+  spans.forEach(span => {
+    let length = span.getAttribute('length');
+    let realLength = span.innerText.length;
+    if (realLength != length) {
+      span.remove();
+    }
+  })
+
+}
 
 </script>
 <template>
@@ -190,50 +214,46 @@ onMounted(() => {
 
   <!-- Questions for the operation -->
   <div v-show="crumb === 2 && !isLoading" class="questions-container">
-    <form @submit.prevent="submit" class="questions-manager-container">
-      <h2>{{ currentOperation && currentOperation.name }}</h2>
-      <div class="form__group" v-for="(question, index) in questions" :key="index">
-        <div class="checkbox-wrapper-46">
-          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleQuestion(question)">
-          <label :for="'question_' + index" class="cbx larger-label">
-            <span>
-              <svg viewBox="0 0 12 10" height="10px" width="12px">
-                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-              </svg>
-            </span>
-            <span>{{ question.question }}</span>
-          </label>
-        </div>
-      </div>
-      <!--
-          <legend>Gènere del pacient</legend>
-          <div class="mydict">
-            <div class="form__group">
-              <label class="radio">
-                <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
-                <span>Home</span>
-              </label>
-              <label class="radio">
-                <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
-                <span>Dona</span>
+        <form @submit.prevent="submit" class="questions-manager-container">
+          <h2>{{ currentOperation && currentOperation.name }}</h2>
+          <div class="form__group" v-for="(question, index) in questions" :key="index">
+            <div class="checkbox-wrapper-46">
+              <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" v-model="form['question_' + index]"/>
+              <label :for="'question_' + index" class="cbx larger-label">
+                <span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                </svg>
+              </span>
+              <span>{{question.question}}</span>
               </label>
             </div>
           </div>
-          -->
-      <div class="button-btn-div">
-        <Button text="Consultar" type="submit" class="button-btn" :id="props.selectedOperation"></Button>
-      </div>
-    </form>
-    <div class="questions-manager-container">
-      <h2>Gestor de condicions</h2>
-      <div class="manager-inputs">
-        <input type="text" placeholder="Nom de la condició">
-        <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
-        <div class="ck-medications-editor">
-          <div class="select-options">
-            <SelectOnSteroids>
-              <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
-            </SelectOnSteroids>
+          <div class="button-btn-div">
+         <Button text="Consultar" @click="submit" class="button-btn"/>
+        </div>
+        </form>
+        <div class="questions-manager-container">
+          <h2>Gestor de condicions</h2>
+          <div class="manager-inputs">
+            <input type="text" placeholder="Nom de la condició">
+            <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
+            <div class="ck-medications-editor">
+              <div class="select-options">
+                <SelectOnSteroids
+                  @change="addAntibioticToTextarea"
+                  placeholder="Selecciona un antibiòtic"
+                  search-placeholder="Cerca un antibiòtic">
+                  <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
+                </SelectOnSteroids>
+              </div>
+              <TextAreaOnSteroids
+                @input="handleTextAreaOnSteroidsInput"
+                placeholder="Instruccions de la condició"
+                id="textAreaOnSteroids"
+                class="textAreaOnSteroids">
+              </TextAreaOnSteroids>
+            </div>
           </div>
           <TextAreaOnSteroids placeholder="Instruccions de la condició">
           </TextAreaOnSteroids>
@@ -255,12 +275,7 @@ onMounted(() => {
   </div>
 
   <div class="spinner-container" v-if="isLoading">
-    <div class="lds-ring">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <div class="lds-ring"></div>
   </div>
 </template>
 
