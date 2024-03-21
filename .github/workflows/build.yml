@@ -13,21 +13,12 @@ jobs:
         with:
           php-version: 8.1
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
+      - run: composer update
       - run: composer install --no-dev --no-interaction --prefer-dist    
       - run: npm install
       - run: npm run build
       - run: rm -rf node_modules
       - run: rm -rf storage
-      - name: Copiar archivo env
-        run: cp env/env ../.env
-      - name: Actualizar .env con datos de BDD
-        run: |
-          sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
-          sed -i "s/DB_HOST=127.0.0.1/DB_HOST=${{ secrets.DB_HOST }}/g" env
-          sed -i "s/DB_PORT=3306/DB_PORT=${{ secrets.DB_PORT }}/g" env
-          sed -i "s/DB_DATABASE=mydatabase/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
-          sed -i "s/DB_USERNAME=mydatabaseuser/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
-          sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
       - run: tar -czf app.tgz ./*
       - name: ssh scp ssh pipelines
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
@@ -40,9 +31,27 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           connect_timeout: 10s
+          first_ssh: |
+            cd ${{ secrets.SSH_DIR }}
+            sudo rm -R ${{ secrets.SSH_DIR }}
+            sudo mkdir -p ${{ secrets.SSH_DIR }}
+            sudo chown -R www-data:www-data ${{ secrets.SSH_DIR }}
+            sudo chmod 775 ${{ secrets.SSH_DIR }}
+            cd ${{ secrets.SSH_DIR }}
           scp: |
             './app.tgz' => ${{ secrets.SSH_DIR }}
           last_ssh: |
             cd ${{ secrets.SSH_DIR }} 
             tar -xzf app.tgz
+            cp env/env.example .env
+            sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
+            sed -i "s/DB_HOST=127.0.0.1/DB_HOST=${{ secrets.DB_HOST }}/g" .env
+            sed -i "s/DB_PORT=3306/DB_PORT=${{ secrets.DB_PORT }}/g" .env
+            sed -i "s/DB_DATABASE=mydatabase/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
+            sed -i "s/DB_USERNAME=mydatabaseuser/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
+            sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
+            sed -i "s/mysql -u user -ppassword -e 'DROP DATABASE IF EXISTS trueta;'/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'DROP DATABASE IF EXISTS trueta;'/g" builddbServer.sh
+            sed -i "s/mysql -u user -ppassword -e 'CREATE DATABASE trueta;'/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'CREATE DATABASE trueta;'/g" builddbServer.sh
             sh ./deploy/deploy.sh
+            sh ./builddbServer.sh
+            

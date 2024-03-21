@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('conditions', function (Blueprint $table) {
-            $table->foreign('criteriaId')->references('id')->on('criterias');
+        Schema::create('doses', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('medicationId');
+            $table->foreign('medicationId')->references('id')->on('medications');
+            $table->string('dose');
+            $table->timestamps();
         });
     }
 
@@ -21,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-
+        Schema::dropIfExists('doses');
     }
 };
