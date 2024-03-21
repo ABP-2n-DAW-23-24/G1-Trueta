@@ -74,6 +74,7 @@ const surgeries = ref([]);
 var questions = ref([]);
 var isLoading = ref();
 
+
 isLoading.value = true;
 axios.get("/json/surgeriesWithOperations")
 .then(response => {
@@ -131,10 +132,33 @@ onMounted(() => {
   axios.get('/medication-panel/get-medication')
     .then(response => {
       medications.value = response.data;
-
       console.log(medications.value);
     });
 });
+
+function addAntibioticToTextarea(e) {
+  const div = document.getElementById("textAreaOnSteroids");
+
+  if (div.innerText.length > 0) {
+    div.innerHTML += "&nbsp;";
+  }
+  div.innerHTML += `<span style="color: white; background: #eb4034; padding: 0 8px; border-radius: 5px" length='${e.text.length}' class="dynamic-span" value='${e.value}'>${e.text}</span>&nbsp;`;
+
+  div.focus();
+  window.getSelection().collapse(div, div.childNodes.length);
+}
+
+function handleTextAreaOnSteroidsInput() {
+  const spans = document.querySelectorAll("#textAreaOnSteroids span");
+  spans.forEach(span => {
+    let length = span.getAttribute('length');
+    let realLength = span.innerText.length;
+    if (realLength != length) {
+      span.remove();
+    }
+  })
+
+}
 
 </script>
 <template>
@@ -218,21 +242,6 @@ onMounted(() => {
               </label>
             </div>
           </div>
-          <!--
-          <legend>Gènere del pacient</legend>
-          <div class="mydict">
-            <div class="form__group">
-              <label class="radio">
-                <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
-                <span>Home</span>
-              </label>
-              <label class="radio">
-                <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
-                <span>Dona</span>
-              </label>
-            </div>
-          </div>
-          -->
           <div class="button-btn-div">
          <Button text="Consultar" @click="submit" class="button-btn"/>
         </div>
@@ -244,11 +253,18 @@ onMounted(() => {
             <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
             <div class="ck-medications-editor">
               <div class="select-options">
-                <SelectOnSteroids>
+                <SelectOnSteroids
+                  @change="addAntibioticToTextarea"
+                  placeholder="Selecciona un antibiòtic"
+                  search-placeholder="Cerca un antibiòtic">
                   <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
                 </SelectOnSteroids>
               </div>
-              <TextAreaOnSteroids placeholder="Instruccions de la condició">
+              <TextAreaOnSteroids
+                @input="handleTextAreaOnSteroidsInput"
+                placeholder="Instruccions de la condició"
+                id="textAreaOnSteroids"
+                class="textAreaOnSteroids">
               </TextAreaOnSteroids>
             </div>
           </div>
@@ -256,7 +272,7 @@ onMounted(() => {
         </div>
   </div>
   <div class="spinner-container" v-if="isLoading">
-    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <div class="lds-ring"></div>
   </div>
 </template>
 
@@ -545,4 +561,6 @@ textarea:focus {
   height: 40px;
   width: 100px;
 }
+
+
 </style>
