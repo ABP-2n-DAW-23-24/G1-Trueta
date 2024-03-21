@@ -64,33 +64,30 @@ switch(props.language){
             </div>
         </div>
     </div>
-    <Footer/>
-
+    <Footer class="footer"/>
 </template>
 <style>
-/* Estilo para el contenedor principal */
 .container {
     background-color: white;
 }
 
-/* Estilo para el div del WizardProfileHeader */
 .profile-header {
-    margin-bottom: 15px; /* Espacio inferior entre el header y los formularios */
+    margin-bottom: 15px; 
 }
 
-/* Estilo para el contenedor de los formularios */
 .form-container {
     display: flex;
     justify-content: space-around;
 }
 
-/* Estilo para los formularios */
 .form {
     max-width: 400px;
-    /* Otros estilos necesarios para los formularios */
 }
 
-/* Estilos para hacer la página responsive */
+.footer {
+    margin-bottom: 0;
+}
+
 @media screen and (max-width: 768px) {
     .profile-header {
         margin-bottom: 160px; /* Espacio inferior entre el header y los formularios */
