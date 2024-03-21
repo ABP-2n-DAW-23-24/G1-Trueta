@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('conditionId');
+            $table->foreign('conditionId')->references('id')->on('conditions');
             $table->unsignedBigInteger('doseId');
+            $table->foreign('doseId')->references('id')->on('doses');
             $table->softDeletes();
         });
     }
