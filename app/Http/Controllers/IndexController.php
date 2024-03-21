@@ -35,32 +35,15 @@ class IndexController extends Controller
         ]);
     }
 
-    // get resumes by operationId and form with questions (true or false)
-    public function getResumes($operationId, Request $request) {
-        $data = $request->all();
-    
-        $questionIds = [
-            'question_0' => 1,
-            'question_1' => 2,
-            'question_2' => 3,
-        ];
-    
-        $questionsTrueId = array_keys($data, 'true');
-        $questionsTrueId = array_map(function($question) use ($questionIds) {
-            return $questionIds[$question];
-        }, $questionsTrueId);
-
-        //get resume
-        $resume = Resume::where('operationId', $operationId)
-            ->where(function($query) use ($questionsTrueId) {
-                $query->whereIn('questionId', $questionsTrueId);
-            })
-            ->get();
-        
+    // get resumes by operationId and questionId
+    public function getResume($operationId, $questionId) {
+      
+        $resume = Resume::where('operationId', $operationId)->where('questionId', $questionId)->get()->toArray();
         return response()->json([
-            'test' => 2
+            'resume' => $resume
         ]);
     }
+
 }
        
     

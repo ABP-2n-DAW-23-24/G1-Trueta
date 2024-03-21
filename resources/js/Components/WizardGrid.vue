@@ -10,26 +10,34 @@ import Button from '@/Components/Button.vue';
 
 // Results
 const resumes = ref([]);
-
-let form = useForm({
-  question_0: false, //Profilaxi quirúrgica d’elecció
-  question_1: false, //Al·lèrgia a Penicil·lina
-  question_2: false, //Pacients colonitzats per MARSA
-  //gender: "", //Home: false - Dona: true
-
-
-});
+const QuestionSelected = ref([]);
 
 const submit = () => {
-  // form.post(`/get-resumes/${props.selectedOperation}` , {
-  //   onSuccess: (data) => {
-  //     console.log("dawd");
-  //     resumes.value = data.resumes;
-      props.setCrumb(3);
-  //   }
-  // });
+  // foreach question selected, axios get
+  QuestionSelected.value.forEach((question) => {
+    axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
+      .then(response => {
+        resumes.value.push(response.data);
+        console.log(resumes.value);
+        props.setCrumb(3);
+
+      });
+  });
 };
 
+
+
+
+// push the selected questions to the array if is checked, if not, remove it
+const handleQuestion = (question) => {
+  if (QuestionSelected.value.includes(question)) {
+    QuestionSelected.value = QuestionSelected.value.filter((item) => item !== question);
+    console.log(QuestionSelected.value);
+  } else {
+    QuestionSelected.value.push(question);
+    console.log(QuestionSelected.value);
+  }
+};
 
 const props = defineProps({
   crumb: {
@@ -98,10 +106,7 @@ function handleSurgeryClick(surgery) {
 
 function handleOperationClick(operationId) {
   questions.value = [];
-  form.question_0 = false;
-  form.question_1 = false;
-  form.question_2 = false;
-  form.gender = "";
+  QuestionSelected.value = [];
   isLoading.value = true;
   axios.get(`/get-questions/${operationId}`)
     .then(response => {
@@ -189,8 +194,7 @@ onMounted(() => {
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="form__group" v-for="(question, index) in questions" :key="index">
         <div class="checkbox-wrapper-46">
-          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index"
-            v-model="form['question_' + index]" />
+          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleQuestion(question)">
           <label :for="'question_' + index" class="cbx larger-label">
             <span>
               <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -244,9 +248,9 @@ onMounted(() => {
   <div v-show="crumb === 3">
     <div class="results-manager-container">
       <h2>Resultats:</h2>
-      <!-- <div v-for="result in results" :key="result.id">
-        <p>{{ result.resume }}</p>
-</div> -->
+      <div v-for="resume in resumes" :key="resume.id">
+        <h3>- {{ resume.resume[0].resume }}</h3> <br/>
+      </div>
     </div>
   </div>
 

@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [IndexController::class, 'index'])->name('index');
     Route::get('/get-questions/{operationId}', [IndexController::class, 'getQuestions'])->name('getQuestions');
     Route::get('/json/surgeriesWithOperations', [SurgeriesController::class, 'surgeriesWithOperations'])->name('surgeriesWithOperations');
-    Route::post('/get-resumes/{operationId}', [IndexController::class, 'getResumes'])->name('getResumes');
+    Route::get('/get-resumes/{operationId}/{questionId}', [IndexController::class, 'getResume'])->name('getResume');
 });
 
 Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->middleware(['auth', 'verified'])->name('dashboard');
