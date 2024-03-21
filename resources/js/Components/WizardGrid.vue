@@ -13,7 +13,7 @@ const resumes = ref([]);
 const QuestionSelected = ref([]);
 
 const submit = () => {
-  // foreach question selected, axios get
+  // foreach question selected, axios get the resumes
   QuestionSelected.value.forEach((question) => {
     axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
       .then(response => {
