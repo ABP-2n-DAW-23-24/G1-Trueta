@@ -47,9 +47,18 @@ const props = defineProps({
       isManager: false,
     }
       ]"
+      
     ></BuildableDropdown>
 </template>
+<!-- sudo add-apt-repository --remove ppa:ondrej/php
+sudo add-apt-repository --remove ppa:ondrej/php
+sudo apt-get update
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo add-apt-repository --remove ppa:ondrej/phpdawdawd
 
+
+-->
 <style scoped>
   .user-dropdown {
     width: 100%;
