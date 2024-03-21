@@ -12,7 +12,7 @@ let props=defineProps({
 });
 
 const user = usePage().props.auth.user;
-
+  
 </script>
 
 <template>
