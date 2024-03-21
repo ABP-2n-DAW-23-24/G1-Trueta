@@ -10,6 +10,18 @@ class Resume extends Model
     use HasFactory;
 
     protected $fillable = [
-        'resume'
+        'resume',
+        'questionId',
+        'operationId'
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class, 'questionId');
+    }
+
+    public function operation()
+    {
+        return $this->belongsTo(Operation::class, 'operationId');
+    }
 }

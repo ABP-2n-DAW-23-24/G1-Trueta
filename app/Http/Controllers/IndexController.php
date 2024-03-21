@@ -9,13 +9,15 @@ use App\Models\Dose;
 
 use App\Models\Surgery;
 use App\Models\Operation;
+use App\Models\Question;
+use App\Models\Resume;
 use Illuminate\Support\Facades\Auth;
 
 
 
 class IndexController extends Controller
 {
-    public function index() {
+    public function index() {      
         $surgeries = Surgery::with('operations')->get()->toArray();
         $user = Auth::user();
 
@@ -26,8 +28,7 @@ class IndexController extends Controller
     }
 
     public function getQuestions($operationId) {
-        $operation = Operation::with('questions')->findOrFail($operationId);
-        $questionsOperation = $operation->questions;
+        $questionsOperation = Resume::with('question')->where('operationId', $operationId)->get()->pluck('question')->toArray();
         
         return response()->json([
             'questionsOperation' => $questionsOperation

@@ -15,30 +15,37 @@ const props = defineProps({
       :user="user"
       :routes="[
         {
-            label: 'Panell d\'antibiòtics',
-            route: 'medication-panel',
-            
-
-        },
-        {
-            label: 'Perfil',
-            route: 'profile.edit'
-
-        },
-        {
-            label: 'Panell administració',
-            route: 'admin_panel'
-        },
-        {
-            label: 'Pagina Inici',
-            route: 'index',
-            method: 'get'
-        },
-        {
-            label: 'Tancar sessió',
-            route: 'logout',
-            method: 'post'
-        }
+      label: 'Panell d\'antibiòtics',
+      route: 'medication-panel',
+      isAdmin: true,
+      isManager: true,
+    },
+    {
+      label: 'Perfil',
+      route: 'profile.edit',
+      isAdmin: false,
+      isManager: false,
+    },
+    {
+      label: 'Panell administració',
+      route: 'admin_panel',
+      isAdmin: true,
+      isManager: false,
+    },
+    {
+      label: 'Pagina Inici',
+      route: 'index',
+      method: 'get',
+      isAdmin: false,
+      isManager: false,
+    },
+    {
+      label: 'Tancar sessió',
+      route: 'logout',
+      method: 'post',
+      isAdmin: true,
+      isManager: false,
+    }
       ]"
     ></BuildableDropdown>
 </template>

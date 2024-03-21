@@ -1,5 +1,14 @@
 
     {
+    
+        "pass":"Contrasenya",
+        "Admin":"Admin",
+        "Manager":"Gestor",
+        "add":"Afegir",
+        "editUserTitle":"Editar usuari",
+        "editText":"Editar",
+        "textDeleteConfirm":"Estas segur de eliminar l'usauri?",
+        "deleteText":"Eliminar",
         "error_name":"Nom no valid",
         "error_email":"Email no valid",
         "error_pass":"Contrasenya no valida",
@@ -14,7 +23,15 @@
         "password_update_information":"Assegura't que el teu compte utilitzi una contrasenya llarga i aleatòria per mantenir-lo segur.",
         "current_password":"Contrasenya Actual",
         "new_password":"Nova Contrasenya",
-        "confirm_password":"Confirmar Contrasenya"
+        "confirm_password":"Confirmar Contrasenya",
+        "listUser":"Llistat d’usuaris",
+        "usernotfound":"Usuari no trobat",
+        "findUser":"Buscar Usuari",
+        "addUserTitle":"Afegir Usuaris",
+        "surnames":"Cognoms"
+        
+        
+        
     }
 
 

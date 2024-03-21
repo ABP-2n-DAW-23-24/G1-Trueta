@@ -6,11 +6,15 @@ defineProps({
         type: String,
         required: true,
     },
+    
 });
 </script>
 
 <template>
-    <Link :href="href">
+    
+    <Link :href="href"
+  
+    >
         <slot />
     </Link>
 </template>

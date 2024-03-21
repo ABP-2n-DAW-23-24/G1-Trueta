@@ -1,9 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import WizardSquare from '@/Components/WizardSquare.vue';
 import { useForm } from "@inertiajs/vue3";
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
+import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
+import Button from '@/Components/Button.vue';
 
 let form = useForm({
   question_0: false, //Profilaxi quirúrgica d’elecció
@@ -121,13 +124,21 @@ const currentOperation = computed(() => {
   return surgeries.value.length > 0 ? surgeries.value[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
 });
 
+// Get medications
+const medications = ref([]);
+
+onMounted(() => {
+  axios.get('/medication-panel/get-medication')
+    .then(response => {
+      medications.value = response.data;
+
+      console.log(medications.value);
+    });
+});
+
 </script>
 <template>
-    <!-- All surgeries -->
-
-
-
-
+  <!-- All surgeries -->
   <div
     v-show="crumb === 0 && !isLoading"
     class="wizard-grid-container">
@@ -191,11 +202,9 @@ const currentOperation = computed(() => {
   </div>
 
   <!-- Questions for the operation -->
-  <div v-show="crumb === 2 && !isLoading" class="rectangle">
-    <div class="wrapper">
-      <div class="grid">
-        <form @submit.prevent="submit">
-          <legend>{{ currentOperation && currentOperation.name  }}</legend>
+  <div v-show="crumb === 2 && !isLoading" class="questions-container">
+        <form @submit.prevent="submit" class="questions-manager-container">
+          <h2>{{ currentOperation && currentOperation.name }}</h2>
           <div class="form__group" v-for="(question, index) in questions" :key="index">
             <div class="checkbox-wrapper-46">
               <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" v-model="form['question_' + index]"/>
@@ -224,10 +233,27 @@ const currentOperation = computed(() => {
             </div>
           </div>
           -->
-          <PrimaryButton type="submit">Consultar</PrimaryButton>
+          <div class="button-btn-div">
+         <Button text="Consultar" @click="submit" class="button-btn"/>
+        </div>
         </form>
-      </div>
-    </div>
+        <div class="questions-manager-container">
+          <h2>Gestor de condicions</h2>
+          <div class="manager-inputs">
+            <input type="text" placeholder="Nom de la condició">
+            <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
+            <div class="ck-medications-editor">
+              <div class="select-options">
+                <SelectOnSteroids>
+                  <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
+                </SelectOnSteroids>
+              </div>
+              <TextAreaOnSteroids placeholder="Instruccions de la condició">
+              </TextAreaOnSteroids>
+            </div>
+          </div>
+          <button>Afegir condició</button>
+        </div>
   </div>
   <div class="spinner-container" v-if="isLoading">
     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -243,12 +269,25 @@ const currentOperation = computed(() => {
 .larger-label {
   font-size: 1.2em;
 }
-.rectangle {
+
+.questions-container {
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  gap: 15px;
+}
+
+.questions-operation-container,
+.questions-manager-container {
   background-color: #f0f0f0;
-  padding: 20px;
-  border: 2px solid #333;
+  padding: 30px 40px;
   border-radius: 10px;
 }
+
+.questions-container h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
@@ -275,13 +314,16 @@ form > * + * {
   align-items: center;
 }
 
+.select-options {
+  max-width: fit-content;
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   width: 1.5em;
   height: 1.5em;
   margin-right: 0.65rem;
 }
-
 
 .checkbox-wrapper-46 input[type="checkbox"] {
   display: none;
@@ -324,6 +366,34 @@ input[type="radio"] {
   transition-delay: 0.1s;
   transform: translate3d(0, 0, 0);
 }
+
+.manager-inputs {
+  display: grid;
+  gap: 15px;
+}
+.manager-inputs > * {
+  display: block;
+  resize: none;
+  width: 100%;
+}
+
+input,
+textarea {
+  border: none;
+  border-radius: 5px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: inherit;
+  box-shadow: none;
+}
+
+/* textarea:active, input:active{
+  outline: none;
+  border: none;
+}  */
+
 .checkbox-wrapper-46 .cbx span:first-child:before {
   content: "";
   width: 100%;
@@ -464,4 +534,15 @@ input[type="radio"] {
   }
 }
 
+.button-btn-div {
+  display: flex;
+  justify-content:center;
+  margin-top: 20px;
+ 
+}
+
+.button-btn{
+  height: 40px;
+  width: 100px;
+}
 </style>
