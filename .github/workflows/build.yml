@@ -38,6 +38,11 @@ jobs:
             sudo chown -R www-data:www-data ${{ secrets.SSH_DIR }}
             sudo chmod 775 ${{ secrets.SSH_DIR }}
             cd ${{ secrets.SSH_DIR }}
+          scp: |
+            './app.tgz' => ${{ secrets.SSH_DIR }}
+          last_ssh: |
+            cd ${{ secrets.SSH_DIR }} 
+            tar -xzf app.tgz
             cp env/env.example .env
             sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
             sed -i "s/DB_HOST=127.0.0.1/DB_HOST=${{ secrets.DB_HOST }}/g" .env
@@ -45,10 +50,5 @@ jobs:
             sed -i "s/DB_DATABASE=mydatabase/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
             sed -i "s/DB_USERNAME=mydatabaseuser/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
             sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
-          scp: |
-            './app.tgz' => ${{ secrets.SSH_DIR }}
-          last_ssh: |
-            cd ${{ secrets.SSH_DIR }} 
-            tar -xzf app.tgz
             sh ./deploy/deploy.sh
             sudo chmod 775 builddbServer.sh
