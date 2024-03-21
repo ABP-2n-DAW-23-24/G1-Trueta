@@ -6,7 +6,7 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 import Footer from '@/Components/Footer.vue';
 import Logo from '@/Components/Logo.vue';
 import WizardProfileHeader from '@/Components/WizardProfileHeader.vue';
-
+//ola
 
 
 import { Head } from '@inertiajs/vue3';
@@ -40,34 +40,72 @@ switch(props.language){
 }
 </script>
 
-<template style="background-color: white;"
->
-    <Head title="Profile" />
-            <WizardProfileHeader 
-                :user="user"
-                />
-        <div class="py-12 mt-5">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 sm:rounded-lg"  style="display: flex;
-                    justify-content: space-around;">
+<template>
+    <div class="container">
+        <Head title="Profile" />
+        <div class="profile-header">
+            <WizardProfileHeader :user="user" />
+        </div>
 
-                    <div>
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="form-container p-4 sm:p-8 sm:rounded-lg">
+                    <div class="form">
                         <UpdateProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        :traductions="traductions"
-                        class="max-w-xl"
-                    />
+                            :must-verify-email="mustVerifyEmail"
+                            :status="status"
+                            :traductions="traductions"
+                        />
                     </div>
-                    <div>
-                    <UpdatePasswordForm class="max-w-xl"
-                    :traductions="traductions"
-                    />
+                    <div class="form">
+                        <UpdatePasswordForm :traductions="traductions" />
                     </div>
-                </div>
-                <div>
                 </div>
             </div>
         </div>
-    <Footer />
+    </div>
+    <Footer/>
+
 </template>
+<style>
+/* Estilo para el contenedor principal */
+.container {
+    background-color: white;
+}
+
+/* Estilo para el div del WizardProfileHeader */
+.profile-header {
+    margin-bottom: 15px; /* Espacio inferior entre el header y los formularios */
+}
+
+/* Estilo para el contenedor de los formularios */
+.form-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Estilo para los formularios */
+.form {
+    max-width: 400px;
+    /* Otros estilos necesarios para los formularios */
+}
+
+/* Estilos para hacer la página responsive */
+@media screen and (max-width: 768px) {
+    .profile-header {
+        margin-bottom: 160px; /* Espacio inferior entre el header y los formularios */
+    }
+    /* Estilos específicos para pantallas más pequeñas */
+    .form-container {
+        flex-direction: column; /* Apila los formularios en pantallas pequeñas */
+        align-items: center; /* Centra los formularios en pantallas pequeñas */
+    }
+
+    .form {
+        margin-bottom: 20px; /* Espacio entre los formularios en pantallas pequeñas */
+    }
+
+}
+
+</style>
+

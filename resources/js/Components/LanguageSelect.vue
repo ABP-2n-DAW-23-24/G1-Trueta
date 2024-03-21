@@ -51,13 +51,13 @@ console.log(langact);
 }
 
 .flag {
-    border-radius: 16px; /* Bordes redondeados */
+    border-radius: 48px; /* Bordes redondeados */
     border: 2px solid whitesmoke;
-    width: 64px;
-    height: 64px; /* Tamaño de las imágenes */
+    width: 48px;
+    height: 48px; /* Tamaño de las imágenes */
 }
 .active-flag {
-    border-radius: 16px;
+    border-radius: 48px;
     border:2px solid green; /* Color del borde activo */
 
 

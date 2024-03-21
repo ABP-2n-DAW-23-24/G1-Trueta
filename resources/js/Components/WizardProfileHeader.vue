@@ -18,7 +18,7 @@ const props = defineProps({
 
 <template>
   <div class="wizard-header-container">
-    <Logo style="height: 50px;"/>
+    <Logo style="height: 8vh;"/>
     <div class="breadcrumbs-progress-container">
     
       <a href="/" class="breadcrumb-link">Pagina d'inici</a>
@@ -52,7 +52,7 @@ const props = defineProps({
 
 .breadcrumb-link {
   color: #0239EB;
-  font-size: 14px; /* Reducir el tamaño de fuente */
+  font-size: 18px; /* Reducir el tamaño de fuente */
 }
 
 .language-select {
@@ -64,6 +64,7 @@ const props = defineProps({
     flex-direction: column;
   }
   .wizard-header-container {
+    padding: auto;
     grid-template-columns: auto;
   }
   .breadcrumbs-progress-container a {
