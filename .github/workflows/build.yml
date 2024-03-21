@@ -19,15 +19,6 @@ jobs:
       - run: npm run build
       - run: rm -rf node_modules
       - run: rm -rf storage
-      - name: Actualizar .env con datos de BDD
-        run: |
-          cp env/env.example .env
-          sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
-          sed -i "s/DB_HOST=127.0.0.1/DB_HOST=${{ secrets.DB_HOST }}/g" .env
-          sed -i "s/DB_PORT=3306/DB_PORT=${{ secrets.DB_PORT }}/g" .env
-          sed -i "s/DB_DATABASE=mydatabase/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
-          sed -i "s/DB_USERNAME=mydatabaseuser/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
-          sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
       - run: tar -czf app.tgz ./*
       - name: ssh scp ssh pipelines
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
@@ -47,6 +38,13 @@ jobs:
             sudo chown -R www-data:www-data ${{ secrets.SSH_DIR }}
             sudo chmod 775 ${{ secrets.SSH_DIR }}
             cd ${{ secrets.SSH_DIR }}
+            cp env/env.example .env
+            sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
+            sed -i "s/DB_HOST=127.0.0.1/DB_HOST=${{ secrets.DB_HOST }}/g" .env
+            sed -i "s/DB_PORT=3306/DB_PORT=${{ secrets.DB_PORT }}/g" .env
+            sed -i "s/DB_DATABASE=mydatabase/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
+            sed -i "s/DB_USERNAME=mydatabaseuser/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
+            sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
           scp: |
             './app.tgz' => ${{ secrets.SSH_DIR }}
           last_ssh: |
