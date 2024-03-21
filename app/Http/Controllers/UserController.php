@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 
 class UserController extends Controller
@@ -77,7 +78,7 @@ return response()->json(['message' => 'User added successfully', 'user' => $requ
         $user=$userModel->find(Auth::user()->id);  
         $user->language=$request->idiomSelect;
         $user->save();
-        return redirect('/');
+        return Inertia::location(route('profile.edit'));
     }
     public static function searchUser(Request $request){
         $users = User::where('name', 'like', $request->name.'%')->get();
