@@ -19,7 +19,6 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $traduccionjson=file_get_contents("lang/".Auth::user()->language."/".Auth::user()->language.".json");
-        
         $user = Auth::user();
 
 
