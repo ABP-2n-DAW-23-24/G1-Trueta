@@ -18,13 +18,17 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $traduccionjson=file_get_contents("lang/".Auth::user()->language."/".Auth::user()->language.".json");     
+        $traduccionjson=file_get_contents("lang/".Auth::user()->language."/".Auth::user()->language.".json");
+        
+        $user = Auth::user();
+
 
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'language'=>Auth::user()->language,
             'traduction'=>$traduccionjson,
+            'user' => $user
         ]);
     }
 

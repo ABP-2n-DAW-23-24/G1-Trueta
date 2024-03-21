@@ -4,6 +4,10 @@ import { ref, defineProps } from 'vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import Footer from '@/Components/Footer.vue';
+import Logo from '@/Components/Logo.vue';
+import WizardProfileHeader from '@/Components/WizardProfileHeader.vue';
+//ola
+
 
 import { Head } from '@inertiajs/vue3';
 
@@ -15,7 +19,9 @@ let props=defineProps({
         type: String,
     },
     language:Object,
-    traduction:Object
+    traduction:Object,
+    user: Object
+
 });
 let idiomDefault=ref("");
 
@@ -32,41 +38,71 @@ switch(props.language){
         idiomDefault.value='Angles'
     break;
 }
-console.log(idiomDefault.value)
-console.log(props.language)
 </script>
 
 <template>
-    <Head title="Profile" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ traductions.profile }}</h2>
-        </template>
+    <div class="container">
+        <Head title="Profile" />
+        <div class="profile-header">
+            <WizardProfileHeader :user="user" />
+        </div>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg"  style="    display: flex;
-                    justify-content: space-around;">
-
-                    <div>
+                <div class="form-container p-4 sm:p-8 sm:rounded-lg">
+                    <div class="form">
                         <UpdateProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        :traductions="traductions"
-                        class="max-w-xl"
-                    />
+                            :must-verify-email="mustVerifyEmail"
+                            :status="status"
+                            :traductions="traductions"
+                        />
                     </div>
-                    <div>
-                    <UpdatePasswordForm class="max-w-xl"
-                    :traductions="traductions"
-                    />
+                    <div class="form">
+                        <UpdatePasswordForm :traductions="traductions" />
                     </div>
-                </div>
-                <div>
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
-    <Footer />
+    </div>
+    <Footer class="footer"/>
 </template>
+<style>
+.container {
+    background-color: white;
+}
+
+.profile-header {
+    margin-bottom: 15px; 
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.form {
+    max-width: 400px;
+}
+
+.footer {
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-header {
+        margin-bottom: 160px; /* Espacio inferior entre el header y los formularios */
+    }
+    /* Estilos específicos para pantallas más pequeñas */
+    .form-container {
+        flex-direction: column; /* Apila los formularios en pantallas pequeñas */
+        align-items: center; /* Centra los formularios en pantallas pequeñas */
+    }
+
+    .form {
+        margin-bottom: 20px; /* Espacio entre los formularios en pantallas pequeñas */
+    }
+
+}
+
+</style>
+
