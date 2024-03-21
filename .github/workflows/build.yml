@@ -50,7 +50,7 @@ jobs:
             sed -i "s/DB_DATABASE=mydatabase/DB_DATABASE=${{ secrets.DB_DATABASE }}/g" .env
             sed -i "s/DB_USERNAME=mydatabaseuser/DB_USERNAME=${{ secrets.DB_USERNAME }}/g" .env
             sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
-            sed -i "s/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'DROP DATABASE IF EXISTS trueta;'/g" .builddbServer.sh
-            sed -i "s/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'CREATE DATABASE trueta;'/g" .builddbServer.sh
+            sed -i "s/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'DROP DATABASE IF EXISTS trueta;'/g" builddbServer.sh
+            sed -i "s/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'CREATE DATABASE trueta;'/g" builddbServer.sh
             sh ./deploy/deploy.sh
             sudo chmod 775 builddbServer.sh
