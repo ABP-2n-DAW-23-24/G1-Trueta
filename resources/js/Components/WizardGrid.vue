@@ -8,19 +8,35 @@ import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
 import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
 import Button from '@/Components/Button.vue';
 
-let form = useForm({
-  question_0: false, //Profilaxi quirúrgica d’elecció
-  question_1: false, //Al·lèrgia a Penicil·lina
-  question_2: false, //Pacients colonitzats per MARSA
-  //gender: "", //Home: false - Dona: true
-});
+// Results
+const resumes = ref([]);
+const QuestionSelected = ref([]);
 
 const submit = () => {
-  /*if (form.gender == ""){
-    alert("Selecciona un género");
-    return;
-  }*/
-  console.log(form);
+  // foreach question selected, axios get the resumes
+  QuestionSelected.value.forEach((question) => {
+    axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
+      .then(response => {
+        resumes.value.push(response.data);
+        console.log(resumes.value);
+        props.setCrumb(3);
+
+      });
+  });
+};
+
+
+
+
+// push the selected questions to the array if is checked, if not, remove it
+const handleQuestion = (question) => {
+  if (QuestionSelected.value.includes(question)) {
+    QuestionSelected.value = QuestionSelected.value.filter((item) => item !== question);
+    console.log(QuestionSelected.value);
+  } else {
+    QuestionSelected.value.push(question);
+    console.log(QuestionSelected.value);
+  }
 };
 
 const props = defineProps({
@@ -74,26 +90,27 @@ const surgeries = ref([]);
 var questions = ref([]);
 var isLoading = ref();
 
+
 isLoading.value = true;
 axios.get("/json/surgeriesWithOperations")
-.then(response => {
-  surgeries.value = response.data;
-}).finally(() => {
-  isLoading.value = false;
-});
+  .then(response => {
+    surgeries.value = response.data;
+  }).finally(() => {
+    isLoading.value = false;
+  });
 
 function handleSurgeryClick(surgery) {
   props.setSelectedSurgery(surgery)
   props.setCrumb(1);
   props.toggleCollapse(surgery + 1);
+  QuestionSelected.value = [];
+  resumes.value = [];
 }
 
 function handleOperationClick(operationId) {
   questions.value = [];
-  form.question_0 = false;
-  form.question_1 = false;
-  form.question_2 = false;
-  form.gender = "";
+  QuestionSelected.value = [];
+  resumes.value = [];
   isLoading.value = true;
   axios.get(`/get-questions/${operationId}`)
     .then(response => {
@@ -131,74 +148,71 @@ onMounted(() => {
   axios.get('/medication-panel/get-medication')
     .then(response => {
       medications.value = response.data;
-
       console.log(medications.value);
     });
 });
 
+function addAntibioticToTextarea(e) {
+  const div = document.getElementById("textAreaOnSteroids");
+
+  if (div.innerText.length > 0) {
+    div.innerHTML += "&nbsp;";
+  }
+  div.innerHTML += `<span style="color: white; background: #eb4034; padding: 0 8px; border-radius: 5px" length='${e.text.length}' class="dynamic-span" value='${e.value}'>${e.text}</span>&nbsp;`;
+
+  div.focus();
+  window.getSelection().collapse(div, div.childNodes.length);
+}
+
+function handleTextAreaOnSteroidsInput() {
+  const spans = document.querySelectorAll("#textAreaOnSteroids span");
+  spans.forEach(span => {
+    let length = span.getAttribute('length');
+    let realLength = span.innerText.length;
+    if (realLength != length) {
+      span.remove();
+    }
+  })
+
+}
+
 </script>
 <template>
   <!-- All surgeries -->
-  <div
-    v-show="crumb === 0 && !isLoading"
-    class="wizard-grid-container">
-    <WizardSquare
-      v-show="surgery.operations.length > 0"
-      v-for="(surgery, index) in surgeries"
-      :class="{
-        'hover': props.hoveredSurgery == surgery.id,
-      }"
-      @mouseover="props.setHoveredSurgery(surgery.id)"
-      @mouseleave="props.setHoveredSurgery(-1)"
-      @click="() => handleSurgeryClick(index)"
-      :name="surgery.name"
-      :color="surgery.color"
-      :textColor="makeTextColorReadable(surgery.color)"
-      type="surgery"
-    />
+  <div v-show="crumb === 0 && !isLoading" class="wizard-grid-container">
+    <WizardSquare v-show="surgery.operations.length > 0" v-for="(surgery, index) in surgeries" :class="{
+    'hover': props.hoveredSurgery == surgery.id,
+  }" @mouseover="props.setHoveredSurgery(surgery.id)" @mouseleave="props.setHoveredSurgery(-1)"
+      @click="() => handleSurgeryClick(index)" :name="surgery.name" :color="surgery.color"
+      :textColor="makeTextColorReadable(surgery.color)" type="surgery" />
   </div>
 
   <!-- All operations with profilaxis -->
-  <div
-    v-show="crumb === 1  && !isLoading"
-    class="wizard-grid-container">
-    <WizardSquare
-      :class="{
-        'hover': props.hoveredOperation === operation.id,
-      }"
-      @mouseover="props.setHoveredOperation(operation.id)"
-      @mouseleave="props.setHoveredOperation(-1)"
+  <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
+    <WizardSquare :class="{
+    'hover': props.hoveredOperation === operation.id,
+  }" @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
-      @click="() => handleOperationClick(operation.id)"
-      :name="operation.name"
+      @click="() => handleOperationClick(operation.id)" :name="operation.name"
       :color="surgeries[props.selectedSurgery].color"
-      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)"
-      type="operation"
-    />
+      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
-  <div v-show="crumb === 1 && !isLoading && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
+  <div
+    v-show="crumb === 1 && !isLoading && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
 
   <!-- All operations without profilaxis -->
-  <div
-    v-show="crumb === 1 && !isLoading"
-    class="wizard-grid-container">
-    <WizardSquare
-      :class="{
-        'hover': props.hoveredOperation == operation.id,
-      }"
-      @mouseover="props.setHoveredOperation(operation.id)"
-      @mouseleave="props.setHoveredOperation(-1)"
+  <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
+    <WizardSquare :class="{
+    'hover': props.hoveredOperation == operation.id,
+  }" @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
-      :name="operation.name"
-      :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))"
-      type="operation"
-    />
+      :name="operation.name" :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
 
   <!-- Questions for the operation -->
@@ -218,21 +232,6 @@ onMounted(() => {
               </label>
             </div>
           </div>
-          <!--
-          <legend>Gènere del pacient</legend>
-          <div class="mydict">
-            <div class="form__group">
-              <label class="radio">
-                <input type="radio" id="male" value="false" name="gender" v-model="form.gender">
-                <span>Home</span>
-              </label>
-              <label class="radio">
-                <input type="radio" id="female" value="true" name="gender" v-model="form.gender">
-                <span>Dona</span>
-              </label>
-            </div>
-          </div>
-          -->
           <div class="button-btn-div">
          <Button text="Consultar" @click="submit" class="button-btn"/>
         </div>
@@ -244,19 +243,42 @@ onMounted(() => {
             <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
             <div class="ck-medications-editor">
               <div class="select-options">
-                <SelectOnSteroids>
+                <SelectOnSteroids
+                  @change="addAntibioticToTextarea"
+                  placeholder="Selecciona un antibiòtic"
+                  search-placeholder="Cerca un antibiòtic">
                   <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
                 </SelectOnSteroids>
               </div>
-              <TextAreaOnSteroids placeholder="Instruccions de la condició">
+              <TextAreaOnSteroids
+                @input="handleTextAreaOnSteroidsInput"
+                placeholder="Instruccions de la condició"
+                id="textAreaOnSteroids"
+                class="textAreaOnSteroids">
               </TextAreaOnSteroids>
             </div>
           </div>
-          <button>Afegir condició</button>
+          <TextAreaOnSteroids placeholder="Instruccions de la condició">
+          </TextAreaOnSteroids>
         </div>
+      </div>
+      <button>Afegir condició</button>
+    </div>
   </div>
+
+  <!-- The result  -->
+
+  <div v-show="crumb === 3">
+    <div class="results-manager-container">
+      <h2>Resultats:</h2>
+      <div v-for="resume in resumes" :key="resume.id">
+        <h3>- {{ resume.resume[0].resume }}</h3> <br/>
+      </div>
+    </div>
+  </div>
+
   <div class="spinner-container" v-if="isLoading">
-    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    <div class="lds-ring"></div>
   </div>
 </template>
 
@@ -266,6 +288,7 @@ onMounted(() => {
   gap: 15px;
   grid-template-columns: repeat(auto-fit, minmax(230px, auto));
 }
+
 .larger-label {
   font-size: 1.2em;
 }
@@ -305,7 +328,7 @@ legend {
   font-size: 1.5em;
 }
 
-form > * + * {
+form>*+* {
   margin-top: 1.5rem;
 }
 
@@ -336,11 +359,13 @@ input[type="radio"] {
   user-select: none;
   cursor: pointer;
 }
+
 .checkbox-wrapper-46 .cbx span {
   display: inline-block;
   vertical-align: middle;
   transform: translate3d(0, 0, 0);
 }
+
 .checkbox-wrapper-46 .cbx span:first-child {
   position: relative;
   width: 18px;
@@ -351,6 +376,7 @@ input[type="radio"] {
   border: 1px solid #9098a9;
   transition: all 0.2s ease;
 }
+
 .checkbox-wrapper-46 .cbx span:first-child svg {
   position: absolute;
   top: 3px;
@@ -371,7 +397,8 @@ input[type="radio"] {
   display: grid;
   gap: 15px;
 }
-.manager-inputs > * {
+
+.manager-inputs>* {
   display: block;
   resize: none;
   width: 100%;
@@ -404,22 +431,26 @@ textarea:focus {
   opacity: 1;
   border-radius: 50%;
 }
+
 .checkbox-wrapper-46 .cbx span:last-child {
   padding-left: 8px;
 }
+
 .checkbox-wrapper-46 .cbx:hover span:first-child {
   border-color: #506eec;
 }
 
-.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child {
+.checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child {
   background: #506eec;
   border-color: #506eec;
   animation: wave-46 0.4s ease;
 }
-.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child svg {
+
+.checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child svg {
   stroke-dashoffset: 0;
 }
-.checkbox-wrapper-46 .inp-cbx:checked + .cbx span:first-child:before {
+
+.checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child:before {
   transform: scale(3.5);
   opacity: 0;
   transition: all 0.6s ease;
@@ -436,6 +467,7 @@ textarea:focus {
   display: flex;
   justify-content: flex-start;
 }
+
 :focus {
   outline: 0;
   border-color: #2260ff;
@@ -459,7 +491,7 @@ textarea:focus {
   width: 1px;
 }
 
-.mydict input[type="radio"]:checked + span {
+.mydict input[type="radio"]:checked+span {
   box-shadow: 0 0 0 0.0625em #0043ed;
   background-color: #dee7ff;
   z-index: 1;
@@ -516,19 +548,24 @@ textarea:focus {
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #000 transparent transparent transparent;
 }
+
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
 }
+
 .lds-ring div:nth-child(2) {
   animation-delay: -0.3s;
 }
+
 .lds-ring div:nth-child(3) {
   animation-delay: -0.15s;
 }
+
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -536,13 +573,24 @@ textarea:focus {
 
 .button-btn-div {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   margin-top: 20px;
- 
+
 }
 
-.button-btn{
+.button-btn {
   height: 40px;
   width: 100px;
+}
+
+.results-manager-container {
+  background-color: #f0f0f0;
+  padding: 30px 40px;
+  border-radius: 10px;
+}
+
+.results-manager-container h2 {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 </style>
