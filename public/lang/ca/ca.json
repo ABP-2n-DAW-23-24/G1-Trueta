@@ -1,0 +1,37 @@
+
+    {
+    
+        "pass":"Contrasenya",
+        "Admin":"Admin",
+        "Manager":"Gestor",
+        "add":"Afegir",
+        "editUserTitle":"Editar usuari",
+        "editText":"Editar",
+        "textDeleteConfirm":"Estas segur de eliminar l'usauri?",
+        "deleteText":"Eliminar",
+        "error_name":"Nom no valid",
+        "error_email":"Email no valid",
+        "error_pass":"Contrasenya no valida",
+        "profile":"Perfil",
+        "name":"Nom",
+        "surname":"Cognom",
+        "email":"Correu",
+        "save":"Desar",
+        "profile_information":"Informacio del perfil",
+        "profile_update_information":"Informació bàsica del compte.",
+        "password_information":"Actualitza la Contrasenya",
+        "password_update_information":"Assegura't que el teu compte utilitzi una contrasenya llarga i aleatòria per mantenir-lo segur.",
+        "current_password":"Contrasenya Actual",
+        "new_password":"Nova Contrasenya",
+        "confirm_password":"Confirmar Contrasenya",
+        "listUser":"Llistat d’usuaris",
+        "usernotfound":"Usuari no trobat",
+        "findUser":"Buscar Usuari",
+        "addUserTitle":"Afegir Usuaris",
+        "surnames":"Cognoms"
+        
+        
+        
+    }
+
+
