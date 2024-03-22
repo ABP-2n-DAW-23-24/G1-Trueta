@@ -42,24 +42,24 @@ console.log(langact);
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.flag-button {
-    margin: 10px;
-    border: none;
+    gap: 8px;
+    background-color: #D9D9D9;
+    height: 50px;
     border-radius: 10px;
+    padding: 5px 15px;
+
 }
 
 .flag {
     border-radius: 48px; /* Bordes redondeados */
     border: 2px solid whitesmoke;
-    width: 48px;
-    height: 48px; /* Tamaño de las imágenes */
+    width: 35px;
+    height: 35px; /* Tamaño de las imágenes */
 }
 .active-flag {
-    border-radius: 48px;
-    border:2px solid green; /* Color del borde activo */
-
-
+    border-radius: 50px;
+    border:2px solid #ff9100;
 }
+
+
 </style>
