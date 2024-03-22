@@ -23,6 +23,7 @@ class AdminPanelTest extends TestCase
     
         $response->assertStatus(200);
     }
+    // 
     public function test_registration_screen_can_be_rendered_(): void
     {
         $user = User::factory()->create();
