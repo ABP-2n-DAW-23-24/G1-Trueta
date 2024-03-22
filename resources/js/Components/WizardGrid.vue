@@ -190,8 +190,9 @@ function handleTextAreaOnSteroidsInput() {
   <!-- All operations with profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
     <WizardSquare :class="{
-    'hover': props.hoveredOperation === operation.id,
-  }" @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
+      'hover': props.hoveredOperation === operation.id,
+    }" 
+    @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => handleOperationClick(operation.id)" :name="operation.name"
       :color="surgeries[props.selectedSurgery].color"
@@ -208,8 +209,9 @@ function handleTextAreaOnSteroidsInput() {
   <!-- All operations without profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
     <WizardSquare :class="{
-    'hover': props.hoveredOperation == operation.id,
-  }" @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
+      'hover': props.hoveredOperation == operation.id,
+    }" 
+    @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
       v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name" :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
       :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
@@ -217,62 +219,55 @@ function handleTextAreaOnSteroidsInput() {
 
   <!-- Questions for the operation -->
   <div v-show="crumb === 2 && !isLoading" class="questions-container">
-        <form @submit.prevent="submit" class="questions-manager-container">
-          <h2>{{ currentOperation && currentOperation.name }}</h2>
-          <div class="form__group" v-for="(question, index) in questions" :key="index">
-            <div class="checkbox-wrapper-46">
-              <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" v-model="form['question_' + index]"/>
-              <label :for="'question_' + index" class="cbx larger-label">
-                <span>
-                <svg viewBox="0 0 12 10" height="10px" width="12px">
-                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                </svg>
-              </span>
-              <span>{{question.question}}</span>
-              </label>
-            </div>
-          </div>
-          <div class="button-btn-div">
-         <Button text="Consultar" @click="submit" class="button-btn"/>
+    <form @submit.prevent="submit" class="questions-manager-container">
+      <h2>{{ currentOperation && currentOperation.name }}</h2>
+      <div class="form__group" v-for="(question, index) in questions" :key="index">
+        <div class="checkbox-wrapper-46">
+          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index"
+            v-model="form['question_' + index]" />
+          <label :for="'question_' + index" class="cbx larger-label">
+            <span>
+              <svg viewBox="0 0 12 10" height="10px" width="12px">
+                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+              </svg>
+            </span>
+            <span>{{ question.question }}</span>
+          </label>
         </div>
-        </form>
-        <div class="questions-manager-container">
-          <h2>Gestor de condicions</h2>
-          <div class="manager-inputs">
-            <input type="text" placeholder="Nom de la condició">
-            <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
-            <div class="ck-medications-editor">
-              <div class="select-options">
-                <SelectOnSteroids
-                  @change="addAntibioticToTextarea"
-                  placeholder="Selecciona un antibiòtic"
-                  search-placeholder="Cerca un antibiòtic">
-                  <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
-                </SelectOnSteroids>
-              </div>
-              <TextAreaOnSteroids
-                @input="handleTextAreaOnSteroidsInput"
-                placeholder="Instruccions de la condició"
-                id="textAreaOnSteroids"
-                class="textAreaOnSteroids">
-              </TextAreaOnSteroids>
-            </div>
+      </div>
+      <div class="button-btn-div">
+        <Button text="Consultar" @click="submit" class="button-btn" />
+      </div>
+    </form>
+    <div class="questions-manager-container">
+      <h2>Gestor de condicions</h2>
+      <div class="manager-inputs">
+        <input type="text" placeholder="Nom de la condició">
+        <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
+        <div class="ck-medications-editor">
+          <div class="select-options">
+            <SelectOnSteroids @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic"
+              search-placeholder="Cerca un antibiòtic">
+              <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
+            </SelectOnSteroids>
           </div>
-          <TextAreaOnSteroids placeholder="Instruccions de la condició">
+          <TextAreaOnSteroids @input="handleTextAreaOnSteroidsInput" placeholder="Instruccions de la condició"
+            id="textAreaOnSteroids" class="textAreaOnSteroids">
           </TextAreaOnSteroids>
         </div>
       </div>
-      <button>Afegir condició</button>
+      <TextAreaOnSteroids placeholder="Instruccions de la condició">
+      </TextAreaOnSteroids>
     </div>
   </div>
-
+  <button>Afegir condició</button>
   <!-- The result  -->
 
   <div v-show="crumb === 3">
     <div class="results-manager-container">
       <h2>Resultats:</h2>
       <div v-for="resume in resumes" :key="resume.id">
-        <h3>- {{ resume.resume[0].resume }}</h3> <br/>
+        <h3>- {{ resume.resume[0].resume }}</h3> <br />
       </div>
     </div>
   </div>
