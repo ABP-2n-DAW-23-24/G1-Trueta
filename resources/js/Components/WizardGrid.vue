@@ -25,9 +25,6 @@ const submit = () => {
   });
 };
 
-
-
-
 // push the selected questions to the array if is checked, if not, remove it
 const handleQuestion = (question) => {
   if (QuestionSelected.value.includes(question)) {
@@ -152,27 +149,76 @@ onMounted(() => {
     });
 });
 
+function stylizeTextArea(textArea) {
+  textArea.querySelectorAll('span').forEach(span => {
+    span.style.backgroundColor = '#eb4034';
+    span.style.borderRadius = '5px';
+    span.style.padding = '0 8px';
+    span.style.color = 'white';
+    span.style.cursor = 'pointer';
+    span.style.display = 'inline-block';
+    span.style.marginTop = '5px';
+
+    span.addEventListener('click', () => {
+      span.remove();
+    });
+
+    span.addEventListener('mouseover', () => {
+      span.style.textDecoration = 'line-through';
+    });
+
+
+    span.addEventListener('mouseout', () => {
+      span.style.textDecoration = 'none';
+    });
+  });
+}
+
 function addAntibioticToTextarea(e) {
   const div = document.getElementById("textAreaOnSteroids");
 
-  if (div.innerText.length > 0) {
+  if (div.innerHTML.slice(-6) != '&nbsp;' && div.innerHTML.length > 0) {
     div.innerHTML += "&nbsp;";
   }
-  div.innerHTML += `<span style="color: white; background: #eb4034; padding: 0 8px; border-radius: 5px" length='${e.text.length}' class="dynamic-span" value='${e.value}'>${e.text}</span>&nbsp;`;
 
+  div.innerHTML += `<span length='${e.text.length}' value='${e.value}'>${e.text}</span>&nbsp;`;
+
+
+  stylizeTextArea(div);
   div.focus();
-  window.getSelection().collapse(div, div.childNodes.length);
+  setCursorToEnd(div);
+}
+
+function setCursorToEnd(div) {
+    window.getSelection().collapse(div, div.childNodes.length);
 }
 
 function handleTextAreaOnSteroidsInput() {
   const spans = document.querySelectorAll("#textAreaOnSteroids span");
+  const div = document.getElementById("textAreaOnSteroids");
+
+  
   spans.forEach(span => {
     let length = span.getAttribute('length');
     let realLength = span.innerText.length;
+    console.log(span.innerText);
+    if (realLength - 1 == length) {
+      realLength--;
+      let lastCharacter = span.innerText.slice(-1);
+      if (lastCharacter.charCodeAt(0) != 160) {
+        lastCharacter = " " + lastCharacter;
+      }
+
+      span.innerText = span.innerText.slice(0, -1);
+      div.innerHTML += lastCharacter;
+      setCursorToEnd(div);
+    }
+
     if (realLength != length) {
       span.remove();
     }
   })
+  stylizeTextArea(div);
 
 }
 
@@ -218,7 +264,7 @@ function handleTextAreaOnSteroidsInput() {
   </div>
 
   <!-- Questions for the operation -->
-  <div v-show="crumb === 2 && !isLoading" class="questions-container">
+  <!-- <div v-show="crumb === 2 && !isLoading" class="questions-container">
     <form @submit.prevent="submit" class="questions-manager-container">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="form__group" v-for="(question, index) in questions" :key="index">
@@ -243,7 +289,6 @@ function handleTextAreaOnSteroidsInput() {
       <h2>Gestor de condicions</h2>
       <div class="manager-inputs">
         <input type="text" placeholder="Nom de la condició">
-        <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
         <div class="ck-medications-editor">
           <div class="select-options">
             <SelectOnSteroids @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic"
@@ -260,7 +305,50 @@ function handleTextAreaOnSteroidsInput() {
       </TextAreaOnSteroids>
     </div>
   </div>
-  <button>Afegir condició</button>
+  <button>Afegir condició</button> -->
+
+  <div v-show="crumb === 2 && !isLoading" class="questions-container">
+    <form @submit.prevent="submit" class="questions-manager-container">
+      <h2>{{ currentOperation && currentOperation.name }}</h2>
+      <div class="form__group" v-for="(question, index) in questions" :key="index">
+        <div class="checkbox-wrapper-46">
+          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleQuestion(question)">
+          <label :for="'question_' + index" class="cbx larger-label">
+            <span>
+              <svg viewBox="0 0 12 10" height="10px" width="12px">
+                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+              </svg>
+            </span>
+            <span>{{ question.question }}</span>
+          </label>
+        </div>
+      </div>
+      <div class="button-btn-div">
+        <Button text="Consultar" type="submit" class="button-btn" :id="props.selectedOperation"></Button>
+      </div>
+    </form>
+    <div class="questions-manager-container">
+      <h2>Gestor de condicions</h2>
+      <div class="manager-inputs">
+        <input type="text" placeholder="Nom de la condició">
+        <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
+        <div class="ck-medications-editor">
+          <div class="select-options">
+            <SelectOnSteroids @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic"
+              search-placeholder="Cerca un antibiòtic">
+              <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
+            </SelectOnSteroids>
+          </div>
+          <TextAreaOnSteroids @input="handleTextAreaOnSteroidsInput" placeholder="Instruccions de la condició"
+            id="textAreaOnSteroids" class="textAreaOnSteroids">
+          </TextAreaOnSteroids>
+        </div>
+      </div>
+      <button>Afegir condició</button>
+    </div>
+  </div>
+
+  
   <!-- The result  -->
 
   <div v-show="crumb === 3">
