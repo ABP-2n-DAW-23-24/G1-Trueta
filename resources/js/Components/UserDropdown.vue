@@ -1,5 +1,5 @@
 <script setup>
-    import BuildableDropdown from "@/Components/BuildableDropdown.vue";
+import BuildableDropdown from "@/Components/BuildableDropdown.vue";
 
 const props = defineProps({
   user: {
@@ -10,22 +10,21 @@ const props = defineProps({
 </script>
 
 <template>
-    <BuildableDropdown
-      class="user-dropdown"
-      :user="user"
-      :routes="[
-        {
+  <BuildableDropdown class="user-dropdown" :user="user" :routes="[
+    {
+      label: 'Pàgina d\'inici',
+      route: 'index',
+      method: 'get',
+      isAdmin: false,
+      isManager: false,
+    },
+    {
       label: 'Panell d\'antibiòtics',
       route: 'medication-panel',
       isAdmin: true,
       isManager: true,
     },
-    {
-      label: 'Perfil',
-      route: 'profile.edit',
-      isAdmin: false,
-      isManager: false,
-    },
+
     {
       label: 'Panell administració',
       route: 'admin_panel',
@@ -33,9 +32,8 @@ const props = defineProps({
       isManager: false,
     },
     {
-      label: 'Pagina Inici',
-      route: 'index',
-      method: 'get',
+      label: 'Perfil',
+      route: 'profile.edit',
       isAdmin: false,
       isManager: false,
     },
@@ -46,9 +44,7 @@ const props = defineProps({
       isAdmin: true,
       isManager: false,
     }
-      ]"
-      
-    ></BuildableDropdown>
+  ]"></BuildableDropdown>
 </template>
 <!-- sudo add-apt-repository --remove ppa:ondrej/php
 sudo add-apt-repository --remove ppa:ondrej/php
@@ -60,7 +56,7 @@ sudo add-apt-repository --remove ppa:ondrej/phpdawdawd
 
 -->
 <style scoped>
-  .user-dropdown {
-    width: 100%;
-  }
+.user-dropdown {
+  width: 100%;
+}
 </style>
