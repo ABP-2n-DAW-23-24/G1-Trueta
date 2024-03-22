@@ -18,58 +18,92 @@ const props = defineProps({
 
 <template>
   <div class="wizard-header-container">
-    <Logo style="height: 8vh;"/>
-    <div class="breadcrumbs-progress-container">
+    <Logo class="logo"/>
+    <div class="right-menu">
     
-      <a href="/" class="breadcrumb-link">Pagina d'inici</a>
-      
-      <LanguageSelect  :user="props.user" class="language-select"/>
+    <div class="breadcrumbs-progress-container">
+      <LanguageSelect :user="props.user" class="language-select" />
     </div>
-    <UserDropdown  :user="props.user" class="user-dropdown" />
-
+    <UserDropdown :user="props.user" class="user-dropdown" />
+</div>
   </div>
 </template>
 
 <style scoped>
 .wizard-header-container {
-  padding: 20px; /* Reducir el espacio entre los elementos */
-  display: grid;
-  grid-template-columns: 15% 60% 20%; 
-  align-items: center; 
-  height: 50px; 
-  gap: 15px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
 }
 
+.logo{
+  width: 250px;
+  height: 50px;
+}
+
+.right-menu {
+ display: grid;
+  grid-template-columns: auto 175px;
+  gap: 15px;
+  width: 100%;
+}
+
+
 .breadcrumbs-progress-container {
-  background: #D9D9D9;
+  background: #ffffff;
   border-radius: 10px;
   display: flex;
   align-items: center;
-  padding: 0 15px; /* Reducir el espacio interno */
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
+  height: 50px;
+
 }
 
 .breadcrumb-link {
   color: #0239EB;
-  font-size: 18px; /* Reducir el tamaño de fuente */
+  font-size: 18px;
+
 }
 
-.language-select {
-  height: 70px; /* Reducir el tamaño de fuente */
-}
 
-@media (max-width: 425px) {
-  .breadcrumbs-progress-container {
-    flex-direction: column;
+@media (max-width: 768px) {
+  .right-menu {
+    display: grid;
+    grid-template-columns: auto 175px;
+    gap: 15px;
+    width: 100%;
+    height: 50px;
   }
+}
+
+@media screen and (max-width: 600px){
+
   .wizard-header-container {
-    padding: auto;
-    grid-template-columns: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
   }
-  .breadcrumbs-progress-container a {
-    margin-bottom: 10px;
+  .logo {
+    justify-content: center !important;
+    width: 100%;
+  }
+  .right-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
+    height: 50px;
+  }
+
+  .breadcrumbs-progress-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    width: 100%;
+    height: 50px;
   }
 }
 </style>
-

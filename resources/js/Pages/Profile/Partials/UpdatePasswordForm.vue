@@ -1,6 +1,7 @@
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import Button from '@/Components/Button.vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -82,7 +83,8 @@ const updatePassword = () => {
             </div>
 
             <div class="button-group">
-                <button :disabled="form.processing" class="button">{{ props.traductions.save }}</button>
+                <!-- <button :disabled="form.processing" class="button">{{ props.traductions.save }}</button> -->
+                <Button :disabled="form.processing" class="button" :text="props.traductions.save" />
                 <p v-if="form.recentlySuccessful" class="success-message">Guardado.</p>
             </div>
         </form>
@@ -90,10 +92,7 @@ const updatePassword = () => {
 </template>
 
 <style scoped>
-.profile-section {
-  padding: 1rem;
 
-}
 
 .profile-header {
   margin-bottom: 1rem;
@@ -129,7 +128,7 @@ const updatePassword = () => {
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 0.25rem;
+  border-radius: 10px;
 }
 
 .error {
@@ -139,21 +138,25 @@ const updatePassword = () => {
 .button-group {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: flex-end;
+
 }
 
 .button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  background-color: #fbc000;
-  color: #fff;
-  cursor: pointer;
+  width: 100px;
 }
 
 .success-message {
   font-size: 0.875rem;
   color: #4caf50;
+}
+
+@media screen and (max-width: 600px) {
+
+.button-group{
+  justify-content: center;
+}
+
+
 }
 </style>

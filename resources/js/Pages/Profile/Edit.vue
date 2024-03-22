@@ -6,7 +6,6 @@ import UpdateProfileInformationForm from './Partials/UpdateProfileInformationFor
 import Footer from '@/Components/Footer.vue';
 import Logo from '@/Components/Logo.vue';
 import WizardProfileHeader from '@/Components/WizardProfileHeader.vue';
-//ola
 
 
 import { Head } from '@inertiajs/vue3';
@@ -41,15 +40,15 @@ switch(props.language){
 </script>
 
 <template>
-    <div class="container">
+    <div class="container-profile">
         <Head title="Profile" />
-        <div class="profile-header">
-            <WizardProfileHeader :user="user" />
-        </div>
+         <div class="profile-header">
+            <WizardProfileHeader :user="user" /> 
+        </div> 
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="form-container p-4 sm:p-8 sm:rounded-lg">
+        <div class="">
+            <div class="">
+                <div class="form-container ">
                     <div class="form">
                         <UpdateProfileInformationForm
                             :must-verify-email="mustVerifyEmail"
@@ -67,17 +66,14 @@ switch(props.language){
     <Footer class="footer"/>
 </template>
 <style>
-.container {
-    background-color: white;
-}
-
-.profile-header {
-    margin-bottom: 15px; 
+.container-profile {
+   padding: 30px;
 }
 
 .form-container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    padding: 30px;
 }
 
 .form {
@@ -89,17 +85,19 @@ switch(props.language){
 }
 
 @media screen and (max-width: 768px) {
-    .profile-header {
-        margin-bottom: 160px; /* Espacio inferior entre el header y los formularios */
-    }
-    /* Estilos específicos para pantallas más pequeñas */
-    .form-container {
-        flex-direction: column; /* Apila los formularios en pantallas pequeñas */
-        align-items: center; /* Centra los formularios en pantallas pequeñas */
-    }
+   .form-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+   }
+}
 
-    .form {
-        margin-bottom: 20px; /* Espacio entre los formularios en pantallas pequeñas */
+@media screen and (max-width: 600px){
+    .form-container{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 40px;
     }
 
 }
