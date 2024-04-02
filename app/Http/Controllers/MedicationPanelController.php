@@ -22,7 +22,7 @@ class MedicationPanelController extends Controller
 
     // get medication
     public function getMedication() {
-        $medications = Medication::get();
+        $medications = Medication::where('deleted', 'false')->get();
         return response()->json($medications);
     }
 
@@ -143,6 +143,18 @@ class MedicationPanelController extends Controller
                 'medicationId' => $data['medicationId'],
                 'dosage' => $data['dosage']
             ]);
+        }
+    }
+
+    // change deleted status of medication by medication id
+    public function deleteMedication($medicationId) {
+        $medication = Medication::where('id', $medicationId)->first();
+        if ($medication) {
+            $medication->update([
+                'deleted' => 'true'
+            ]);
+        } else {
+            return response()->json(['message' => 'Medication not found']);
         }
     }
 }
