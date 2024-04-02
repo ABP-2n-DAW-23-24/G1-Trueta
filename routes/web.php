@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/medication-panel/edit-medication-dosage', [MedicationPanelController::class, 'editMedicationDosage'])->name('edit-medication-dosage');
         Route::post('/wizard/question/add', [QuestionsController::class, 'addQuestion'])->name('add-question');
         Route::post('/wizard/resume/delete', [ResumesController::class, 'deleteResume'])->name('delete-resume');
+        Route::delete('/medication-panel/delete-medication/{medicationId}', [MedicationPanelController::class, 'deleteMedication'])->name('delete-medication');
     });
 
 

@@ -92,6 +92,7 @@ onMounted(() => {
     axios.get('/medication-panel/get-medication')
         .then(response => {
             medications.value = response.data;
+
             if (medications.value.length > 0) {
                 activeMedication.value = medications.value[0].id;
                 getDoses(activeMedication.value);
@@ -120,6 +121,12 @@ function getMedications() {
     axios.get('/medication-panel/get-medication')
         .then(response => {
             medications.value = response.data;
+            
+            if (medications.value.length > 0) {
+                activeMedication.value = medications.value[0].id;
+                getDoses(activeMedication.value);
+                getMedicationDosage(activeMedication.value);
+            }
         })
         .catch(error => {
             console.log(error);
@@ -320,12 +327,28 @@ const editDosage = () => {
     EditDosageForm.medicationId = activeMedication.value;
     EditDosageForm.post('/medication-panel/edit-medication-dosage', {
         onSuccess: () => {
-            getDoses(activeMedication.value);   
+            getDoses(activeMedication.value);
             getMedicationDosage(activeMedication.value);
             closeModalDosage();
         }
     });
 };
+
+// delete medication
+const deleteMedication = (medicationId) => {
+    const confirmDelete = confirm("Segur que vols eliminar aquest medicament?");
+    if (confirmDelete) {
+        axios.delete('/medication-panel/delete-medication/' + medicationId)
+            .then(response => {
+                getMedications();
+                console.log('medication deleted');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+};
+
 </script>
 
 <template>
@@ -376,7 +399,7 @@ const editDosage = () => {
                         {{ medication.name }}
                     </button>
                 </div>
-                
+
             </div>
             <div class="medication-content">
                 <div class="medication-buttons-panel">
@@ -385,41 +408,51 @@ const editDosage = () => {
                 <div class="medication-dosage-content">
                     <h1 class="title-dosage">Dosificacions d'antibiòtics</h1>
                     <div class="medication-dosage-div" v-for="dosage in medicationDosage" :key="dosage.id">
-                        <textarea class="textarea is-link" readonly placeholder="Encara no hi ha dosificació per aquest antibiòtic">{{ dosage.dosage}}</textarea>
+                        <textarea class="textarea is-link" readonly
+                            placeholder="Encara no hi ha dosificació per aquest antibiòtic">{{ dosage.dosage === null ? 'Encara no hi ha dosificació per aquest antibiòtic' : dosage.dosage }}</textarea>
                     </div>
                     <div class="button-edit-dosage">
                         <div :class="{ 'is-active': isAddDosageActive }" class="modal">
-                          
-                        <div class="modal-background" @click="closeModalDosage"></div>
-                        <form @submit.prevent="editDosage">
-                            <div class="modal-content">
-                                <div class="modal-card">
-                                    <section class="modal-card-body">
-                                        <div class="field">
-                                            <label class="label">Dosificació de {{  medications.find(med => med.id === activeMedication)?.name }}:</label>
-                                            <div class="control">
-                                                <textarea class="textarea input-edit-dosage" placeholder="Encara no hi ha dosificació per aquest antibiòtic" title="Dosificació de l'antibiòtic..."
-                                            v-model="EditDosageForm.dosage"></textarea>
-                                                
+
+                            <div class="modal-background" @click="closeModalDosage"></div>
+                            <form @submit.prevent="editDosage">
+                                <div class="modal-content">
+                                    <div class="modal-card">
+                                        <section class="modal-card-body">
+                                            <div class="field">
+                                                <label class="label">Dosificació de {{ medications.find(med => med.id
+                    === activeMedication)?.name }}:</label>
+                                                <div class="control">
+                                                    <textarea class="textarea input-edit-dosage"
+                                                        placeholder="Encara no hi ha dosificació per aquest antibiòtic"
+                                                        title="Dosificació de l'antibiòtic..."
+                                                        v-model="EditDosageForm.dosage"></textarea>
+
+                                                </div>
                                             </div>
-                                        </div>
-                                    </section>
-                                    <footer class="modal-card-foot">
-                                        <button class="button is-success add-button" type="submit">Actualitzar</button>
-                                        <button class="button-cancel" @click="closeModalDosage"
-                                            type="button">Cancelar</button>
-                                    </footer>
+                                        </section>
+                                        <footer class="modal-card-foot">
+                                            <button class="button is-success add-button"
+                                                type="submit">Actualitzar</button>
+                                            <button class="button-cancel" @click="closeModalDosage"
+                                                type="button">Cancelar</button>
+                                        </footer>
+                                    </div>
                                 </div>
-                            </div>
-                            <button id="image-modal-close" class="modal-close" title="Close"
-                                @click="closeModalDosage"></button>
-                        </form> 
-                    </div>
-                    <Button class="button-dosage" :text="'Editar dosificació'" @click="showModalDosage" />
+                                <button id="image-modal-close" class="modal-close" title="Close"
+                                    @click="closeModalDosage"></button>
+                            </form>
                         </div>
+                        <div class="buttons-dosage">
+                        <Button class="button-dosage" :text="'Editar dosificació'" @click="showModalDosage" />
+                 
+                    <Button class="delete-med" :text="'Eliminar medicament'" @click="deleteMedication(activeMedication)"
+                        :id="activeMedication" />
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <Footer />
 </template>
@@ -710,25 +743,36 @@ header {
 }
 
 .textarea {
-  height: 300px;
-  max-height: 500px;
-  background-color: #f0f0f0;
-  overflow-y:auto;
-  resize: none;
+    height: 300px;
+    max-height: 500px;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+    resize: none;
 }
 
 .textarea:focus {
-  background-color: #f0f0f0 !important;
+    background-color: #f0f0f0 !important;
 }
 
 .textarea::placeholder {
-  color: #00000096;
+    color: #00000096;
+}
+
+.buttons-dosage {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+ .delete-med{
+    width: 200px;
+    background-color: #a90909;
 }
 
 .button-dosage{
-    width: fit-content;
-    align-items: center;
-}
+    width: 200px;
 
+} 
 
 </style>
