@@ -127,27 +127,27 @@ function closeModal(params) {
             </div>
             <div class="rols">
                 <div class="checkbox-wrapper-46">
-  <input type="checkbox" id="cbx-46-admin" class="inp-cbx" v-model="isAdmin" >{{ props.traduccion['Admin'] }}>
+  <input type="checkbox" id="cbx-46-admin" class="inp-cbx" v-model="isAdmin" >
   <label for="cbx-46-admin" class="cbx"
     ><span>
       <svg viewBox="0 0 12 10" height="10px" width="12px">
         <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-    ><span>Administrador</span>
+    ><span>{{ props.traduccion['Admin'] }}</span>
   </label>
 </div>
 <div class="checkbox-wrapper-46">
-  <input type="checkbox" id="cbx-46-manager" class="inp-cbx" v-model="isManager">{{ props.traduccion['Manager'] }}>
+  <input type="checkbox" id="cbx-46-manager" class="inp-cbx" v-model="isManager">
   <label for="cbx-46-manager" class="cbx"
     ><span>
       <svg viewBox="0 0 12 10" height="10px" width="12px">
         <polyline points="1.5 6 4.5 9 10.5 1"></polyline></svg></span
-    ><span>Gestor</span>
+    ><span>{{ props.traduccion['Manager'] }}</span>
   </label>
 </div>
             </div>
         </div>
         <div class="center_flex">
-            <button class="btn_add_user" @click="btn_add_user">{{ props.traduccion['add'] }}>Afegir</button>
+            <button class="btn_add_user" @click="btn_add_user">{{ props.traduccion['add'] }}</button>
         </div>
         </div>
    

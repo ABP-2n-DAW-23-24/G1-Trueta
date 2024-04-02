@@ -17,7 +17,8 @@ const props = defineProps({
   user: {
     type: Object,
     required: true
-  }
+  },
+  traduccion: Object,
 
 });
 
