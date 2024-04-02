@@ -63,7 +63,7 @@ switch(props.language){
             </div>
         </div>
     </div>
-    <Footer class="footer"/>
+    <Footer class="footer" />
 </template>
 <style>
 .container-profile {
@@ -80,9 +80,10 @@ switch(props.language){
     max-width: 400px;
 }
 
-.footer {
-    margin-bottom: 0;
+.footer{
+    padding: 0 !important;
 }
+
 
 @media screen and (max-width: 768px) {
    .form-container{
@@ -99,7 +100,6 @@ switch(props.language){
         gap: 15px;
         margin-top: 40px;
     }
-
 }
 
 </style>
