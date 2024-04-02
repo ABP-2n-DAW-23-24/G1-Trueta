@@ -14,6 +14,11 @@ const props = defineProps({
         required: false,
         default: 'Cerca',
     },
+    updateHeader: {
+        type: Boolean,
+        required: false,
+        default: true,
+    },
 });
 
 const _value = ref(null);
@@ -86,6 +91,7 @@ function handleToggleFold() {
 }
 
 const getInnerTextFromValue = computed(() => {
+    if (!props.updateHeader) return null;
     if (_value.value) {
         for (let i = 0; i  < options.value.length; i++) {
             if (options.value[i].getAttribute('value') == _value.value) {
