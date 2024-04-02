@@ -5,24 +5,25 @@ import WizardGrid from '@/Components/WizardGrid.vue';
 
 
 const props = defineProps({
-    setCrumb: {
-        type: Function,
-        required: true
-    },
+    setCrumb: Function,
     crumb: Number,
     selectedSurgery: Number,
     setSelectedSurgery: Function,
-    user: {
-        type: Object,
-        required: true
-    },
+    user: Object,
     hoveredSurgery: Number,
     hoveredOperation: Number,
     toggleCollapse: Function,
     selectedOperation: Number,
     setSelectedOperation: Function,
     setHoveredSurgery: Function,
-    setHoveredOperation: Function
+    setHoveredOperation: Function,
+    questions: Array,
+    selectedQuestions: Array,
+    resumes: Array,
+    isLoading: Boolean,
+    setIsLoading: Function,
+    setSelectedQuestions: Function,
+    setResumes: Function,
 });
 
 
@@ -59,6 +60,13 @@ function handleSetSelectedSurgery(setSelectedSurgery) {
             :setSelectedOperation="props.setSelectedOperation"
             :setHoveredSurgery="props.setHoveredSurgery"
             :setHoveredOperation="props.setHoveredOperation"
+            :questions="props.questions"
+            :selectedQuestions="props.selectedQuestions"
+            :resumes="props.resumes"
+            :isLoading="props.isLoading"
+            :setIsLoading="props.setIsLoading"
+            :setSelectedQuestions="props.setSelectedQuestions"
+            :setResumes="props.setResumes"
         />
     </div>
 </template>

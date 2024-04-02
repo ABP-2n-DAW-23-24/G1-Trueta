@@ -32,20 +32,20 @@ onUnmounted(() => {
 </script>
 <template>
   <div class="buildable-dropdown-container">
-    <button @click="toggleDropdown" type="button">
+    <button @click="toggleDropdown" type="button" class="dropdown-button">
       <span>{{ user.name.toUpperCase() }} {{ user.surnames.toUpperCase() }}</span>
       <img src="../../assets/svg/arrow.svg" alt="arrow"
         :style="{ transform: isDropdownUnfolded ? 'rotate(180deg)' : 'rotate(0deg)' }" />
     </button>
-    <div v-show="isDropdownUnfolded" class="dropdown-options">
-      <div v-for="dropdownRoute in routes">
+      <div v-show="isDropdownUnfolded" class="dropdown-options">
+        <div v-for="dropdownRoute in routes">
 
-        <DropdownLink class="dropdown-link" :href="route(dropdownRoute.route)" :method="dropdownRoute.method ?? 'GET'"
-          as="button" v-if="(user.isAdmin == true) || (dropdownRoute.isManager == 1 && user.isManager == true)
-      || (dropdownRoute.isManager == 0 && dropdownRoute.isAdmin == 0)"> {{ dropdownRoute.label }}
-        </DropdownLink>
+          <DropdownLink class="dropdown-link" :href="route(dropdownRoute.route)" :method="dropdownRoute.method ?? 'GET'"
+            as="button" v-if="(user.isAdmin == true) || (dropdownRoute.isManager == 1 && user.isManager == true)
+        || (dropdownRoute.isManager == 0 && dropdownRoute.isAdmin == 0)"> {{ dropdownRoute.label }}
+          </DropdownLink>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -58,7 +58,7 @@ onUnmounted(() => {
   position: relative;
 }
 
-.buildable-dropdown-container button {
+.buildable-dropdown-container .dropdown-button {
   height: 100%;
   width: 100%;
   display: flex;

@@ -8,31 +8,15 @@ import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
 import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
 import Button from '@/Components/Button.vue';
 
-// Results
-const resumes = ref([]);
-const QuestionSelected = ref([]);
+const selectedQuestions = ref([]);
 
-const submit = () => {
-  // foreach question selected, axios get the resumes
-  QuestionSelected.value.forEach((question) => {
-    axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
-      .then(response => {
-        resumes.value.push(response.data);
-        console.log(resumes.value);
-        props.setCrumb(3);
 
-      });
-  });
-};
 
-// push the selected questions to the array if is checked, if not, remove it
-const handleQuestion = (question) => {
-  if (QuestionSelected.value.includes(question)) {
-    QuestionSelected.value = QuestionSelected.value.filter((item) => item !== question);
-    console.log(QuestionSelected.value);
+const handleToggleQuestion = (question) => {
+  if (selectedQuestions.value.includes(question)) {
+    selectedQuestions.value = selectedQuestions.value.filter((item) => item !== question);
   } else {
-    QuestionSelected.value.push(question);
-    console.log(QuestionSelected.value);
+    selectedQuestions.value.push(question);
   }
 };
 
@@ -80,45 +64,72 @@ const props = defineProps({
   setHoveredOperation: {
     type: Function,
     required: true
-  }
+  },
+  questions: {
+    type: Array,
+    required: true
+  },
+  selectedQuestions: {
+    type: Array,
+    required: true
+  },
+  resumes: {
+    type: Array,
+    required: true
+  },
+  isLoading: {
+    type: Boolean,
+    required: true
+  },
+  setIsLoading: {
+    type: Function,
+    required: true
+  },
+  setSelectedQuestions: {
+    type: Function,
+    required: true
+  },
+  setResumes: {
+    type: Function,
+    required: true
+  },
 });
 
+
+const handleSubmitQuestionsQuery = () => {
+  props.setResumes([]);
+  selectedQuestions.value.forEach((question) => {
+    axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
+      .then(response => {
+        props.setResumes([...props.resumes, response.data]);
+        props.setCrumb(3);
+
+      });
+  });
+};
+
 const surgeries = ref([]);
-var questions = ref([]);
-var isLoading = ref();
+
+const conditionNameInput = ref(null);
 
 
-isLoading.value = true;
+props.setIsLoading(true);
 axios.get("/json/surgeriesWithOperations")
   .then(response => {
     surgeries.value = response.data;
   }).finally(() => {
-    isLoading.value = false;
+    props.setIsLoading(false);
   });
 
 function handleSurgeryClick(surgery) {
   props.setSelectedSurgery(surgery)
   props.setCrumb(1);
   props.toggleCollapse(surgery + 1);
-  QuestionSelected.value = [];
-  resumes.value = [];
+  props.setSelectedQuestions([]);
+  props.setResumes([]);
 }
 
-function handleOperationClick(operationId) {
-  questions.value = [];
-  QuestionSelected.value = [];
-  resumes.value = [];
-  isLoading.value = true;
-  axios.get(`/get-questions/${operationId}`)
-    .then(response => {
-      questions.value = response.data.questionsOperation;
-    })
-    .finally(() => {
-      isLoading.value = false;
-    });
-  props.setSelectedOperation(operationId);
-  props.setCrumb(2);
-}
+
 
 // Modifica el color del text per fer-lo més llegible
 function makeTextColorReadable(backgroundColor) {
@@ -201,7 +212,6 @@ function handleTextAreaOnSteroidsInput() {
   spans.forEach(span => {
     let length = span.getAttribute('length');
     let realLength = span.innerText.length;
-    console.log(span.innerText);
     if (realLength - 1 == length) {
       realLength--;
       let lastCharacter = span.innerText.slice(-1);
@@ -222,27 +232,62 @@ function handleTextAreaOnSteroidsInput() {
 
 }
 
+function handleAddCondition() {
+  const textArea = document.getElementById("textAreaOnSteroids");
+  let resume = "";
+
+  textArea.childNodes.forEach(node => {
+    let isSpan = !node.length;
+
+    if (isSpan) {
+      resume += `{{${node.getAttribute("value")}}}`;
+    } else {
+      resume += node.textContent;
+    }
+  });
+
+
+  axios.post('/wizard/question/add', {
+    resume: resume,
+    operationId: props.selectedOperation,
+    question: conditionNameInput.value.value
+  }).then(response => {
+    console.log(response.data);
+    props.setSelectedOperation(props.selectedOperation);
+  });
+}
+
 </script>
 <template>
   <!-- All surgeries -->
   <div v-show="crumb === 0 && !isLoading" class="wizard-grid-container">
-    <WizardSquare v-show="surgery.operations.length > 0" v-for="(surgery, index) in surgeries" :class="{
-    'hover': props.hoveredSurgery == surgery.id,
-  }" @mouseover="props.setHoveredSurgery(surgery.id)" @mouseleave="props.setHoveredSurgery(-1)"
-      @click="() => handleSurgeryClick(index)" :name="surgery.name" :color="surgery.color"
+    <WizardSquare 
+      v-show="surgery.operations.length > 0" 
+      v-for="(surgery, index) in surgeries" 
+      :class="{
+        'hover': props.hoveredSurgery == surgery.id,
+      }" 
+      @mouseover="props.setHoveredSurgery(surgery.id)" 
+      @mouseleave="props.setHoveredSurgery(-1)"
+      @click="() => handleSurgeryClick(index)" 
+      :name="surgery.name" 
+      :color="surgery.color"
       :textColor="makeTextColorReadable(surgery.color)" type="surgery" />
   </div>
 
   <!-- All operations with profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
-    <WizardSquare :class="{
+    <WizardSquare 
+    :class="{
       'hover': props.hoveredOperation === operation.id,
-    }" 
-    @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
-      @click="() => handleOperationClick(operation.id)" :name="operation.name"
-      :color="surgeries[props.selectedSurgery].color"
-      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
+    }"
+    @mouseover="props.setHoveredOperation(operation.id)" 
+    @mouseleave="props.setHoveredOperation(-1)"
+    v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
+    @click="() => props.setSelectedOperation(operation.id)" 
+    :name="operation.name"
+    :color="surgeries[props.selectedSurgery].color"
+    :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
@@ -254,65 +299,24 @@ function handleTextAreaOnSteroidsInput() {
 
   <!-- All operations without profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
-    <WizardSquare :class="{
+    <WizardSquare 
+    :class="{
       'hover': props.hoveredOperation == operation.id,
     }" 
-    @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
-      :name="operation.name" :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
+    @mouseover="props.setHoveredOperation(operation.id)" 
+    @mouseleave="props.setHoveredOperation(-1)"
+    v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+    :name="operation.name" 
+    :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
+    :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
-
-  <!-- Questions for the operation -->
-  <!-- <div v-show="crumb === 2 && !isLoading" class="questions-container">
-    <form @submit.prevent="submit" class="questions-manager-container">
-      <h2>{{ currentOperation && currentOperation.name }}</h2>
-      <div class="form__group" v-for="(question, index) in questions" :key="index">
-        <div class="checkbox-wrapper-46">
-          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index"
-            v-model="form['question_' + index]" />
-          <label :for="'question_' + index" class="cbx larger-label">
-            <span>
-              <svg viewBox="0 0 12 10" height="10px" width="12px">
-                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-              </svg>
-            </span>
-            <span>{{ question.question }}</span>
-          </label>
-        </div>
-      </div>
-      <div class="button-btn-div">
-        <Button text="Consultar" @click="submit" class="button-btn" />
-      </div>
-    </form>
-    <div class="questions-manager-container">
-      <h2>Gestor de condicions</h2>
-      <div class="manager-inputs">
-        <input type="text" placeholder="Nom de la condició">
-        <div class="ck-medications-editor">
-          <div class="select-options">
-            <SelectOnSteroids @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic"
-              search-placeholder="Cerca un antibiòtic">
-              <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
-            </SelectOnSteroids>
-          </div>
-          <TextAreaOnSteroids @input="handleTextAreaOnSteroidsInput" placeholder="Instruccions de la condició"
-            id="textAreaOnSteroids" class="textAreaOnSteroids">
-          </TextAreaOnSteroids>
-        </div>
-      </div>
-      <TextAreaOnSteroids placeholder="Instruccions de la condició">
-      </TextAreaOnSteroids>
-    </div>
-  </div>
-  <button>Afegir condició</button> -->
 
   <div v-show="crumb === 2 && !isLoading" class="questions-container">
-    <form @submit.prevent="submit" class="questions-manager-container">
+    <form @submit.prevent="handleSubmitQuestionsQuery" class="questions-manager-container">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="form__group" v-for="(question, index) in questions" :key="index">
         <div class="checkbox-wrapper-46">
-          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleQuestion(question)">
+          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleToggleQuestion(question)">
           <label :for="'question_' + index" class="cbx larger-label">
             <span>
               <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -330,12 +334,11 @@ function handleTextAreaOnSteroidsInput() {
     <div class="questions-manager-container">
       <h2>Gestor de condicions</h2>
       <div class="manager-inputs">
-        <input type="text" placeholder="Nom de la condició">
+        <input type="text" placeholder="Nom de la condició" ref="conditionNameInput">
         <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
         <div class="ck-medications-editor">
           <div class="select-options">
-            <SelectOnSteroids @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic"
-              search-placeholder="Cerca un antibiòtic">
+            <SelectOnSteroids :update-header="false" @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic">
               <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
             </SelectOnSteroids>
           </div>
@@ -344,7 +347,7 @@ function handleTextAreaOnSteroidsInput() {
           </TextAreaOnSteroids>
         </div>
       </div>
-      <button>Afegir condició</button>
+      <Button @click="handleAddCondition" text="Afegir condició" type="submit" class="button-btn-condition"></Button>
     </div>
   </div>
 
@@ -658,12 +661,17 @@ textarea:focus {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-
 }
 
 .button-btn {
   height: 40px;
-  width: 100px;
+  width: auto;
+}
+
+.button-btn-condition {
+  height: 40px;
+  width: auto;
+  margin-top: 20px;
 }
 
 .results-manager-container {
