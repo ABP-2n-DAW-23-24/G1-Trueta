@@ -2,15 +2,12 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import WizardSquare from '@/Components/WizardSquare.vue';
-import { useForm } from "@inertiajs/vue3";
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
 import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
-import Button from '@/Components/Button.vue';
+import Boto from '@/Components/Button.vue';
+import Modal from './Modal.vue';
 
 const selectedQuestions = ref([]);
-
-
 
 const handleToggleQuestion = (question) => {
   if (selectedQuestions.value.includes(question)) {
@@ -128,8 +125,6 @@ function handleSurgeryClick(surgery) {
   props.setSelectedQuestions([]);
   props.setResumes([]);
 }
-
-
 
 // Modifica el color del text per fer-lo més llegible
 function makeTextColorReadable(backgroundColor) {
@@ -257,6 +252,31 @@ function handleAddCondition() {
   });
 }
 
+const isModalOpen = ref(false);
+const selectedQuestionId = ref(null);
+
+function closeModal() {
+  isModalOpen.value = false;
+}
+
+function openModal(questionId) {
+  selectedQuestionId.value = questionId;
+  isModalOpen.value = true;
+}
+
+function deleteQuestion(id) {
+  console.log("delete operation: " + props.selectedOperation)
+  console.log("delete question " + id);
+
+  axios.post('/wizard/resume/delete', {
+    operationId: props.selectedOperation,
+    questionId: id
+  }).then(response => {
+    console.log(response.data);
+    props.setSelectedOperation(props.selectedOperation);
+    isModalOpen.value = false;
+  });
+}
 </script>
 <template>
   <!-- All surgeries -->
@@ -315,7 +335,7 @@ function handleAddCondition() {
     <form @submit.prevent="handleSubmitQuestionsQuery" class="questions-manager-container">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="form__group" v-for="(question, index) in questions" :key="index">
-        <div class="checkbox-wrapper-46">
+        <div class="checkbox-wrapper-46 flex">
           <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleToggleQuestion(question)">
           <label :for="'question_' + index" class="cbx larger-label">
             <span>
@@ -325,10 +345,34 @@ function handleAddCondition() {
             </span>
             <span>{{ question.question }}</span>
           </label>
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 448 512" 
+            class="icons"
+            @click="openModal(question.id)">
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" 
+              />
+          </svg>
+          <Modal :show="isModalOpen" @close="closeModal">
+            <div style="padding: 20px;">
+              <div style="float: right">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 384 512" 
+                  style="height: 20px; cursor:pointer;"
+                  @click="closeModal">
+                  <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                </svg>
+              </div>
+              <h1 style="padding:20px;">Estàs segur de que vols eliminar el resum <b>{{ question.question }}</b>?</h1>
+              <button class="btn_delete" @click="deleteQuestion(selectedQuestionId)">Eliminar</button>
+            </div>
+          </Modal>
         </div>
       </div>
       <div class="button-btn-div">
-        <Button text="Consultar" type="submit" class="button-btn" :id="props.selectedOperation"></Button>
+        <Boto text="Consultar" type="submit" class="button-btn" :id="props.selectedOperation"></Boto>
       </div>
     </form>
     <div class="questions-manager-container">
@@ -347,13 +391,12 @@ function handleAddCondition() {
           </TextAreaOnSteroids>
         </div>
       </div>
-      <Button @click="handleAddCondition" text="Afegir condició" type="submit" class="button-btn-condition"></Button>
+      <Boto @click="handleAddCondition" text="Afegir condició" type="submit" class="button-btn-condition"></Boto>
     </div>
   </div>
 
   
   <!-- The result  -->
-
   <div v-show="crumb === 3">
     <div class="results-manager-container">
       <h2>Resultats:</h2>
@@ -683,5 +726,29 @@ textarea:focus {
 .results-manager-container h2 {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.flex span:first-child {
+  margin-right: 8px;
+}
+
+.flex span {
+  margin-right: 8px;
+}
+
+.flex .icons {
+  display: inline-block;
+  width: 20px;
+  cursor: pointer;
+}
+
+.btn_delete {
+  padding: 10px;
+  background: red;
+  border-radius: 10px;
+  color: white;
+  float: right;
+  cursor: pointer;
+  margin-bottom: 30px;  
 }
 </style>

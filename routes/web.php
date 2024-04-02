@@ -11,7 +11,7 @@ use App\Http\Controllers\SurgeriesController;
 use App\Http\Controllers\Adminpanel;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionsController;
-
+use App\Http\Controllers\ResumesController;
 
 Route::middleware('auth')->group(function () {
     Route::middleware('IsAdmin')->group(function () {
@@ -34,9 +34,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/medication-panel/add-condition-dose', [MedicationPanelController::class, 'addConditionDose'])->name('add-condition-dose');
         Route::post('/medication-panel/add-dose', [MedicationPanelController::class, 'addDose'])->name('add-dose');
         Route::post('/medication-panel/edit-dose-condition', [MedicationPanelController::class, 'editCondition'])->name('edit-dose-condition');
-        Route::post('wizard/question/add', [QuestionsController::class, 'addQuestion'])->name('add-question');
         Route::get('/medication-panel/get-medication-dosage/{medicationId}', [MedicationPanelController::class, 'getMedicationDosage'])->name('get-medication-dosage');
         Route::post('/medication-panel/edit-medication-dosage', [MedicationPanelController::class, 'editMedicationDosage'])->name('edit-medication-dosage');
+        Route::post('/wizard/question/add', [QuestionsController::class, 'addQuestion'])->name('add-question');
+        Route::post('/wizard/resume/delete', [ResumesController::class, 'deleteResume'])->name('delete-resume');
         Route::delete('/medication-panel/delete-medication/{medicationId}', [MedicationPanelController::class, 'deleteMedication'])->name('delete-medication');
     });
 
