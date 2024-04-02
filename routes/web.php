@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/medication-panel/add-condition-dose', [MedicationPanelController::class, 'addConditionDose'])->name('add-condition-dose');
         Route::post('/medication-panel/add-dose', [MedicationPanelController::class, 'addDose'])->name('add-dose');
         Route::post('/medication-panel/edit-dose-condition', [MedicationPanelController::class, 'editCondition'])->name('edit-dose-condition');
+        Route::get('/medication-panel/get-medication-dosage/{medicationId}', [MedicationPanelController::class, 'getMedicationDosage'])->name('get-medication-dosage');
+        Route::post('/medication-panel/edit-medication-dosage', [MedicationPanelController::class, 'editMedicationDosage'])->name('edit-medication-dosage');
     });
     
 

@@ -9,6 +9,7 @@ use App\Models\Dose;
 use App\Models\Condition;
 use App\Models\Criteria;
 use App\Models\ConditionsDose;
+use App\Models\MedicationDosage;
 
 class MedicationPanelController extends Controller
 {
@@ -29,7 +30,12 @@ class MedicationPanelController extends Controller
     public function addMedication(Request $request) {
         $data = $request->all();
         $medication = Medication::create($data);
-        
+        // create a "null" dosage for the medication with the new id
+        $medicationDosage = MedicationDosage::create([
+            'medicationId' => $medication->id,
+            'dosage' => null
+        ]);
+
     }
 
     // get dose by medication and their condition_dose, condition and criteria
@@ -116,5 +122,27 @@ class MedicationPanelController extends Controller
             }
         }   
     
+    }
+
+    // get medication dosage by medication id
+    public function getMedicationDosage($medicationId) {
+        $medicationDosage = MedicationDosage::where('medicationId', $medicationId)->get();
+        return response()->json($medicationDosage);
+    }
+
+    // edit medication dosage by medication id
+    public function editMedicationDosage(Request $request) {
+        $data = $request->all();
+        $medicationDosage = MedicationDosage::where('medicationId', $data['medicationId'])->first();
+        if ($medicationDosage) {
+            $medicationDosage->update([
+                'dosage' => $data['dosage']
+            ]);
+        } else {
+            $medicationDosage = MedicationDosage::create([
+                'medicationId' => $data['medicationId'],
+                'dosage' => $data['dosage']
+            ]);
+        }
     }
 }
