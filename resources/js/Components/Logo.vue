@@ -23,7 +23,7 @@ import { Link } from '@inertiajs/vue3';
 @media screen and (max-width: 768px){
     .logo{
         justify-content: center !important;
-        height: 70px !important;
+        height: 50px !important;
     }
 }
 

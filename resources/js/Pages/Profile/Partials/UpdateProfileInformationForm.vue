@@ -40,9 +40,7 @@ const user = usePage().props.auth.user;
     </section>
 </template>
 <style scoped>
-.profile-section {
-  padding: 1rem;
-}
+
 
 .profile-header {
   margin-bottom: 1rem;

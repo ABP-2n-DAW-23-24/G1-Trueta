@@ -8,3 +8,12 @@ export const fetchUsers = async () => {
     throw error;
   }
 };
+
+export const fetchaxios = async () => {
+  try {
+    const response = await axios.post('/medication-panel/get-dose-medication/7');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
