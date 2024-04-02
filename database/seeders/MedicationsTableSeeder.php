@@ -16,103 +16,123 @@ class MedicationsTableSeeder extends Seeder
 
         // 1
         Medication::create([
-            'name' => 'CEFAZOLINA'
+            'name' => 'CEFAZOLINA',
+            'deleted' => 'false'
         ]);
 
         // 2
         Medication::create([
-            'name' => 'CEFUROXIMA'
+            'name' => 'CEFUROXIMA',
+            'deleted' => 'false'
         ]);
 
         // 3
         Medication::create([
-            'name' => 'CEFTRIAXONA'
+            'name' => 'CEFTRIAXONA',
+            'deleted' => 'false'
         ]);
 
         // 4
         Medication::create([
-            'name' => 'VANCOMICINA'
+            'name' => 'VANCOMICINA',
+            'deleted' => 'false'
         ]);
 
         // 5
         Medication::create([
-            'name' => 'CLINDAMICINA'
+            'name' => 'CLINDAMICINA',
+            'deleted' => 'false'
         ]);
 
         // 6
         Medication::create([
-            'name' => 'AMOXICIL·LINA CLAVULÀNIC'
+            'name' => 'AMOXICIL·LINA CLAVULÀNIC',
+            'deleted' => 'false'
         ]);
 
         // 7
         Medication::create([
-            'name' => 'GENTAMICINA'
+            'name' => 'GENTAMICINA',
+            'deleted' => 'false'
         ]);
 
         // 8
         Medication::create([
-            'name' => 'METRONIDAZOL'
+            'name' => 'METRONIDAZOL',
+            'deleted' => 'false'
         ]);
 
         // 9
         Medication::create([
-            'name' => 'AZTREONAM'
+            'name' => 'AZTREONAM',
+            'deleted' => 'false'
         ]);
 
         // 10
         Medication::create([
-            'name' => 'TEICOPLANINA'
+            'name' => 'TEICOPLANINA',
+            'deleted' => 'false'
         ]);
 
         // 11
         Medication::create([
-            'name' => 'CEFTAZIDIMA'
+            'name' => 'CEFTAZIDIMA',
+            'deleted' => 'false'
         ]);
 
         // 12
         Medication::create([
-            'name' => 'FOSFOMICINA TROMETAMOL'
+            'name' => 'FOSFOMICINA TROMETAMOL',
+            'deleted' => 'false'
         ]);
 
         // 13
         Medication::create([
-            'name' => 'MOXIFLOXACINO'
+            'name' => 'MOXIFLOXACINO',
+            'deleted' => 'false'
         ]);
 
         
         // 14
         Medication::create([
-            'name' => 'ALBENDAZOL'
+            'name' => 'ALBENDAZOL',
+            'deleted' => 'false'
         ]);
 
         // 15
         Medication::create([
-            'name' => 'PRAZIQUANTEL'
+            'name' => 'PRAZIQUANTEL',
+            'deleted' => 'false'
         ]);
 
         // 16
         Medication::create([
-            'name' => 'NEOMICINA'
+            'name' => 'NEOMICINA',
+            'deleted' => 'false'
         ]);
 
         // 17
         Medication::create([
-            'name' => 'DOXICICLINA'
+            'name' => 'DOXICICLINA',
+            'deleted' => 'false'
         ]);
 
         // 18
         Medication::create([
-            'name' => 'CEFOXITINA'
+            'name' => 'CEFOXITINA',
+            'deleted' => 'false'
         ]);
 
         // 19
         Medication::create([
-            'name' => 'CIPROFLOXACI'
+            'name' => 'CIPROFLOXACI',
+            'deleted' => 'false'
         ]);
 
         // 20
         Medication::create([
-            'name' => 'PIPERACIL.LINA-TAZOBACTAM'
+            'name' => 'PIPERACIL.LINA-TAZOBACTAM',
+            'deleted' => 'false'
         ]);
     }
 }

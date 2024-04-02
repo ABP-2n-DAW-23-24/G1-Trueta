@@ -131,67 +131,67 @@ class MedicationsDosagesTableSeeder extends Seeder
         // 10
         MedicationDosage::create([
             'medicationId' => 10,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 11
         MedicationDosage::create([
             'medicationId' => 11,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 12
         MedicationDosage::create([
             'medicationId' => 12,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 13
         MedicationDosage::create([
             'medicationId' => 13,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 14
         MedicationDosage::create([
             'medicationId' => 14,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 15
         MedicationDosage::create([
             'medicationId' => 15,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 16
         MedicationDosage::create([
             'medicationId' => 16,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 17
         MedicationDosage::create([
             'medicationId' => 17,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 18
         MedicationDosage::create([
             'medicationId' => 18,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 19
         MedicationDosage::create([
             'medicationId' => 19,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
         // 20
         MedicationDosage::create([
             'medicationId' => 20,
-            'dosage' => 'null'
+            'dosage' => ''
         ]);
 
     }
