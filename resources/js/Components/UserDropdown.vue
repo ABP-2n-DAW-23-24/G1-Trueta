@@ -41,7 +41,7 @@ const props = defineProps({
       label: 'Tancar sessió',
       route: 'logout',
       method: 'post',
-      isAdmin: true,
+      isAdmin: false,
       isManager: false,
     }
   ]"></BuildableDropdown>
