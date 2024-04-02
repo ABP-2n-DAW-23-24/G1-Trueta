@@ -95,6 +95,7 @@ onMounted(() => {
             if (medications.value.length > 0) {
                 activeMedication.value = medications.value[0].id;
                 getDoses(activeMedication.value);
+                getMedicationDosage(activeMedication.value);
             }
         })
         .catch(error => {
@@ -384,7 +385,7 @@ const editDosage = () => {
                 <div class="medication-dosage-content">
                     <h1 class="title-dosage">Dosificacions d'antibiòtics</h1>
                     <div class="medication-dosage-div" v-for="dosage in medicationDosage" :key="dosage.id">
-                        <textarea class="textarea is-link" readonly>{{ dosage.dosage != null ? dosage.dosage : 'Encara no hi ha dosificació per aquest antibiòtic' }}</textarea>
+                        <textarea class="textarea is-link" readonly placeholder="Encara no hi ha dosificació per aquest antibiòtic">{{ dosage.dosage}}</textarea>
                     </div>
                     <div class="button-edit-dosage">
                         <div :class="{ 'is-active': isAddDosageActive }" class="modal">
@@ -397,7 +398,7 @@ const editDosage = () => {
                                         <div class="field">
                                             <label class="label">Dosificació de {{  medications.find(med => med.id === activeMedication)?.name }}:</label>
                                             <div class="control">
-                                                <textarea class="textarea input-edit-dosage" placeholder="Dosificació de l'antibiòtic..." title="Dosificació de l'antibiòtic..."
+                                                <textarea class="textarea input-edit-dosage" placeholder="Encara no hi ha dosificació per aquest antibiòtic" title="Dosificació de l'antibiòtic..."
                                             v-model="EditDosageForm.dosage"></textarea>
                                                 
                                             </div>
@@ -716,8 +717,18 @@ header {
   resize: none;
 }
 
+.textarea:focus {
+  background-color: #f0f0f0 !important;
+}
+
+.textarea::placeholder {
+  color: #00000096;
+}
+
 .button-dosage{
     width: fit-content;
     align-items: center;
 }
+
+
 </style>

@@ -127,5 +127,72 @@ class MedicationsDosagesTableSeeder extends Seeder
                 En pacients amb FG 10- 30 ml, valorar redosificació. Si FG <10 no cal
                 redosificar.'
         ]);
+
+        // 10
+        MedicationDosage::create([
+            'medicationId' => 10,
+            'dosage' => 'null'
+        ]);
+
+        // 11
+        MedicationDosage::create([
+            'medicationId' => 11,
+            'dosage' => 'null'
+        ]);
+
+        // 12
+        MedicationDosage::create([
+            'medicationId' => 12,
+            'dosage' => 'null'
+        ]);
+
+        // 13
+        MedicationDosage::create([
+            'medicationId' => 13,
+            'dosage' => 'null'
+        ]);
+
+        // 14
+        MedicationDosage::create([
+            'medicationId' => 14,
+            'dosage' => 'null'
+        ]);
+
+        // 15
+        MedicationDosage::create([
+            'medicationId' => 15,
+            'dosage' => 'null'
+        ]);
+
+        // 16
+        MedicationDosage::create([
+            'medicationId' => 16,
+            'dosage' => 'null'
+        ]);
+
+        // 17
+        MedicationDosage::create([
+            'medicationId' => 17,
+            'dosage' => 'null'
+        ]);
+
+        // 18
+        MedicationDosage::create([
+            'medicationId' => 18,
+            'dosage' => 'null'
+        ]);
+
+        // 19
+        MedicationDosage::create([
+            'medicationId' => 19,
+            'dosage' => 'null'
+        ]);
+
+        // 20
+        MedicationDosage::create([
+            'medicationId' => 20,
+            'dosage' => 'null'
+        ]);
+
     }
 }
