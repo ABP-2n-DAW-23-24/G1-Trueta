@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useForm, router } from '@inertiajs/vue3';
+import { useForm, router, usePage } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
 import UserDropdown from '@/Components/UserDropdown.vue';
 import Footer from '@/Components/Footer.vue';
@@ -162,6 +162,8 @@ onMounted(() => {
 const props = defineProps({
     user: Object,
 });
+
+
 // Delete dose
 const deleteDose = (doseId) => {
     const confirmDelete = confirm("Segur que vols eliminar aquesta dosi?");
@@ -362,7 +364,7 @@ const deleteMedication = (medicationId) => {
 
         <div class="medication-panel-content">
             <div class="medications">
-                <div class="add-medication">
+                <div class="add-medication" v-if="user.isManager">
                     <div :class="{ 'is-active': isAddMedicationModalActive }" class="modal">
                         <div class="modal-background" @click="closeModal"></div>
                         <form @submit.prevent="addMedication">
@@ -406,7 +408,7 @@ const deleteMedication = (medicationId) => {
 
                 </div>
                 <div class="medication-dosage-content">
-                    <h1 class="title-dosage">Dosificacions d'antibiòtics</h1>
+                    <h1 class="title-dosage">Dosificacions de l'antibiòtic {{ medications.find(med => med.id === activeMedication)?.name }}: </h1>
                     <div class="medication-dosage-div" v-for="dosage in medicationDosage" :key="dosage.id">
                         <textarea class="textarea is-link" readonly
                             placeholder="Encara no hi ha dosificació per aquest antibiòtic">{{ dosage.dosage === null ? 'Encara no hi ha dosificació per aquest antibiòtic' : dosage.dosage }}</textarea>
@@ -443,7 +445,10 @@ const deleteMedication = (medicationId) => {
                                     @click="closeModalDosage"></button>
                             </form>
                         </div>
-                        <div class="buttons-dosage">
+                  <!-- only if IsMaager (user) is true -->
+                        <div class="buttons-dosage" v-if="props.user.isManager">
+                                          
+                           
                         <Button class="button-dosage" :text="'Editar dosificació'" @click="showModalDosage" />
                  
                     <Button class="delete-med" :text="'Eliminar medicament'" @click="deleteMedication(activeMedication)"
