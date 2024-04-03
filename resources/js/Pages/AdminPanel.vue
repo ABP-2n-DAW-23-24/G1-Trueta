@@ -23,7 +23,7 @@ function endSearchUser(data) {
 <div class="container-admin">
   <Head title="Index" />
  
-      <AdminPanelHeader @searched-user="endSearchUser" :user="props.user"></AdminPanelHeader>
+      <AdminPanelHeader @searched-user="endSearchUser" :traduccion="traduccion" :user="props.user"></AdminPanelHeader>
 
   <div class="bg-listuser">
      

@@ -9,6 +9,10 @@ import { Head } from '@inertiajs/vue3';
 
 
 const selectedSurgery = ref(1);
+const questions = ref([]);
+const selectedQuestions = ref([]);
+const resumes = ref([]);
+const isLoading = ref(true);
 function setSelectedSurgery(value) {
   selectedSurgery.value = value;
 }
@@ -52,13 +56,21 @@ const hoveredOperation = ref(-1);
 const selectedOperation = ref(0);
 
 function setSelectedOperation(value) {
+  crumb.value = 2;
   selectedOperation.value = value;
+  questions.value = [];
+  selectedQuestions.value = [];
+  resumes.value = [];
+  axios.get(`/get-questions/${value}`)
+  .then(response => {
+    questions.value = response.data.questionsOperation;
+  })
+  .finally(() => {
+    isLoading.value = false;
+  });
+
 }
 
-
-// funcio toggleHoverOperation: passar id de la operació
-
-// funcio toggleHoverSurgery: passar id de la cirurgia
 function setHoveredSurgery(id) {
   hoveredSurgery.value = id;
 }
@@ -67,6 +79,17 @@ function setHoveredOperation(id) {
   hoveredOperation.value = id;
 }
 
+function setIsLoading(value) {
+  isLoading.value = value;
+}
+
+function setSelectedQuestions(value) {
+  selectedQuestions.value = value;
+}
+
+function setResumes(value) {
+  resumes.value = value;
+}
 
 
 </script>
@@ -103,6 +126,13 @@ function setHoveredOperation(id) {
         :toggleCollapse="toggleCollapse"
         :setSelectedOperation="setSelectedOperation"
         :selectedOperation="selectedOperation"
+        :questions="questions"
+        :selectedQuestions="selectedQuestions"
+        :resumes="resumes"
+        :isLoading="isLoading"
+        :setIsLoading="setIsLoading"
+        :setSelectedQuestions="setSelectedQuestions"
+        :setResumes="setResumes"
       />
     </div>
   </div>

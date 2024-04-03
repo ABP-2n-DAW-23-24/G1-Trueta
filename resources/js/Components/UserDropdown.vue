@@ -1,5 +1,5 @@
 <script setup>
-    import BuildableDropdown from "@/Components/BuildableDropdown.vue";
+import BuildableDropdown from "@/Components/BuildableDropdown.vue";
 
 const props = defineProps({
   user: {
@@ -10,15 +10,26 @@ const props = defineProps({
 </script>
 
 <template>
-    <BuildableDropdown
-      class="user-dropdown"
-      :user="user"
-      :routes="[
-        {
+  <BuildableDropdown class="user-dropdown" :user="user" :routes="[
+    {
+      label: 'Pàgina d\'inici',
+      route: 'index',
+      method: 'get',
+      isAdmin: false,
+      isManager: false,
+    },
+    {
       label: 'Panell d\'antibiòtics',
       route: 'medication-panel',
       isAdmin: true,
       isManager: true,
+    },
+
+    {
+      label: 'Panell administració',
+      route: 'admin_panel',
+      isAdmin: true,
+      isManager: false,
     },
     {
       label: 'Perfil',
@@ -27,31 +38,25 @@ const props = defineProps({
       isManager: false,
     },
     {
-      label: 'Panell administració',
-      route: 'admin_panel',
-      isAdmin: true,
-      isManager: false,
-    },
-    {
-      label: 'Pagina Inici',
-      route: 'index',
-      method: 'get',
-      isAdmin: false,
-      isManager: false,
-    },
-    {
       label: 'Tancar sessió',
       route: 'logout',
       method: 'post',
-      isAdmin: true,
+      isAdmin: false,
       isManager: false,
     }
-      ]"
-    ></BuildableDropdown>
+  ]"></BuildableDropdown>
 </template>
+<!-- sudo add-apt-repository --remove ppa:ondrej/php
+sudo add-apt-repository --remove ppa:ondrej/php
+sudo apt-get update
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo add-apt-repository --remove ppa:ondrej/phpdawdawd
 
+
+-->
 <style scoped>
-  .user-dropdown {
-    width: 100%;
-  }
+.user-dropdown {
+  width: 100%;
+}
 </style>

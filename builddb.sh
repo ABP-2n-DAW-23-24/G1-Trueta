@@ -63,3 +63,5 @@ echo "[ INFO ] Seeding Questions...";
 ./vendor/bin/sail artisan db:seed --class=QuestionsTableSeeder
 echo "[ INFO ] Seeding Resumes...";
 ./vendor/bin/sail artisan db:seed --class=ResumesTableSeeder
+echo "[ INFO ] Seeding MedicationsDosages...";
+./vendor/bin/sail artisan db:seed --class=MedicationsDosagesTableSeeder
