@@ -31,6 +31,9 @@ function test(data) {
   emit('searchedUser', data); // Emitir el evento 'searchedUser' con los datos de la respuesta
 
 }
+function getUsers(){
+  emit('endcreate')
+}
 </script>
 
 <template>
@@ -40,7 +43,7 @@ function test(data) {
     </div>
     <div class="menu-right">
       <AdminPanelMenu @searchedUser="test" class="menu"></AdminPanelMenu>
-      <ModalUsers class="modal-users-button" @getUser="test" :traduccion="traduccion"></ModalUsers>
+      <ModalUsers class="modal-users-button" @getUser="getUsers" :traduccion="traduccion"></ModalUsers>
       <div class="dropdown-div">
         <UserDropdown :user="user" class="user-dropdown" />
       </div>
