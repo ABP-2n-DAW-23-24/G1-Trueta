@@ -249,6 +249,9 @@ function handleAddCondition() {
   }).then(response => {
     console.log(response.data);
     props.setSelectedOperation(props.selectedOperation);
+
+    textArea.innerHTML = "";
+    conditionNameInput.value.value = "";
   });
 }
 
@@ -525,9 +528,10 @@ input[type="radio"] {
 .manager-inputs {
   display: grid;
   gap: 15px;
+  margin-top: 24px;
 }
 
-.manager-inputs>* {
+.manager-inputs > * {
   display: block;
   resize: none;
   width: 100%;
