@@ -7,6 +7,7 @@ import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
 import Boto from '@/Components/Button.vue';
 import Modal from './Modal.vue';
 
+
 const selectedQuestions = ref([]);
 
 const handleToggleQuestion = (question) => {
@@ -16,6 +17,8 @@ const handleToggleQuestion = (question) => {
     selectedQuestions.value.push(question);
   }
 };
+
+const checkboxContainer = ref(null);
 
 const props = defineProps({
   crumb: {
@@ -93,14 +96,15 @@ const props = defineProps({
 });
 
 
-const handleSubmitQuestionsQuery = () => {
+const handleSubmitQuestionsQuery = e => {
   props.setResumes([]);
   selectedQuestions.value.forEach((question) => {
     axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
       .then(response => {
-        props.setResumes([...props.resumes, response.data]);
         props.setCrumb(3);
-
+        props.setResumes([...props.resumes, response.data]);
+        checkboxContainer.value.querySelectorAll("input[type=checkbox]").forEach(checkbox => checkbox.checked = false);
+        selectedQuestions.value = [];
       });
   });
 };
@@ -255,16 +259,16 @@ function handleAddCondition() {
   });
 }
 
-const isModalOpen = ref(false);
+const isModalDeleteOpen = ref(false);
 const selectedQuestionId = ref(null);
 
-function closeModal() {
-  isModalOpen.value = false;
+function closeModalDelete() {
+  isModalDeleteOpen.value = false;
 }
 
-function openModal(questionId) {
+function openModalDelete(questionId) {
   selectedQuestionId.value = questionId;
-  isModalOpen.value = true;
+  isModalDeleteOpen.value = true;
 }
 
 function deleteQuestion(id) {
@@ -277,7 +281,7 @@ function deleteQuestion(id) {
   }).then(response => {
     console.log(response.data);
     props.setSelectedOperation(props.selectedOperation);
-    isModalOpen.value = false;
+    isModalDeleteOpen.value = false;
   });
 }
 </script>
@@ -301,16 +305,16 @@ function deleteQuestion(id) {
   <!-- All operations with profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
     <WizardSquare 
-    :class="{
-      'hover': props.hoveredOperation === operation.id,
-    }"
-    @mouseover="props.setHoveredOperation(operation.id)" 
-    @mouseleave="props.setHoveredOperation(-1)"
-    v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
-    @click="() => props.setSelectedOperation(operation.id)" 
-    :name="operation.name"
-    :color="surgeries[props.selectedSurgery].color"
-    :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
+      :class="{
+        'hover': props.hoveredOperation === operation.id,
+      }"
+      @mouseover="props.setHoveredOperation(operation.id)" 
+      @mouseleave="props.setHoveredOperation(-1)"
+      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
+      @click="() => props.setSelectedOperation(operation.id)" 
+      :name="operation.name"
+      :color="surgeries[props.selectedSurgery].color"
+      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
@@ -322,67 +326,81 @@ function deleteQuestion(id) {
 
   <!-- All operations without profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
-    <WizardSquare 
-    :class="{
-      'hover': props.hoveredOperation == operation.id,
-    }" 
-    @mouseover="props.setHoveredOperation(operation.id)" 
-    @mouseleave="props.setHoveredOperation(-1)"
-    v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
-    :name="operation.name" 
-    :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
-    :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
+    <WizardSquare
+      :class="{
+        'hover': props.hoveredOperation == operation.id,
+      }" 
+      @mouseover="props.setHoveredOperation(operation.id)" 
+      @mouseleave="props.setHoveredOperation(-1)"
+      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+      :name="operation.name" 
+      :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
 
   <div v-show="crumb === 2 && !isLoading" class="questions-container">
-    <form @submit.prevent="handleSubmitQuestionsQuery" class="questions-manager-container">
+    <div class="questions-manager-container" ref="checkboxContainer">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
-      <div class="form__group" v-for="(question, index) in questions" :key="index">
-        <div class="checkbox-wrapper-46 flex">
-          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleToggleQuestion(question)">
-          <label :for="'question_' + index" class="cbx larger-label">
-            <span>
-              <svg viewBox="0 0 12 10" height="10px" width="12px">
-                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-              </svg>
-            </span>
-            <span>{{ question.question }}</span>
-          </label>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 448 512" 
-            class="icons"
-            @click="openModal(question.id)">
-              <path
-                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" 
-              />
-          </svg>
-          <Modal :show="isModalOpen" @close="closeModal">
-            <div style="padding: 20px;">
-              <div style="float: right">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 384 512" 
-                  style="height: 20px; cursor:pointer;"
-                  @click="closeModal">
-                  <path
-                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+      <div class="questions">
+        <div class="form__group" v-for="(question, index) in questions" :key="index">
+          <div class="checkbox-wrapper-46 flex">
+            <input
+              type="checkbox" 
+              class="inp-cbx" 
+              :id="'question_' + index" 
+              :name="'question_' + index" 
+              @change="() => handleToggleQuestion(question)"
+            >
+            <label :for="'question_' + index" class="cbx larger-label">
+              <span>
+                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                  <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
                 </svg>
+              </span>
+              <span>{{ question.question }}</span>
+            </label>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 448 512" 
+              class="icons"
+              @click="openModalDelete(question.id)">
+                <path
+                  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" 
+                />
+            </svg>
+            <Modal :show="isModalDeleteOpen" @close="closeModalDelete">
+              <div style="padding: 20px;">
+                <div style="float: right">
+                  <svg xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 384 512" 
+                    style="height: 20px; cursor:pointer;"
+                    @click="closeModalDelete">
+                    <path
+                      d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                  </svg>
+                </div>
+                <h1 style="padding:20px;">Estàs segur de que vols eliminar el resum <b>{{ question.question }}</b>?</h1>
+                <button class="btn_delete" @click="deleteQuestion(selectedQuestionId)">Eliminar</button>
               </div>
-              <h1 style="padding:20px;">Estàs segur de que vols eliminar el resum <b>{{ question.question }}</b>?</h1>
-              <button class="btn_delete" @click="deleteQuestion(selectedQuestionId)">Eliminar</button>
-            </div>
-          </Modal>
+            </Modal>
+          </div>
         </div>
       </div>
+
       <div class="button-btn-div">
-        <Boto text="Consultar" type="submit" class="button-btn" :id="props.selectedOperation"></Boto>
+        <Boto
+          @click="handleSubmitQuestionsQuery"
+          text="Consultar" 
+          type="submit" 
+          class="button-btn" 
+          :id="props.selectedOperation">
+        </Boto>
       </div>
-    </form>
+    </div>
     <div class="questions-manager-container">
       <h2>Gestor de condicions</h2>
       <div class="manager-inputs">
         <input type="text" placeholder="Nom de la condició" ref="conditionNameInput">
-        <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
         <div class="ck-medications-editor">
           <div class="select-options">
             <SelectOnSteroids :update-header="false" @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic">
@@ -427,7 +445,7 @@ function deleteQuestion(id) {
 
 .questions-container {
   display: grid;
-  grid-template-columns: 1fr 500px;
+  grid-template-columns: 1.25fr 1fr;
   gap: 15px;
 }
 
@@ -460,13 +478,29 @@ legend {
   font-size: 1.5em;
 }
 
-form>*+* {
+form > * + * {
   margin-top: 1.5rem;
 }
 
-.form__group {
-  display: flex;
-  align-items: center;
+.questions {
+  display: grid;
+  justify-items: start;
+  gap: 24px;
+}
+
+.form__group:first-child {
+  margin-top: 24px;
+}
+
+@media screen and (max-width: 1150px) {
+  .questions-container {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .button-btn-div {
+    justify-content: flex-start !important;
+  }
 }
 
 .select-options {
@@ -486,8 +520,9 @@ input[type="radio"] {
 }
 
 .checkbox-wrapper-46 .cbx {
+  display: flex;
+  align-items: center;
   margin: auto;
-  -webkit-user-select: none;
   user-select: none;
   cursor: pointer;
 }
@@ -500,8 +535,8 @@ input[type="radio"] {
 
 .checkbox-wrapper-46 .cbx span:first-child {
   position: relative;
-  width: 18px;
-  height: 18px;
+  min-width: 18px;
+  min-height: 18px;
   border-radius: 3px;
   transform: scale(1);
   vertical-align: middle;
@@ -549,11 +584,6 @@ textarea:focus {
   box-shadow: none;
 }
 
-/* textarea:active, input:active{
-  outline: none;
-  border: none;
-}  */
-
 .checkbox-wrapper-46 .cbx span:first-child:before {
   content: "";
   width: 100%;
@@ -563,10 +593,6 @@ textarea:focus {
   transform: scale(0);
   opacity: 1;
   border-radius: 50%;
-}
-
-.checkbox-wrapper-46 .cbx span:last-child {
-  padding-left: 8px;
 }
 
 .checkbox-wrapper-46 .cbx:hover span:first-child {
@@ -732,18 +758,15 @@ textarea:focus {
   font-weight: bold;
 }
 
-.flex span:first-child {
-  margin-right: 8px;
-}
-
 .flex span {
-  margin-right: 8px;
+  padding-left: 8px;
 }
 
 .flex .icons {
-  display: inline-block;
-  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
   cursor: pointer;
+  margin-left: 15px;
 }
 
 .btn_delete {

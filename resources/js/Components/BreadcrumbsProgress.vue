@@ -14,12 +14,30 @@ const props = defineProps({
     setCrumb: {
         type: Function,
         required: true
+    },
+    setResumes: {
+        type: Function,
+        required: true
+    },
+    resumes: {
+        type: Array,
+        required: true
     }
 });
 
 const goBack = () => {
     if (props.crumb === 0) return;
     props.setCrumb(props.crumb - 1);
+};
+
+const handleCrumbClick = (index) => {
+    console.log(props.resumes);
+    props.setResumes([]);
+    console.log(props.resumes);
+    if (index <= props.crumb) {
+        props.setCrumb(index);
+
+    }
 };
 </script>
 
@@ -29,7 +47,7 @@ const goBack = () => {
             <img src="../../assets/svg/left-arrow.svg" alt="Back" @click="goBack()" class="back-button">
         </div>
         <div v-for="(breadcrumb, index) in breadcrumbs" :key="index">
-            <span @click="() => { index <= crumb ? setCrumb(index) : null }" class="breadcrumb" :class="{
+            <span @click="() => { handleCrumbClick(index) }" class="breadcrumb" :class="{
                 'active': index === crumb,
                 'inactive': index > crumb
             }">{{ breadcrumb }}</span>

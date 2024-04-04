@@ -27,17 +27,6 @@ const props = defineProps({
 });
 
 
-
-
-onUpdated(() => {
-    // alert(props.idSurgery);
-});
-
-
-function handleSetSelectedSurgery(setSelectedSurgery) {
-    console.log(setSelectedSurgery);
-}
-
 </script>
 
 
@@ -47,6 +36,8 @@ function handleSetSelectedSurgery(setSelectedSurgery) {
             :crumb="props.crumb"
             :setCrumb="props.setCrumb"
             :user="props.user"
+            :setResumes="props.setResumes"
+            :resumes="props.resumes"
         />
         <WizardGrid
             :crumb="props.crumb"
