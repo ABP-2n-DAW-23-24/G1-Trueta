@@ -6,8 +6,22 @@ import TextAreaOnSteroids from '@/Components/TextAreaOnSteroids.vue';
 import SelectOnSteroids from '@/Components/SelectOnSteroids.vue';
 import Boto from '@/Components/Button.vue';
 import Modal from './Modal.vue';
+import ModalOnSteroids from '@/Components/ModalOnSteroids.vue';
 
 const selectedQuestions = ref([]);
+const medicationsResumes = ref([]);
+const resumesLoaded = ref([]);
+
+const modalMedicationInfoBody = ref("");
+
+const isModalMedicationInfoOpen = ref(false);
+const selectedModalMedication = ref(null);
+function setIsModalMedicationInfoOpen(value) {
+  isModalMedicationInfoOpen.value = value;
+  document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
+}
+
+const modalMedicationInfo = ref(null);
 
 const handleToggleQuestion = (question) => {
   if (selectedQuestions.value.includes(question)) {
@@ -92,12 +106,49 @@ const props = defineProps({
   },
 });
 
+function formattedResume(resume) {
+  return stylizeHTML(resume.replace(/{{(.*?)}}/g, "<span>$1</span>"));
+}
+
+function extractMedicationsResumes(resume) {
+  let medications = [];
+  resume.replace(/{{(.*?)}}/g, (match, p1) => {
+    if (!medicationsResumes.value.includes(p1)) {
+      medications.push(p1);
+      medicationsResumes.value.push(p1);
+    }
+  });
+
+  return medications;
+}
 
 const handleSubmitQuestionsQuery = () => {
   props.setResumes([]);
   selectedQuestions.value.forEach((question) => {
     axios.get(`/get-resumes/${props.selectedOperation}/${question.id}`)
       .then(response => {
+        const newMedications = extractMedicationsResumes(response.data.resume[0].resume);
+
+        newMedications.forEach(medicationId => {
+          axios.get(`/medication-panel/get-medication-dosage/${medicationId}`)
+            .then(response => {
+              resumesLoaded.value.push({
+                id: medicationId,
+                dosage: response.data[0].dosage
+              });
+              const spans = document.querySelectorAll(".operation-content span[value='" + medicationId + "']");
+
+              spans.forEach(span => {
+                const dosage = resumesLoaded.value.filter(resume => resume.id == medicationId)[0].dosage;
+                span.addEventListener('click', e => {
+                  setIsModalMedicationInfoOpen(true);
+                  selectedModalMedication.value = medicationId;
+                  modalMedicationInfo.value = dosage;
+                });
+              });
+            });
+        });
+
         props.setResumes([...props.resumes, response.data]);
         props.setCrumb(3);
 
@@ -105,8 +156,13 @@ const handleSubmitQuestionsQuery = () => {
   });
 };
 
-const surgeries = ref([]);
+function getMedicationName(medicationId) {
+  if (!medications.value) return "";
+  if (!medicationId) return "";
+  return medications.value.filter(medication => medication.id == medicationId)[0].name;
+};
 
+const surgeries = ref([]);
 const conditionNameInput = ref(null);
 
 
@@ -155,15 +211,21 @@ onMounted(() => {
     });
 });
 
+const spanStyles = ref({
+  backgroundColor: '#eb4034',
+  borderRadius: '5px',
+  padding: '0 8px',
+  color: 'white',
+  cursor: 'pointer',
+  display: 'inline-block',
+  marginTop: '5px',
+});
+
 function stylizeTextArea(textArea) {
   textArea.querySelectorAll('span').forEach(span => {
-    span.style.backgroundColor = '#eb4034';
-    span.style.borderRadius = '5px';
-    span.style.padding = '0 8px';
-    span.style.color = 'white';
-    span.style.cursor = 'pointer';
-    span.style.display = 'inline-block';
-    span.style.marginTop = '5px';
+    for (const [key, value] of Object.entries(spanStyles.value)) {
+      span.style[key] = value;
+    }
 
     span.addEventListener('click', () => {
       span.remove();
@@ -178,6 +240,17 @@ function stylizeTextArea(textArea) {
       span.style.textDecoration = 'none';
     });
   });
+}
+
+function stylizeHTML(stringHTML) {
+  const div = document.createElement('div');
+  div.innerHTML = stringHTML;
+  div.querySelectorAll('span').forEach(span => {
+    span.setAttribute('value', span.innerHTML);
+    span.innerHTML = medications.value.filter(medication => medication.id == span.innerHTML)[0].name;
+  })
+  stylizeTextArea(div);
+  return div.innerHTML;
 }
 
 function addAntibioticToTextarea(e) {
@@ -196,14 +269,14 @@ function addAntibioticToTextarea(e) {
 }
 
 function setCursorToEnd(div) {
-    window.getSelection().collapse(div, div.childNodes.length);
+  window.getSelection().collapse(div, div.childNodes.length);
 }
 
 function handleTextAreaOnSteroidsInput() {
   const spans = document.querySelectorAll("#textAreaOnSteroids span");
   const div = document.getElementById("textAreaOnSteroids");
 
-  
+
   spans.forEach(span => {
     let length = span.getAttribute('length');
     let realLength = span.innerText.length;
@@ -280,37 +353,33 @@ function deleteQuestion(id) {
     isModalOpen.value = false;
   });
 }
+const computeModalMedicationInfo = computed(() => {
+  if (modalMedicationInfo.value) {
+    return modalMedicationInfo.value.replaceAll("\n", "<br>");
+  }
+  return "";
+});
+
 </script>
 <template>
   <!-- All surgeries -->
   <div v-show="crumb === 0 && !isLoading" class="wizard-grid-container">
-    <WizardSquare 
-      v-show="surgery.operations.length > 0" 
-      v-for="(surgery, index) in surgeries" 
-      :class="{
-        'hover': props.hoveredSurgery == surgery.id,
-      }" 
-      @mouseover="props.setHoveredSurgery(surgery.id)" 
-      @mouseleave="props.setHoveredSurgery(-1)"
-      @click="() => handleSurgeryClick(index)" 
-      :name="surgery.name" 
-      :color="surgery.color"
+    <WizardSquare v-show="surgery.operations.length > 0" v-for="(surgery, index) in surgeries" :class="{
+    'hover': props.hoveredSurgery == surgery.id,
+  }" @mouseover="props.setHoveredSurgery(surgery.id)" @mouseleave="props.setHoveredSurgery(-1)"
+      @click="() => handleSurgeryClick(index)" :name="surgery.name" :color="surgery.color"
       :textColor="makeTextColorReadable(surgery.color)" type="surgery" />
   </div>
 
   <!-- All operations with profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
-    <WizardSquare 
-    :class="{
-      'hover': props.hoveredOperation === operation.id,
-    }"
-    @mouseover="props.setHoveredOperation(operation.id)" 
-    @mouseleave="props.setHoveredOperation(-1)"
-    v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
-    @click="() => props.setSelectedOperation(operation.id)" 
-    :name="operation.name"
-    :color="surgeries[props.selectedSurgery].color"
-    :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
+    <WizardSquare :class="{
+    'hover': props.hoveredOperation === operation.id,
+  }" @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
+      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
+      @click="() => props.setSelectedOperation(operation.id)" :name="operation.name"
+      :color="surgeries[props.selectedSurgery].color"
+      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
@@ -322,16 +391,12 @@ function deleteQuestion(id) {
 
   <!-- All operations without profilaxis -->
   <div v-show="crumb === 1 && !isLoading" class="wizard-grid-container">
-    <WizardSquare 
-    :class="{
-      'hover': props.hoveredOperation == operation.id,
-    }" 
-    @mouseover="props.setHoveredOperation(operation.id)" 
-    @mouseleave="props.setHoveredOperation(-1)"
-    v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
-    :name="operation.name" 
-    :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
-    :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
+    <WizardSquare :class="{
+    'hover': props.hoveredOperation == operation.id,
+  }" @mouseover="props.setHoveredOperation(operation.id)" @mouseleave="props.setHoveredOperation(-1)"
+      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+      :name="operation.name" :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
 
   <div v-show="crumb === 2 && !isLoading" class="questions-container">
@@ -339,7 +404,8 @@ function deleteQuestion(id) {
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="form__group" v-for="(question, index) in questions" :key="index">
         <div class="checkbox-wrapper-46 flex">
-          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index" @change="() => handleToggleQuestion(question)">
+          <input type="checkbox" class="inp-cbx" :id="'question_' + index" :name="'question_' + index"
+            @change="() => handleToggleQuestion(question)">
           <label :for="'question_' + index" class="cbx larger-label">
             <span>
               <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -348,21 +414,14 @@ function deleteQuestion(id) {
             </span>
             <span>{{ question.question }}</span>
           </label>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 448 512" 
-            class="icons"
-            @click="openModal(question.id)">
-              <path
-                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" 
-              />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icons" @click="openModal(question.id)">
+            <path
+              d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
           </svg>
           <Modal :show="isModalOpen" @close="closeModal">
             <div style="padding: 20px;">
               <div style="float: right">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 384 512" 
-                  style="height: 20px; cursor:pointer;"
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="height: 20px; cursor:pointer;"
                   @click="closeModal">
                   <path
                     d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
@@ -385,7 +444,8 @@ function deleteQuestion(id) {
         <!-- <textarea placeholder="Instruccions de la condició"></textarea> -->
         <div class="ck-medications-editor">
           <div class="select-options">
-            <SelectOnSteroids :update-header="false" @change="addAntibioticToTextarea" placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic">
+            <SelectOnSteroids :update-header="false" @change="addAntibioticToTextarea"
+              placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic">
               <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
             </SelectOnSteroids>
           </div>
@@ -398,13 +458,13 @@ function deleteQuestion(id) {
     </div>
   </div>
 
-  
+
   <!-- The result  -->
   <div v-show="crumb === 3">
     <div class="results-manager-container">
-      <h2>Resultats:</h2>
-      <div v-for="resume in resumes" :key="resume.id">
-        <h3>- {{ resume.resume[0].resume }}</h3> <br />
+      <div v-for="resume in resumes" :key="resume.id" class="operation-container">
+        <h3 class="operation">{{ questions.filter(q => q.id == resume.resume[0].questionId)[0].question }}</h3>
+        <span class="operation-content" v-html="formattedResume(resume.resume[0].resume)"></span>
       </div>
     </div>
   </div>
@@ -412,6 +472,13 @@ function deleteQuestion(id) {
   <div class="spinner-container" v-if="isLoading">
     <div class="lds-ring"></div>
   </div>
+
+  <ModalOnSteroids :show="isModalMedicationInfoOpen" :set="setIsModalMedicationInfoOpen"
+    :title="`Informació de ${getMedicationName(selectedModalMedication)}`">
+    <template v-slot:body>
+      <div v-html="computeModalMedicationInfo" class="consolas"></div>
+    </template>
+  </ModalOnSteroids>
 </template>
 
 <style scoped>
@@ -531,7 +598,7 @@ input[type="radio"] {
   margin-top: 24px;
 }
 
-.manager-inputs > * {
+.manager-inputs>* {
   display: block;
   resize: none;
   width: 100%;
@@ -548,11 +615,6 @@ textarea:focus {
   border-color: inherit;
   box-shadow: none;
 }
-
-/* textarea:active, input:active{
-  outline: none;
-  border: none;
-}  */
 
 .checkbox-wrapper-46 .cbx span:first-child:before {
   content: "";
@@ -753,6 +815,35 @@ textarea:focus {
   color: white;
   float: right;
   cursor: pointer;
-  margin-bottom: 30px;  
+  margin-bottom: 30px;
+}
+
+.operation {
+  color: #000;
+  width: fit-content;
+  padding: 5px 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.operation-container:not(:first-child) {
+  margin-top: 50px;
+}
+
+.operation-content {
+  display: block;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 7px 10px;
+}
+
+.consolas {
+  font-family: 'Consolas', monospace;
+  background: #eee;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  line-height: 1.75;
 }
 </style>
