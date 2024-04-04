@@ -18,12 +18,18 @@ function endSearchUser(data) {
   
   users.value=data
 }
+function endcreated(){
+  axios.post("getUsers")
+      .then(response=>{
+          users.value=response.data.user
+          console.log(response)
+      })}
 </script>
 <template>
 <div class="container-admin">
   <Head title="Index" />
  
-      <AdminPanelHeader @searched-user="endSearchUser" :traduccion="traduccion" :user="props.user"></AdminPanelHeader>
+      <AdminPanelHeader @endcreate="endcreated" @searched-user="endSearchUser" :traduccion="traduccion" :user="props.user"></AdminPanelHeader>
 
   <div class="bg-listuser">
      
