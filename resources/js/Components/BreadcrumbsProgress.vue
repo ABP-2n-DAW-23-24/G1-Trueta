@@ -82,7 +82,7 @@ const goBack = () => {
     width: 20px;
 }
 
-@media screen and (max-width: 890px) {
+@media screen and (max-width: 1000px) {
 
     .breadcrumb:not(.active) {
         display: none;
@@ -101,7 +101,7 @@ const goBack = () => {
     }
 }
 
-@media screen and (min-width: 890px) {
+@media screen and (min-width: 1000px) {
     .breadcrumb-container {
         display: none;
     }

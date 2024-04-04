@@ -47,6 +47,11 @@ function handleSetSelectedSurgery(setSelectedSurgery) {
             :crumb="props.crumb"
             :setCrumb="props.setCrumb"
             :user="props.user"
+            :selectedSurgery="props.selectedSurgery"
+            :setSelectedSurgery="props.setSelectedSurgery"
+            :selectedOperation="props.selectedOperation"
+            :setSelectedOperation="props.setSelectedOperation"
+            
         />
         <WizardGrid
             :crumb="props.crumb"

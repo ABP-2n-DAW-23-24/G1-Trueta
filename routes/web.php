@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-questions/{operationId}', [IndexController::class, 'getQuestions'])->name('getQuestions');
     Route::get('/json/surgeriesWithOperations', [SurgeriesController::class, 'surgeriesWithOperations'])->name('surgeriesWithOperations');
     Route::get('/get-resumes/{operationId}/{questionId}', [IndexController::class, 'getResume'])->name('getResume');
+    Route::post('/add-surgery', [IndexController::class, 'addSurgery'])->name('addSurgery');
+    Route::post('/add-operation', [IndexController::class, 'addOperation'])->name('addOperation');
 });
 
 Route::get('/dashboard', function () {
