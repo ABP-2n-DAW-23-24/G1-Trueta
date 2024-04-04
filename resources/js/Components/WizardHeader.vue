@@ -14,6 +14,14 @@ const props = defineProps({
   user: {
     type: Object,
     required: true
+  },
+  setResumes: {
+    type: Function,
+    required: true
+  },
+  resumes: {
+    type: Array,
+    required: true
   }
 });
 
@@ -28,6 +36,8 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
         :breadcrumbs="breadcrumbs"
         :crumb="crumb"
         :setCrumb="setCrumb"
+        :setResumes="props.setResumes"
+        :resumes="resumes"
         class="breadcrumbs"
       />
       <UserDropdown :user="props.user" />
