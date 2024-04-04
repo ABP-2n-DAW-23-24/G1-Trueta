@@ -38,6 +38,11 @@ const props = defineProps({
             :user="props.user"
             :setResumes="props.setResumes"
             :resumes="props.resumes"
+            :selectedSurgery="props.selectedSurgery"
+            :setSelectedSurgery="props.setSelectedSurgery"
+            :selectedOperation="props.selectedOperation"
+            :setSelectedOperation="props.setSelectedOperation"
+            
         />
         <WizardGrid
             :crumb="props.crumb"
