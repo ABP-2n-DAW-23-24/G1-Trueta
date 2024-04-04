@@ -615,5 +615,20 @@ class OperationsTableSeeder extends Seeder
             'name' => "Retirada d'implants ortopèdics utilitzats com tractament de fractures",
             'profilaxis' => 0
         ]);        
+
+        Operation::create([
+            'surgeryId' => 5,
+            'name' => 'Plàstica i dermatologica'
+        ]);
+
+        Operation::create([
+            'surgeryId' => 17,
+            'name' => 'Colo rectal'
+        ]);
+
+        Operation::create([
+            'surgeryId' => 18,
+            'name' => 'Proctològica no complexa'
+        ]);
     }
 }

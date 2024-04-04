@@ -1408,5 +1408,48 @@ class ResumesTableSeeder extends Seeder
             'questionId' => 2,
             'operationId' => 111,
         ]);
+
+        Resume::create([
+            'resume' => '{{1}} 2g
+            (*) Factors de risc: duració cirurgia > 2 h, implant protètic, > 65 anys, obesitat, comorbilitats,
+            transfusió, infecció activa a distància, la ILQ implicaria gravetat.',
+            'questionId' => 1,
+            'operationId' => 115,
+        ]);
+
+        Resume::create([
+            'resume' => '{{5}} 900 mg',
+            'questionId' => 2,
+            'operationId' => 115,
+        ]);
+
+        Resume::create([
+            'resume' => '{{3}} 2g + {{8}} 1g.
+            A la cirurgia colorectal programada es recomana la preparació mecànica del colon
+            (Fosfoevac o Pleinvue) associada a antibiòtics via oral amb Neomicina 1g + {{8}}
+            500 mg, 3 dosis preoperatòries 19, 18 i 9 h abans de l’inici de la cirurgia (és a dir, a les 13h,
+            14h i 23h del dia anterior a la cirurgia).',
+            'questionId' => 1,
+            'operationId' => 116,
+        ]);
+
+        Resume::create([
+            'resume' => '{{8}} 1g + {{7}} 3-5 mg/kg',
+            'questionId' => 2,
+            'operationId' => 116,
+        ]);
+
+        Resume::create([
+            'resume' => '{{6}} 2g',
+            'questionId' => 1,
+            'operationId' => 117,
+        ]);
+
+        Resume::create([
+            'resume' => '{{8}} 1g + {{7}} 3-5 mg/Kg',
+            'questionId' => 2,
+            'operationId' => 117,
+        ]);
+
     }
 }
