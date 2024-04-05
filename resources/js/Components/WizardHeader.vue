@@ -14,6 +14,10 @@ const props = defineProps({
   user: {
     type: Object,
     required: true
+  },
+  traductions:{
+    type: Object,
+    required: true
   }
 });
 
@@ -30,7 +34,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
         :setCrumb="setCrumb"
         class="breadcrumbs"
       />
-      <UserDropdown :user="props.user" />
+      <UserDropdown :user="props.user" :traductions="props.traductions" />
     </div>
 </template>
 

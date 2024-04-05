@@ -10,6 +10,10 @@ const props = defineProps({
   user: {
     type: Object,
     required: true
+  },
+  traductions:{
+    type:Object,
+    required:true
   }
 });
 
@@ -24,7 +28,7 @@ const props = defineProps({
     <div class="breadcrumbs-progress-container">
       <LanguageSelect :user="props.user" class="language-select" />
     </div>
-    <UserDropdown :user="props.user" class="user-dropdown" />
+    <UserDropdown :user="props.user" :traductions="props.traductions" class="user-dropdown" />
 </div>
   </div>
 </template>

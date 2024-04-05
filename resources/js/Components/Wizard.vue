@@ -10,6 +10,7 @@ const props = defineProps({
     selectedSurgery: Number,
     setSelectedSurgery: Function,
     user: Object,
+    traductions:Object,
     hoveredSurgery: Number,
     hoveredOperation: Number,
     toggleCollapse: Function,
@@ -43,10 +44,12 @@ function handleSetSelectedSurgery(setSelectedSurgery) {
 
 <template>
     <div class="wizard-container">
+    
         <WizardHeader
             :crumb="props.crumb"
             :setCrumb="props.setCrumb"
             :user="props.user"
+            :traductions="props.traductions"
         />
         <WizardGrid
             :crumb="props.crumb"
