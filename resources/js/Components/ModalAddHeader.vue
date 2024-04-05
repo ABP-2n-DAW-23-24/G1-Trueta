@@ -5,6 +5,7 @@ import Modal from './Modal.vue';
 import { defineEmits } from 'vue';
 import { useForm, router, usePage } from '@inertiajs/vue3';
 import Button from './Button.vue';
+import axios from 'axios';
 
 let isModalOpen = ref(false);
 function closeModal(params) {
@@ -50,27 +51,35 @@ const props = defineProps({
     setSelectedOperation: {
         type: Function,
         required: true
+    },
+    setSurgeries: {
+        type: Function,
+        required: true
+    },
+    surgeries: {
+        type: Array,
+        required: true
     }
 });
 
-// add a new surgery
-// /add-surgery
 
 const addSurgery = useForm({
     name: ''
 });
 
 const addSurgerySubmit = () => {
-    addSurgery.post('/add-surgery', {
-        onSuccess: () => {
+    axios.post('/add-surgery', {name: addSurgery.name})
+        .then(response => {
             closeModal();
-        }
-    });
+            console.log(response.data);
+            const newSurgery = response.data.surgery;
+            const newOperation = response.data.operation;
+            newOperation.profilaxis = 1;
+            newSurgery.operations = [newOperation];
+            console.log(newSurgery);
+            props.setSurgeries([...props.surgeries, newSurgery]);
+        });
 }
-
-
-// add a new operation
-// /add-operation
 
 const addOperation = useForm({
     name: '',
@@ -86,12 +95,23 @@ const addOperationSubmit = () => {
         addOperation.surgeryId = props.selectedSurgery + 1;
     }
 
-    addOperation.post('/add-operation', {
-        onSuccess: () => {
+    axios.post('/add-operation', {name: addOperation.name, surgeryId: addOperation.surgeryId})
+        .then(response => {
             closeModal1();
-            console.log('Add operation');
-        }
-    });
+            const surgeryId = response.data.operation.surgeryId;
+            const operation = response.data.operation;
+            operation.profilaxis = 1;
+
+            const _surgeries = props.surgeries;
+            for (let i = 0; i < _surgeries.length; i++) {
+                if (_surgeries[i].id == surgeryId) {
+                    _surgeries[i].operations.push(operation);
+                    break;
+                }
+            }
+            props.setSurgeries(_surgeries);
+            console.log(_surgeries);
+        });
 }
 </script>
 
