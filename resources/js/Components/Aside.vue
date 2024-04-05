@@ -56,7 +56,6 @@ axios.get("/json/surgeriesWithOperations")
 
 
 function handleOperationClick(operationId) {
-  console.log(operationId);
   props.setCrumb(2);
   props.setSelectedOperation(operationId);
 }
