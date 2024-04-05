@@ -10,7 +10,6 @@ import axios from 'axios';
 let isModalOpen = ref(false);
 function closeModal(params) {
     isModalOpen.value = false
-
 }
 
 let isModalOpen1 = ref(false);
@@ -87,8 +86,6 @@ const addOperation = useForm({
 });
 
 const addOperationSubmit = () => {
-   
-
     if (props.selectedSurgery === 0) {
         addOperation.surgeryId = 1;
     } else {
@@ -116,8 +113,8 @@ const addOperationSubmit = () => {
 </script>
 
 <template>
-    <div v-show="crumb === 0">
-        <button class="button-add" @click=" isModalOpen = true" title="Delete">
+    <div v-show="crumb === 0" @click="isModalOpen = true">
+        <button class="button-add" title="Delete">
             <img src="../../assets/img/mas.png" alt="Add" class="add-icon">
         </button>
 
@@ -146,8 +143,8 @@ const addOperationSubmit = () => {
         </Modal>
     </div>
 
-    <div v-show="crumb === 1">
-        <button class="button-add" @click=" isModalOpen1 = true" title="Delete">
+    <div v-show="crumb === 1" @click=" isModalOpen1 = true">
+        <button class="button-add" title="Delete">
             <img src="../../assets/img/mas.png" alt="Add" class="add-icon">
         </button>
 
