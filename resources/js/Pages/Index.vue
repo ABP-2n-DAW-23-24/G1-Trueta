@@ -6,6 +6,39 @@ import Logo from '@/Components/Logo.vue';
 import Aside from '@/Components/Aside.vue';
 import Wizard from '@/Components/Wizard.vue';
 import { Head } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
+
+
+let letters = [];
+
+const EASTER_EGGS = [
+  {
+    "word": ["R", "I", "C", "K", "R", "O", "L", "L"],
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+  },
+  {
+    "word": ["S", "T", "A", "R", "W", "A", "R", "S"],
+    "url": "https://www.youtube.com/watch?v=JMDoAdGsdNU"
+  },
+  {
+    "word": ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight"],
+    "url": "https://www.youtube.com/watch?v=Zcb8yPEItwA"
+  }
+]
+
+onMounted(() => {
+  window.addEventListener('keydown', (e) => {
+    letters.push(e.key);
+    if (letters.length > 8) {
+      letters.shift();
+    }
+    EASTER_EGGS.forEach((egg) => {
+      if (egg.word.every((letter, index) => letter === letters[index])) {
+        window.open(egg.url, '_blank');
+      }
+    });
+  });
+});
 
 
 const selectedSurgery = ref(1);

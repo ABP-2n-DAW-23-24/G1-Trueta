@@ -47,14 +47,16 @@ const close = () => {
 }
 
 .modal-on-steroids-wrapper {
-    background: #fff;
-    padding: 30px;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 43rem;
-    margin: 30px;
     display: grid;
     gap: 30px;
+    background: #fff;
+    width: 100%;
+    max-width: 43rem;
+    max-height: calc(100vh -60px);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px;
+    overflow-y: auto;
     animation: scale-in-hor-center 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
