@@ -755,6 +755,7 @@ header {
     background-color: #f0f0f0;
     overflow-y: auto;
     resize: none;
+    font-family: consolas;
 }
 
 .textarea:focus {

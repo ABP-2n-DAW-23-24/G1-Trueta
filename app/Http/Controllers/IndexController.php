@@ -46,6 +46,32 @@ class IndexController extends Controller
         ]);
     }
 
+    // add new surgery
+    public function addSurgery(Request $request) {
+        $data = $request->all();
+        $surgeries = Surgery::get();
+        // get a random color for the new surgery by the color of the random surgery
+        $randomSurgery = $surgeries->random();
+        $color = $randomSurgery->color;
+        $surgery = new Surgery();
+        $surgery->name = $data['name'];
+        $surgery->color = $color;
+        $surgery->save();
+        $surgeries = Surgery::with('operations')->get()->toArray();
+    }
+
+    // add new operation
+    public function addOperation(Request $request) {
+        // name and surgeryId
+        $data = $request->all();
+      
+        $operation = new Operation();
+        $operation->name = $data['name'];
+        $operation->surgeryId = $data['surgeryId'];
+        $operation->save();
+        $surgeries = Surgery::with('operations')->get()->toArray();
+    }
+
 }
        
     
