@@ -26,5 +26,10 @@
     "usernotfound": "Usuario no encontrado",
     "findUser": "Buscar usuario",
     "addUserTitle": "Agregar usuarios",
-    "surnames": "Apellidos"
+    "surnames": "Apellidos",
+    "text_home":"Página de inicio",
+    "text_antibiotics":"Panel de antibióticos",
+    "adminis":"Panel de Administrador",
+    "text_profile":"Perfil",
+    "text_logout":"Cerrar sesión"
   }

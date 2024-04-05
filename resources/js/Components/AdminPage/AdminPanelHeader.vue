@@ -45,7 +45,7 @@ function getUsers(){
       <AdminPanelMenu @searchedUser="test" class="menu"></AdminPanelMenu>
       <ModalUsers class="modal-users-button" @getUser="getUsers" :traduccion="traduccion"></ModalUsers>
       <div class="dropdown-div">
-        <UserDropdown :user="user" class="user-dropdown" />
+        <UserDropdown :user="user" :traductions="props.traduccion" :class="user-dropdown" />
       </div>
     </div>
   </div>

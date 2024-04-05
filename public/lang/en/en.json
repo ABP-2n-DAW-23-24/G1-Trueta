@@ -26,5 +26,11 @@
     "usernotfound": "User not found",
     "findUser": "Find user",
     "addUserTitle": "Add users",
-    "surnames": "Surnames"
+    "surnames": "Surnames",
+    "text_home":"Home",
+    "text_antibiotics":"Antibiotic panel",
+    "adminis":"Admin Panel",
+    "text_profile":"Profile",
+    "text_logout":"Logout"
+    
   }

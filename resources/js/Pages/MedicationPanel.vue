@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,defineProps } from 'vue';
 import axios from 'axios';
 import { useForm, router, usePage } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
@@ -161,6 +161,8 @@ onMounted(() => {
 
 const props = defineProps({
     user: Object,
+    traduccionjson: Object,
+
 });
 
 
@@ -350,7 +352,7 @@ const deleteMedication = (medicationId) => {
             });
     }
 };
-
+let traduccion=JSON.parse(props.traduccionjson)
 </script>
 
 <template>
@@ -358,7 +360,7 @@ const deleteMedication = (medicationId) => {
         <header class="header">
             <Logo class="logo" />
             <div class="user-dropdown">
-                <UserDropdown :user="props.user" />
+                <UserDropdown :user="props.user" :traductions="traduccion" />
             </div>
         </header>
 

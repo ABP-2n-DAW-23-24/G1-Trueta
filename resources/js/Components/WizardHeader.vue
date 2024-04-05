@@ -16,6 +16,8 @@ const props = defineProps({
     type: Object,
     required: true
   },
+  traductions:{
+    type: Object,
   setResumes: {
     type: Function,
     required: true
@@ -87,7 +89,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
         :setSurgeries="props.setSurgeries"
         :surgeries="props.surgeries"
       />
-      <UserDropdown :user="props.user" />
+      <UserDropdown :user="props.user" :traductions="props.traductions" />
     </div>
 </template>
 

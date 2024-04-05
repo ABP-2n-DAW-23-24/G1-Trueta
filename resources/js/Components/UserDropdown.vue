@@ -5,40 +5,49 @@ const props = defineProps({
   user: {
     type: Object,
     required: true
+  },
+  traductions:{
+    type:Object,
+    required:true
   }
 });
+let home=props.traductions["text_home"]
+let antibiotics=props.traductions["text_antibiotics"]
+let administr=props.traductions["adminis"]
+let profile=props.traductions["text_profile"]
+let logout=props.traductions["text_logout"]
 </script>
 
 <template>
   <BuildableDropdown class="user-dropdown" :user="user" :routes="[
     {
-      label: 'Pàgina d\'inici',
+      label: home,
       route: 'index',
       method: 'get',
       isAdmin: false,
       isManager: false,
     },
     {
-      label: 'Panell d\'antibiòtics',
+      label: antibiotics,
       route: 'medication-panel',
       isAdmin: true,
       isManager: true,
     },
 
     {
-      label: 'Panell administració',
+      label: administr,
       route: 'admin_panel',
       isAdmin: true,
       isManager: false,
     },
     {
-      label: 'Perfil',
+      label: profile,
       route: 'profile.edit',
       isAdmin: false,
       isManager: false,
     },
     {
-      label: 'Tancar sessió',
+      label: logout,
       route: 'logout',
       method: 'post',
       isAdmin: false,

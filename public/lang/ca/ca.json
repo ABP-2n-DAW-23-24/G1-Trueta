@@ -28,7 +28,12 @@
         "usernotfound":"Usuari no trobat",
         "findUser":"Buscar Usuari",
         "addUserTitle":"Afegir Usuaris",
-        "surnames":"Cognoms"
+        "surnames":"Cognoms",
+        "text_home":"Pàgina d inici",
+        "text_antibiotics":"Panell d antibiòtics",
+        "adminis":"Panell administració",
+        "text_profile":"Perfil",
+        "text_logout":"Tancar sessió"
         
         
         

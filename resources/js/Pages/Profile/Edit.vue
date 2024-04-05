@@ -43,7 +43,7 @@ switch(props.language){
     <div class="container-profile">
         <Head title="Profile" />
          <div class="profile-header">
-            <WizardProfileHeader :user="user" /> 
+            <WizardProfileHeader :user="user" :traductions="traductions" /> 
         </div> 
 
         <div class="">
