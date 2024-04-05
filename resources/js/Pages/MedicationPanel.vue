@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useForm, router, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import Logo from '@/Components/Logo.vue';
 import UserDropdown from '@/Components/UserDropdown.vue';
 import Footer from '@/Components/Footer.vue';
 import Button from '@/Components/Button.vue';
+import ModalOnSteroids from '@/Components/ModalOnSteroids.vue';
 
 // Medications
 const activeMedication = ref(1);
@@ -17,23 +18,28 @@ const toggleMedication = (medicationId) => {
 
 };
 // Modals
-const isAddMedicationModalActive = ref(false);
 const isAddDoseModalActive = ref(false);
-const isAddConditionModalActive = ref(false);
-const isEditDoseModalActive = ref(false);
 const isAddDosageActive = ref(false);
+const isModalMedicationInfoOpen = ref(false);
+const isModalMedicationInfoOpen2 = ref(false);
 
-const showModal = () => {
-    isAddMedicationModalActive.value = true;
-};
 
-const closeModal = () => {
-    isAddMedicationModalActive.value = false;
-};
+function setIsModalMedicationInfoOpen(value) {
+    isModalMedicationInfoOpen.value = value;
+    document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
+}
 
-const showModalDosis = () => {
-    isAddDoseModalActive.value = true;
-};
+function setIsModalMedicationInfoOpen2(value) {
+    EditDosageForm.dosage = medicationDosage.value.find(dosage => dosage.id === activeMedication.value)?.dosage;
+    isModalMedicationInfoOpen2.value = value;
+    document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
+}
+
+// const showModalDosage = () => {
+//     isAddDosageActive.value = true;
+//     EditDosageForm.dosage = medicationDosage.value.find(dosage => dosage.id === activeMedication.value)?.dosage;
+
+// };
 
 const closeModalDosis = () => {
     isAddDoseModalActive.value = false;
@@ -48,12 +54,6 @@ const closeModalDosis = () => {
     AddDose.doseId = '';
     AddDose.conditionId = '';
 
-};
-
-const showModalCondicio = (doseId) => {
-    const modal = document.getElementById('image-modal-add' + doseId);
-    modal.classList.add('is-active');
-    console.log(doseId);
 };
 
 const closeModalCondicio = (doseId) => {
@@ -74,12 +74,6 @@ const closeModalEdit = (doseId) => {
     modal.classList.remove('is-active');
     AddContitionToDelete.value = [];
     ConditionsArray.value = [];
-};
-
-const showModalDosage = () => {
-    isAddDosageActive.value = true;
-    EditDosageForm.dosage = medicationDosage.value.find(dosage => dosage.id === activeMedication.value)?.dosage;
-
 };
 
 const closeModalDosage = () => {
@@ -107,15 +101,17 @@ onMounted(() => {
 const addMedicationForm = useForm({
     name: '',
 });
+
 // Add medication
 const addMedication = () => {
     addMedicationForm.post('/medication-panel/add-medication', {
         onSuccess: () => {
+            setIsModalMedicationInfoOpen(false);
             getMedications()
-            closeModal();
         }
     });
 };
+
 // Get medications
 function getMedications() {
     axios.get('/medication-panel/get-medication')
@@ -329,9 +325,9 @@ const editDosage = () => {
     EditDosageForm.medicationId = activeMedication.value;
     EditDosageForm.post('/medication-panel/edit-medication-dosage', {
         onSuccess: () => {
+            setIsModalMedicationInfoOpen2(false);
             getDoses(activeMedication.value);
             getMedicationDosage(activeMedication.value);
-            closeModalDosage();
         }
     });
 };
@@ -365,35 +361,35 @@ const deleteMedication = (medicationId) => {
         <div class="medication-panel-content">
             <div class="medications">
                 <div class="add-medication" v-if="user.isManager">
-                    <div :class="{ 'is-active': isAddMedicationModalActive }" class="modal">
-                        <div class="modal-background" @click="closeModal"></div>
-                        <form @submit.prevent="addMedication">
-                            <div class="modal-content">
-                                <div class="modal-card">
-                                    <section class="modal-card-body">
-                                        <div class="field">
-                                            <label class="label">Nom del medicament:</label>
-                                            <div class="control">
-                                                <input class="input input-add-medication" type="text"
-                                                    placeholder="Nom del medicament..." title="Nom del medicament..."
-                                                    v-model="addMedicationForm.name">
-                                            </div>
-                                        </div>
-                                    </section>
-                                    <footer class="modal-card-foot">
-                                        <button class="button is-success add-button" type="submit">Afegir</button>
-                                        <button class="button-cancel" @click="closeModal"
-                                            type="button">Cancelar</button>
-                                    </footer>
-                                </div>
-                            </div>
-                            <button id="image-modal-close" class="modal-close" title="Close"
-                                @click="closeModal"></button>
-                        </form>
-                    </div>
-                    <button class="add-button" id="showModal" @click="showModal">
+                    <button @click="setIsModalMedicationInfoOpen(true)" class="add-button" id="showModal">
                         + Afegir medicament
                     </button>
+
+                    <ModalOnSteroids 
+                        :show="isModalMedicationInfoOpen" 
+                        :set="setIsModalMedicationInfoOpen"
+                        :title="`Afegir medicament`"
+                    >
+                        <template v-slot:body>
+                            <div class="field">
+                                <label class="label">Nom del medicament:</label>
+                                <div class="control">
+                                    <input class="input input-add-medication" type="text"
+                                        placeholder="Nom del medicament..." title="Nom del medicament..."
+                                        v-model="addMedicationForm.name">
+                                </div>
+                            </div>
+                            <div class="add-med">
+                                <button class="button add-button" @click="addMedication"  type="submit">
+                                    Afegir
+                                </button>
+                                <button class="button add-button-delete" @click="setIsModalMedicationInfoOpen(false)" type="submit">
+                                    Cancelar
+                                </button>
+                            </div>
+                            
+                        </template>
+                    </ModalOnSteroids>
                 </div>
                 <div class="medication-button" :class="{ 'active': activeMedication === medication.id }"
                     v-for="medication in medications" :key="medication.id" @click="toggleMedication(medication.id)">
@@ -403,6 +399,7 @@ const deleteMedication = (medicationId) => {
                 </div>
 
             </div>
+
             <div class="medication-content">
                 <div class="medication-buttons-panel">
 
@@ -410,54 +407,77 @@ const deleteMedication = (medicationId) => {
                 <div class="medication-dosage-content">
                     <h1 class="title-dosage">Dosificacions de l'antibiòtic {{ medications.find(med => med.id === activeMedication)?.name }}: </h1>
                     <div class="medication-dosage-div" v-for="dosage in medicationDosage" :key="dosage.id">
-                        <textarea class="textarea is-link" readonly
-                            placeholder="Encara no hi ha dosificació per aquest antibiòtic">{{ dosage.dosage === null ? 'Encara no hi ha dosificació per aquest antibiòtic' : dosage.dosage }}</textarea>
+                        <textarea class="textarea is-link" readonly placeholder="Encara no hi ha dosificació per aquest antibiòtic"
+                        >{{ dosage.dosage === null ? 'Encara no hi ha dosificació per aquest antibiòtic' : dosage.dosage }}
+                        </textarea>
                     </div>
                     <div class="button-edit-dosage">
                         <div :class="{ 'is-active': isAddDosageActive }" class="modal">
-
                             <div class="modal-background" @click="closeModalDosage"></div>
-                            <form @submit.prevent="editDosage">
-                                <div class="modal-content">
-                                    <div class="modal-card">
-                                        <section class="modal-card-body">
-                                            <div class="field">
-                                                <label class="label">Dosificació de {{ medications.find(med => med.id
-                    === activeMedication)?.name }}:</label>
-                                                <div class="control">
-                                                    <textarea class="textarea input-edit-dosage"
-                                                        placeholder="Encara no hi ha dosificació per aquest antibiòtic"
-                                                        title="Dosificació de l'antibiòtic..."
-                                                        v-model="EditDosageForm.dosage"></textarea>
-
-                                                </div>
-                                            </div>
-                                        </section>
-                                        <footer class="modal-card-foot">
-                                            <button class="button is-success add-button"
-                                                type="submit">Actualitzar</button>
-                                            <button class="button-cancel" @click="closeModalDosage"
-                                                type="button">Cancelar</button>
-                                        </footer>
-                                    </div>
-                                </div>
-                                <button id="image-modal-close" class="modal-close" title="Close"
-                                    @click="closeModalDosage"></button>
-                            </form>
                         </div>
-                  <!-- only if IsMaager (user) is true -->
+
+                        <ModalOnSteroids 
+                                :show="isModalMedicationInfoOpen2" 
+                                :set="setIsModalMedicationInfoOpen2"
+                                :title="`Dosificació de ${medications.find(med => med.id === activeMedication)?.name }:`"
+                            >
+                                <template v-slot:body>
+                                    <div class="consolas">
+                                        <div class="field">
+                                            <div class="control">
+                                                <textarea 
+                                                    class="textarea input-edit-dosage"
+                                                    placeholder="Encara no hi ha dosificació per aquest antibiòtic"
+                                                    title="Dosificació de l'antibiòtic..."
+                                                    v-model="EditDosageForm.dosage">
+                                                </textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="add-med">
+                                            <button class="button add-button" @click="editDosage" type="submit">
+                                                Actualizar
+                                            </button>
+
+                                            <button class="button add-button-delete" @click="setIsModalMedicationInfoOpen2(false)" type="submit">
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </template>
+                        </ModalOnSteroids>
+
+                        <ModalOnSteroids 
+                            :show="isModalMedicationInfoOpen" 
+                            :set="setIsModalMedicationInfoOpen"
+                            :title="`Eliminació d'usuari`"
+                        >
+                            <template v-slot:body>
+                                <div class="consolas">Estàs segur de que vols eliminar l'usuari </div>
+                                <div class="nota consolas">Aquesta opció no es podra desfer</div>
+                            </template>
+                        </ModalOnSteroids>
+                        <!-- only if IsMaager (user) is true -->
                         <div class="buttons-dosage" v-if="props.user.isManager">
                                           
-                           
-                        <Button class="button-dosage" :text="'Editar dosificació'" @click="showModalDosage" />
-                 
-                    <Button class="delete-med" :text="'Eliminar medicament'" @click="deleteMedication(activeMedication)"
-                        :id="activeMedication" />
+                            <Button
+                                @click="setIsModalMedicationInfoOpen2(true)"
+                                class="button-dosage" 
+                                :text="'Editar dosificació'" 
+                            />
+                    
+                            <Button
+                                @click="deleteMedication(activeMedication)"
+                                class="delete-med" 
+                                :text="'Eliminar medicament'" 
+                                :id="activeMedication"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <Footer />
 </template>
@@ -604,6 +624,18 @@ const deleteMedication = (medicationId) => {
 .add-button:hover {
     background-color: #b85e00;
     color: #ffffff;
+}
+
+.add-med {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.add-med .add-button,
+.add-med .add-button-delete {
+    width: 20% !important;
 }
 
 .add-button-delete {

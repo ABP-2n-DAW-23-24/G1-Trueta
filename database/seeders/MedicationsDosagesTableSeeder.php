@@ -104,7 +104,39 @@ class MedicationsDosagesTableSeeder extends Seeder
             - Temps infusió: 30- 60 min.
             - L’antibiòtic ha d’haver finalitzat dins els 60 min previs a la incisió de la pell.
             - Donar segona dosi si pèrdua de ≥ 1500mL de sang.
-            - No cal re-dosificar si es perllonga la cirurgia.'
+            - No cal re-dosificar si es perllonga la cirurgia.
+            
+            Pes ajustat= [(pes real - pes ideal) x 0,4 ] + pes ideal.
+
+            Pes ideal(kg):
+
+            Altura (cm) | HOMBRES | MUJERES
+            --------------------------------
+            140         |   39    |   34
+            145         |   43    |   39
+            150         |   48    |   43
+            155         |   52    |   48
+            160         |   57    |   52
+            165         |   61    |   57
+            170         |   66    |   62
+            175         |   71    |   66
+            180         |   75    |   71
+            185         |   80    |   75
+            190         |   84    |   80
+            195         |   89    |   84
+
+
+            Dosis(mg):
+
+            Pes Ajustat (Kg) | 3 mg/kg | 5 mg/kg
+            -------------------------------------
+            <55               |  160 mg |  240 mg
+            50-60             |  160 mg |  320 mg
+            60-75             |  240 mg |  320 mg
+            75-90             |  240 mg |  400 mg
+            90-110            |  320 mg |  480 mg
+
+            '
         ]);
 
         // 8
