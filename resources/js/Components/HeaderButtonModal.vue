@@ -36,6 +36,14 @@ const props = defineProps({
     setSelectedOperation: {
         type: Function,
         required: true
+    },
+    setSurgeries: {
+        type: Function,
+        required: true
+    },
+    surgeries: {
+        type: Array,
+        required: true
     }
 });
 
@@ -54,6 +62,8 @@ const props = defineProps({
         :setSelectedSurgery="setSelectedSurgery"
         :selectedOperation="props.selectedOperation"
             :setSelectedOperation="props.setSelectedOperation"
+            :setSurgeries="props.setSurgeries"
+            :surgeries="props.surgeries"
         />
     </div>
     </div>

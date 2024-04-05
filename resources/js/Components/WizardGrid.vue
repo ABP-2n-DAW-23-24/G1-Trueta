@@ -107,6 +107,14 @@ const props = defineProps({
     type: Function,
     required: true
   },
+  surgeries: {
+    type: Array,
+    required: true
+  },
+  setSurgeries: {
+    type: Function,
+    required: true
+  }
 });
 
 function formattedResume(resume) {
@@ -167,14 +175,14 @@ function getMedicationName(medicationId) {
   return medications.value.filter(medication => medication.id == medicationId)[0].name;
 };
 
-const surgeries = ref([]);
 const conditionNameInput = ref(null);
 
 
 props.setIsLoading(true);
 axios.get("/json/surgeriesWithOperations")
   .then(response => {
-    surgeries.value = response.data;
+    console.log(response.data);
+    props.setSurgeries(response.data);
   }).finally(() => {
     props.setIsLoading(false);
   });
@@ -202,7 +210,7 @@ function makeDarkColor(color) {
 }
 
 const currentOperation = computed(() => {
-  return surgeries.value.length > 0 ? surgeries.value[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
+  return props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
 });
 
 // Get medications
@@ -384,16 +392,16 @@ const computeModalMedicationInfo = computed(() => {
       }"
       @mouseover="props.setHoveredOperation(operation.id)" 
       @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
+      v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => props.setSelectedOperation(operation.id)" 
       :name="operation.name"
-      :color="surgeries[props.selectedSurgery].color"
-      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
+      :color="props.surgeries[props.selectedSurgery].color"
+      :textColor="makeTextColorReadable(props.surgeries[props.selectedSurgery].color)" type="operation" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
   <div
-    v-show="crumb === 1 && !isLoading && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
+    v-show="crumb === 1 && !isLoading && props.surgeries.length > 0 && props.surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
@@ -406,10 +414,10 @@ const computeModalMedicationInfo = computed(() => {
       }" 
       @mouseover="props.setHoveredOperation(operation.id)" 
       @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+      v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name" 
-      :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
+      :color="makeDarkColor(props.surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(props.surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
 
   <div v-show="crumb === 2 && !isLoading" class="questions-container">

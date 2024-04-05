@@ -50,6 +50,8 @@ const props = defineProps({
     user: Object,
 });
 
+const surgeries = ref([]);
+
 const hoveredSurgery = ref(-1);
 const hoveredOperation = ref(-1);
 
@@ -68,7 +70,10 @@ function setSelectedOperation(value) {
   .finally(() => {
     isLoading.value = false;
   });
+}
 
+function setSurgeries(value) {
+  surgeries.value = value;
 }
 
 function setHoveredSurgery(id) {
@@ -133,6 +138,8 @@ function setResumes(value) {
         :setIsLoading="setIsLoading"
         :setSelectedQuestions="setSelectedQuestions"
         :setResumes="setResumes"
+        :surgeries="surgeries"
+        :setSurgeries="setSurgeries"
       />
     </div>
   </div>
