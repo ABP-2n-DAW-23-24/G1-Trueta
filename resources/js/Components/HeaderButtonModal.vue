@@ -51,21 +51,20 @@ const props = defineProps({
 
 <template>
     <div class="breadcrumb-buttons-container">
-      
-    <div class="breadcrumb-button-modal" v-if="user.isAdmin === 1 || user.isManager === 1">
-        <ModalAddHeader
-        :crumb="crumb"
-        :setCrumb="setCrumb"
-        :user="user"
-        :breadcrumbs="breadcrumbs"
-        :selectedSurgery="selectedSurgery"
-        :setSelectedSurgery="setSelectedSurgery"
-        :selectedOperation="props.selectedOperation"
-            :setSelectedOperation="props.setSelectedOperation"
-            :setSurgeries="props.setSurgeries"
-            :surgeries="props.surgeries"
-        />
-    </div>
+        <div class="breadcrumb-button-modal" v-if="user.isAdmin === 1 || user.isManager === 1">
+            <ModalAddHeader
+                :crumb="crumb"
+                :setCrumb="setCrumb"
+                :user="user"
+                :breadcrumbs="breadcrumbs"
+                :selectedSurgery="selectedSurgery"
+                :setSelectedSurgery="setSelectedSurgery"
+                :selectedOperation="props.selectedOperation"
+                :setSelectedOperation="props.setSelectedOperation"
+                :setSurgeries="props.setSurgeries"
+                :surgeries="props.surgeries"
+            />
+        </div>
     </div>
 </template>
 
