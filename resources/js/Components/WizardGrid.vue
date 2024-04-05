@@ -43,6 +43,10 @@ const props = defineProps({
     type: Function,
     required: true
   },
+  user: {
+    type: Object,
+    required: true
+  },
   setSelectedSurgery: {
     type: Function,
     required: true
@@ -107,8 +111,15 @@ const props = defineProps({
     type: Function,
     required: true
   },
+  surgeries: {
+    type: Array,
+    required: true
+  },
+  setSurgeries: {
+    type: Function,
+    required: true
+  }
 });
-
 function formattedResume(resume) {
   return stylizeHTML(resume.replace(/{{(.*?)}}/g, "<span>$1</span>"));
 }
@@ -167,14 +178,14 @@ function getMedicationName(medicationId) {
   return medications.value.filter(medication => medication.id == medicationId)[0].name;
 };
 
-const surgeries = ref([]);
 const conditionNameInput = ref(null);
 
 
 props.setIsLoading(true);
 axios.get("/json/surgeriesWithOperations")
   .then(response => {
-    surgeries.value = response.data;
+    console.log(response.data);
+    props.setSurgeries(response.data);
   }).finally(() => {
     props.setIsLoading(false);
   });
@@ -202,7 +213,7 @@ function makeDarkColor(color) {
 }
 
 const currentOperation = computed(() => {
-  return surgeries.value.length > 0 ? surgeries.value[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
+  return props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.id === props.selectedOperation)[0] : {};
 });
 
 // Get medications
@@ -211,8 +222,8 @@ const medications = ref([]);
 onMounted(() => {
   axios.get('/medication-panel/get-medication')
     .then(response => {
+      console.log(response.data);
       medications.value = response.data;
-      console.log(medications.value);
     });
 });
 
@@ -325,7 +336,6 @@ function handleAddCondition() {
     operationId: props.selectedOperation,
     question: conditionNameInput.value.value
   }).then(response => {
-    console.log(response.data);
     props.setSelectedOperation(props.selectedOperation);
 
     textArea.innerHTML = "";
@@ -346,14 +356,11 @@ function openModalDelete(questionId) {
 }
 
 function deleteQuestion(id) {
-  console.log("delete operation: " + props.selectedOperation)
-  console.log("delete question " + id);
 
   axios.post('/wizard/resume/delete', {
     operationId: props.selectedOperation,
     questionId: id
   }).then(response => {
-    console.log(response.data);
     props.setSelectedOperation(props.selectedOperation);
     isModalDeleteOpen.value = false;
   });
@@ -384,16 +391,16 @@ const computeModalMedicationInfo = computed(() => {
       }"
       @mouseover="props.setHoveredOperation(operation.id)" 
       @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
+      v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => props.setSelectedOperation(operation.id)" 
       :name="operation.name"
-      :color="surgeries[props.selectedSurgery].color"
-      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" />
+      :color="props.surgeries[props.selectedSurgery].color"
+      :textColor="makeTextColorReadable(props.surgeries[props.selectedSurgery].color)" type="operation" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
   <div
-    v-show="crumb === 1 && !isLoading && surgeries.length > 0 && surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
+    v-show="crumb === 1 && !isLoading && props.surgeries.length > 0 && props.surgeries[props.selectedSurgery].operations.some(op => op.profilaxis === 0)">
     <h1 class="title is-1">No precisa profilaxis</h1>
   </div>
 
@@ -406,13 +413,13 @@ const computeModalMedicationInfo = computed(() => {
       }" 
       @mouseover="props.setHoveredOperation(operation.id)" 
       @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in surgeries.length > 0 ? surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+      v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name" 
-      :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
+      :color="makeDarkColor(props.surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(props.surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
 
-  <div v-show="crumb === 2 && !isLoading" class="questions-container">
+  <div v-show="crumb === 2 && !isLoading" :class="{ 'questions-container': true, 'show-both': props.user.isAdmin == 1 || props.user.isManager == 1 }">
     <div class="questions-manager-container" ref="checkboxContainer">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="questions">
@@ -433,7 +440,7 @@ const computeModalMedicationInfo = computed(() => {
               </span>
               <span>{{ question.question }}</span>
             </label>
-            <svg 
+            <svg v-show="props.user.isAdmin == 1 || props.user.isManager == 1"
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 448 512" 
               class="icons"
@@ -471,7 +478,7 @@ const computeModalMedicationInfo = computed(() => {
         </Boto>
       </div>
     </div>
-    <div class="questions-manager-container">
+    <div v-show="props.user.isAdmin == 1 || props.user.isManager == 1" class="questions-manager-container">
       <h2>Gestor de condicions</h2>
       <div class="manager-inputs">
         <input type="text" placeholder="Nom de la condició" ref="conditionNameInput">
@@ -527,15 +534,20 @@ const computeModalMedicationInfo = computed(() => {
 
 .questions-container {
   display: grid;
-  grid-template-columns: 1.25fr 1fr;
+  grid-template-columns: auto;
   gap: 15px;
 }
 
 .questions-operation-container,
 .questions-manager-container {
+  width: 100%;
   background-color: #f0f0f0;
   padding: 30px 40px;
   border-radius: 10px;
+}
+
+.questions-container.show-both {
+  grid-template-columns: 1.25fr 1fr;
 }
 
 .questions-container h2 {

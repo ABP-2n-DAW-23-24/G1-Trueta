@@ -46,3 +46,5 @@ echo "[ INFO ] Seeding Questions...";
 php artisan db:seed --class=QuestionsTableSeeder
 echo "[ INFO ] Seeding Resumes...";
 php artisan db:seed --class=ResumesTableSeeder
+echo "[ INFO ] Seeding MedicationsDosages...";
+php artisan db:seed --class=MedicationsDosagesTableSeeder

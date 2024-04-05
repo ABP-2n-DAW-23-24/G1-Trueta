@@ -25,6 +25,8 @@ const props = defineProps({
     setIsLoading: Function,
     setSelectedQuestions: Function,
     setResumes: Function,
+    surgeries: Array,
+    setSurgeries: Function,
 });
 
 
@@ -45,11 +47,14 @@ const props = defineProps({
             :setSelectedSurgery="props.setSelectedSurgery"
             :selectedOperation="props.selectedOperation"
             :setSelectedOperation="props.setSelectedOperation"
+            :setSurgeries="props.setSurgeries"
+            :surgeries="props.surgeries"
             
         />
         <WizardGrid
             :crumb="props.crumb"
             :setCrumb="props.setCrumb"
+            :user="props.user"
             :selectedSurgery="props.selectedSurgery"
             :setSelectedSurgery="props.setSelectedSurgery"
             :hoveredSurgery="props.hoveredSurgery"
@@ -66,6 +71,8 @@ const props = defineProps({
             :setIsLoading="props.setIsLoading"
             :setSelectedQuestions="props.setSelectedQuestions"
             :setResumes="props.setResumes"
+            :surgeries="props.surgeries"
+            :setSurgeries="props.setSurgeries"
         />
     </div>
 </template>

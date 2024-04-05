@@ -101,7 +101,6 @@ const handleCrumbClick = (index) => {
 }
 
 @media screen and (max-width: 1000px) {
-
     .breadcrumb:not(.active) {
         display: none;
     }

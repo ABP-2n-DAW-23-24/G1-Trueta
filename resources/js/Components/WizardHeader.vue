@@ -41,6 +41,14 @@ const props = defineProps({
   setSelectedOperation: {
     type: Function,
     required: true
+  },
+  setSurgeries: {
+    type: Function,
+    required: true
+  },
+  surgeries: {
+    type: Array,
+    required: true
   }
 
 });
@@ -52,7 +60,12 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 </script>
 
 <template>
-    <div class="wizard-header-container">
+    <div
+      class="wizard-header-container"
+      :style="{
+        'grid-template-columns': props.crumb < 2 ? 'auto 50px 175px' : 'auto 175px'
+      }"
+    >
       {{ props.idSurgery }}
       <BreadcrumbsProgress
         :breadcrumbs="breadcrumbs"
@@ -73,16 +86,16 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
         :selectedSurgery="props.selectedSurgery"
         :selectedOperation="props.selectedOperation"
         :setSelectedOperation="props.setSelectedOperation"
+        :setSurgeries="props.setSurgeries"
+        :surgeries="props.surgeries"
       />
       <UserDropdown :user="props.user" :traductions="props.traductions" />
     </div>
 </template>
 
 <style scoped>
-
 .wizard-header-container {
   display: grid;
-  grid-template-columns: auto 50px 175px;
   min-height: 50px;
   gap: 15px;
 }

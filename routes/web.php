@@ -25,7 +25,6 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('IsManager')->group(function () {
         Route::get('/medication-panel', [MedicationPanelController::class, 'index'])->name('medication-panel');
-        Route::get('/medication-panel/get-medication', [MedicationPanelController::class, 'getMedication'])->name('get-medication');
         Route::post('/medication-panel/add-medication', [MedicationPanelController::class, 'addMedication'])->name('add-medication');
         Route::get('/medication-panel/get-dose-medication/{medicationId}', [MedicationPanelController::class, 'getDoseByMedication'])->name('get-dose-medication');
         Route::get('/medication-panel/get-criterias', [MedicationPanelController::class, 'getCriterias'])->name('get-criterias');
@@ -34,14 +33,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/medication-panel/add-condition-dose', [MedicationPanelController::class, 'addConditionDose'])->name('add-condition-dose');
         Route::post('/medication-panel/add-dose', [MedicationPanelController::class, 'addDose'])->name('add-dose');
         Route::post('/medication-panel/edit-dose-condition', [MedicationPanelController::class, 'editCondition'])->name('edit-dose-condition');
-        Route::get('/medication-panel/get-medication-dosage/{medicationId}', [MedicationPanelController::class, 'getMedicationDosage'])->name('get-medication-dosage');
         Route::post('/medication-panel/edit-medication-dosage', [MedicationPanelController::class, 'editMedicationDosage'])->name('edit-medication-dosage');
         Route::post('/wizard/question/add', [QuestionsController::class, 'addQuestion'])->name('add-question');
         Route::post('/wizard/resume/delete', [ResumesController::class, 'deleteResume'])->name('delete-resume');
         Route::delete('/medication-panel/delete-medication/{medicationId}', [MedicationPanelController::class, 'deleteMedication'])->name('delete-medication');
+        Route::post('/add-surgery', [IndexController::class, 'addSurgery'])->name('addSurgery');
+        Route::post('/add-operation', [IndexController::class, 'addOperation'])->name('addOperation');
     });
 
-
+    Route::get('/medication-panel/get-medication', [MedicationPanelController::class, 'getMedication'])->name('get-medication');
+    Route::get('/medication-panel/get-medication-dosage/{medicationId}', [MedicationPanelController::class, 'getMedicationDosage'])->name('get-medication-dosage');
     Route::post('/idiom_save', [UserController::class, 'setIdiom'])->name('idiom_save');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -50,8 +51,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-questions/{operationId}', [IndexController::class, 'getQuestions'])->name('getQuestions');
     Route::get('/json/surgeriesWithOperations', [SurgeriesController::class, 'surgeriesWithOperations'])->name('surgeriesWithOperations');
     Route::get('/get-resumes/{operationId}/{questionId}', [IndexController::class, 'getResume'])->name('getResume');
-    Route::post('/add-surgery', [IndexController::class, 'addSurgery'])->name('addSurgery');
-    Route::post('/add-operation', [IndexController::class, 'addOperation'])->name('addOperation');
 });
 
 Route::get('/dashboard', function () {
