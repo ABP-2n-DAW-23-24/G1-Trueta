@@ -7,7 +7,6 @@ import { useForm, router, usePage } from '@inertiajs/vue3';
 import Button from './Button.vue';
 import axios from 'axios';
 
-
 const props = defineProps({
     breadcrumbs: {
         type: Array,
