@@ -18,6 +18,7 @@ const props = defineProps({
   },
   traductions:{
     type: Object,
+  },
   setResumes: {
     type: Function,
     required: true
