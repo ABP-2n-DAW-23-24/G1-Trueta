@@ -58,7 +58,12 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 </script>
 
 <template>
-    <div class="wizard-header-container">
+    <div
+      class="wizard-header-container"
+      :style="{
+        'grid-template-columns': props.crumb < 2 ? 'auto 50px 175px' : 'auto 175px'
+      }"
+    >
       {{ props.idSurgery }}
       <BreadcrumbsProgress
         :breadcrumbs="breadcrumbs"
@@ -87,10 +92,8 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 </template>
 
 <style scoped>
-
 .wizard-header-container {
   display: grid;
-  grid-template-columns: auto 50px 175px;
   min-height: 50px;
   gap: 15px;
 }

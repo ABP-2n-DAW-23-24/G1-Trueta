@@ -47,10 +47,31 @@ const props = defineProps({
     }
 });
 
+let isModalOpen = ref(false);
+let isModalOpen1 = ref(false);
+
+function setIsModalOpen(value) {
+    isModalOpen.value = value;
+}
+
+function setIsModalOpen1(value) {
+    isModalOpen1.value = value;
+}
+
+function handleHeaderButtonClick() {
+    if (props.crumb === 0) {
+        setIsModalOpen(true);
+    }
+
+    if (props.crumb === 1) {
+        setIsModalOpen1(true);
+    }
+}
+
 </script>
 
 <template>
-    <div class="breadcrumb-buttons-container">
+    <div class="breadcrumb-buttons-container" v-show="crumb < 2" @click="handleHeaderButtonClick">
         <div class="breadcrumb-button-modal" v-if="user.isAdmin === 1 || user.isManager === 1">
             <ModalAddHeader
                 :crumb="crumb"
@@ -63,6 +84,10 @@ const props = defineProps({
                 :setSelectedOperation="props.setSelectedOperation"
                 :setSurgeries="props.setSurgeries"
                 :surgeries="props.surgeries"
+                :isModalOpen="isModalOpen"
+                :isModalOpen1="isModalOpen1"
+                :setIsModalOpen="setIsModalOpen"
+                :setIsModalOpen1="setIsModalOpen1"
             />
         </div>
     </div>
