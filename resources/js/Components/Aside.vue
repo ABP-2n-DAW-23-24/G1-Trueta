@@ -112,6 +112,7 @@ function handleOperationClick(operationId) {
   color: #434343;
   font-size: 16px;
   width: fit-content;
+  text-transform: uppercase;
 }
 
 .title {
