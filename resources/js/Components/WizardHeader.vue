@@ -39,6 +39,14 @@ const props = defineProps({
   setSelectedOperation: {
     type: Function,
     required: true
+  },
+  setSurgeries: {
+    type: Function,
+    required: true
+  },
+  surgeries: {
+    type: Array,
+    required: true
   }
 
 });
@@ -71,6 +79,8 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
         :selectedSurgery="props.selectedSurgery"
         :selectedOperation="props.selectedOperation"
         :setSelectedOperation="props.setSelectedOperation"
+        :setSurgeries="props.setSurgeries"
+        :surgeries="props.surgeries"
       />
       <UserDropdown :user="props.user" />
     </div>
