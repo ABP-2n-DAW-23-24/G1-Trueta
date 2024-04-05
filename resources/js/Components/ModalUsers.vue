@@ -5,20 +5,21 @@ import { ref, defineEmits } from 'vue';
 import Button from '@/Components/Button.vue';
 import { onMounted } from "vue";
 import axios from "axios";
+
 let props = defineProps({
     show: Boolean,
     traduccion: Object
+});
 
-})
-let name = ref("");
-let surnames = ref("");
-let email = ref("");
-let pass = ref("");
-let isAdmin = ref("0");
-let isManager = ref("0");
-let isModalOpen = ref(props.show);
-let message = ref();
-const emit = defineEmits(['EndAdd'])
+const name = ref("");
+const surnames = ref("");
+const email = ref("");
+const pass = ref("");
+const isAdmin = ref("0");
+const isManager = ref("0");
+const isModalOpen = ref(props.show);
+const message = ref();
+const emit = defineEmits(['EndAdd']);
 
 function btn_add_user(params) {
 

@@ -10,13 +10,18 @@ use App\Models\Condition;
 use App\Models\Criteria;
 use App\Models\ConditionsDose;
 use App\Models\MedicationDosage;
+use Illuminate\Support\Facades\Auth;
 
 class MedicationPanelController extends Controller
 {
     public function index() {
+        $traduccionjson=file_get_contents("lang/".Auth::user()->language."/".Auth::user()->language.".json");     
+
         $user = auth()->user();
         return Inertia::render('MedicationPanel', [
-            'user' => $user
+            'user' => $user,
+            "traduccionjson"=>$traduccionjson
+
         ]);
     }
 

@@ -58,6 +58,14 @@ const close = () => {
     grid-template-rows: auto 1fr;
     margin: var(--margin);
     gap: 30px;
+    background: #fff;
+    width: 100%;
+    max-width: 43rem;
+    max-height: calc(100vh -60px);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px;
+    overflow-y: auto;
     animation: scale-in-hor-center 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
