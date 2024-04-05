@@ -56,7 +56,6 @@ axios.get("/json/surgeriesWithOperations")
 
 
 function handleOperationClick(operationId) {
-  console.log(operationId);
   props.setCrumb(2);
   props.setSelectedOperation(operationId);
 }
@@ -112,6 +111,7 @@ function handleOperationClick(operationId) {
   color: #434343;
   font-size: 16px;
   width: fit-content;
+  text-transform: uppercase;
 }
 
 .title {
