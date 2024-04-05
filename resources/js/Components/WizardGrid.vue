@@ -43,6 +43,10 @@ const props = defineProps({
     type: Function,
     required: true
   },
+  user: {
+    type: Object,
+    required: true
+  },
   setSelectedSurgery: {
     type: Function,
     required: true
@@ -108,7 +112,6 @@ const props = defineProps({
     required: true
   },
 });
-
 function formattedResume(resume) {
   return stylizeHTML(resume.replace(/{{(.*?)}}/g, "<span>$1</span>"));
 }
@@ -211,8 +214,8 @@ const medications = ref([]);
 onMounted(() => {
   axios.get('/medication-panel/get-medication')
     .then(response => {
+      console.log(response.data);
       medications.value = response.data;
-      console.log(medications.value);
     });
 });
 
@@ -325,7 +328,6 @@ function handleAddCondition() {
     operationId: props.selectedOperation,
     question: conditionNameInput.value.value
   }).then(response => {
-    console.log(response.data);
     props.setSelectedOperation(props.selectedOperation);
 
     textArea.innerHTML = "";
@@ -346,14 +348,11 @@ function openModalDelete(questionId) {
 }
 
 function deleteQuestion(id) {
-  console.log("delete operation: " + props.selectedOperation)
-  console.log("delete question " + id);
 
   axios.post('/wizard/resume/delete', {
     operationId: props.selectedOperation,
     questionId: id
   }).then(response => {
-    console.log(response.data);
     props.setSelectedOperation(props.selectedOperation);
     isModalDeleteOpen.value = false;
   });
@@ -412,7 +411,7 @@ const computeModalMedicationInfo = computed(() => {
       :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" />
   </div>
 
-  <div v-show="crumb === 2 && !isLoading" class="questions-container">
+  <div v-show="crumb === 2 && !isLoading" :class="{ 'questions-container': true, 'show-both': props.user.isAdmin == 1 || props.user.isManager == 1 }">
     <div class="questions-manager-container" ref="checkboxContainer">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
       <div class="questions">
@@ -433,7 +432,7 @@ const computeModalMedicationInfo = computed(() => {
               </span>
               <span>{{ question.question }}</span>
             </label>
-            <svg 
+            <svg v-show="props.user.isAdmin == 1 || props.user.isManager == 1"
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 448 512" 
               class="icons"
@@ -471,7 +470,7 @@ const computeModalMedicationInfo = computed(() => {
         </Boto>
       </div>
     </div>
-    <div class="questions-manager-container">
+    <div v-show="props.user.isAdmin == 1 || props.user.isManager == 1" class="questions-manager-container">
       <h2>Gestor de condicions</h2>
       <div class="manager-inputs">
         <input type="text" placeholder="Nom de la condició" ref="conditionNameInput">
@@ -527,15 +526,20 @@ const computeModalMedicationInfo = computed(() => {
 
 .questions-container {
   display: grid;
-  grid-template-columns: 1.25fr 1fr;
+  grid-template-columns: auto;
   gap: 15px;
 }
 
 .questions-operation-container,
 .questions-manager-container {
+  width: 100%;
   background-color: #f0f0f0;
   padding: 30px 40px;
   border-radius: 10px;
+}
+
+.questions-container.show-both {
+  grid-template-columns: 1.25fr 1fr;
 }
 
 .questions-container h2 {
