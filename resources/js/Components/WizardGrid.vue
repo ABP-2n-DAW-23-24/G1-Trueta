@@ -365,6 +365,7 @@ function deleteQuestion(id) {
     isModalDeleteOpen.value = false;
   });
 }
+
 const computeModalMedicationInfo = computed(() => {
   if (modalMedicationInfo.value) {
     return modalMedicationInfo.value.replaceAll("\n", "<br>");
@@ -376,11 +377,20 @@ const computeModalMedicationInfo = computed(() => {
 <template>
   <!-- All surgeries -->
   <div v-show="crumb === 0 && !isLoading" class="wizard-grid-container">
-    <WizardSquare v-show="surgery.operations.length > 0" v-for="(surgery, index) in surgeries" :class="{
-    'hover': props.hoveredSurgery == surgery.id,
-  }" @mouseover="props.setHoveredSurgery(surgery.id)" @mouseleave="props.setHoveredSurgery(-1)"
-      @click="() => handleSurgeryClick(index)" :name="surgery.name" :color="surgery.color"
-      :textColor="makeTextColorReadable(surgery.color)" type="surgery" />
+    <WizardSquare 
+      v-show="surgery.operations.length > 0" 
+      v-for="(surgery, index) in surgeries" 
+      :class="{
+        'hover': props.hoveredSurgery == surgery.id,
+      }" 
+      @mouseover="props.setHoveredSurgery(surgery.id)" 
+      @mouseleave="props.setHoveredSurgery(-1)"
+      @click="() => handleSurgeryClick(index)" 
+      :name="surgery.name" 
+      :color="surgery.color"
+      :textColor="makeTextColorReadable(surgery.color)" 
+      type="surgery"
+    />
   </div>
 
   <!-- All operations with profilaxis -->
@@ -394,8 +404,9 @@ const computeModalMedicationInfo = computed(() => {
       v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => props.setSelectedOperation(operation.id)" 
       :name="operation.name"
-      :color="props.surgeries[props.selectedSurgery].color"
-      :textColor="makeTextColorReadable(props.surgeries[props.selectedSurgery].color)" type="operation" />
+      :color="surgeries[props.selectedSurgery].color"
+      :textColor="makeTextColorReadable(surgeries[props.selectedSurgery].color)" type="operation" 
+    />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
@@ -415,8 +426,9 @@ const computeModalMedicationInfo = computed(() => {
       @mouseleave="props.setHoveredOperation(-1)"
       v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name" 
-      :color="makeDarkColor(props.surgeries[props.selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(props.surgeries[props.selectedSurgery].color))" type="operation" />
+      :color="makeDarkColor(surgeries[props.selectedSurgery].color)"
+      :textColor="makeTextColorReadable(makeDarkColor(surgeries[props.selectedSurgery].color))" type="operation" 
+    />
   </div>
 
   <div v-show="crumb === 2 && !isLoading" :class="{ 'questions-container': true, 'show-both': props.user.isAdmin == 1 || props.user.isManager == 1 }">
@@ -444,7 +456,8 @@ const computeModalMedicationInfo = computed(() => {
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 448 512" 
               class="icons"
-              @click="openModalDelete(question.id)">
+              @click="openModalDelete(question.id)"
+            >
                 <path
                   d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" 
                 />
@@ -455,7 +468,8 @@ const computeModalMedicationInfo = computed(() => {
                   <svg xmlns="http://www.w3.org/2000/svg" 
                     viewBox="0 0 384 512" 
                     style="height: 20px; cursor:pointer;"
-                    @click="closeModalDelete">
+                    @click="closeModalDelete"
+                  >
                     <path
                       d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
                   </svg>
@@ -474,7 +488,8 @@ const computeModalMedicationInfo = computed(() => {
           text="Consultar" 
           type="submit" 
           class="button-btn" 
-          :id="props.selectedOperation">
+          :id="props.selectedOperation"
+        >
         </Boto>
       </div>
     </div>
@@ -484,8 +499,11 @@ const computeModalMedicationInfo = computed(() => {
         <input type="text" placeholder="Nom de la condició" ref="conditionNameInput">
         <div class="ck-medications-editor">
           <div class="select-options">
-            <SelectOnSteroids :update-header="false" @change="addAntibioticToTextarea"
-              placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic">
+            <SelectOnSteroids 
+              :update-header="false" +
+              @change="addAntibioticToTextarea"
+              placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic"
+            >
               <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
             </SelectOnSteroids>
           </div>
@@ -516,7 +534,9 @@ const computeModalMedicationInfo = computed(() => {
   <ModalOnSteroids :show="isModalMedicationInfoOpen" :set="setIsModalMedicationInfoOpen"
     :title="`Informació de ${getMedicationName(selectedModalMedication)}`">
     <template v-slot:body>
-      <div v-html="computeModalMedicationInfo" class="consolas"></div>
+      <div class="consolas-wrapper">
+        <div v-html="computeModalMedicationInfo" class="consolas"></div>
+      </div>
     </template>
   </ModalOnSteroids>
 </template>
@@ -896,9 +916,14 @@ textarea:focus {
 .consolas {
   font-family: 'Consolas', monospace;
   background: #eee;
-  border: 1px solid black;
   padding: 10px;
-  border-radius: 5px;
   line-height: 1.75;
+}
+
+.consolas-wrapper {
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 100%;
+  overflow-y: scroll;
 }
 </style>
