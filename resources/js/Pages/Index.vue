@@ -150,6 +150,7 @@ function setResumes(value) {
         :selectedOperation="selectedOperation"
         :hoveredSurgery="hoveredSurgery"
         :hoveredOperation="hoveredOperation"
+        :surgeries="surgeries"
       />
     </div>
     <div class="col-right">
