@@ -1,11 +1,11 @@
 <script setup>
-import { defineProps } from 'vue';
-import { ref, computed } from 'vue';
-import Modal from './Modal.vue';
-import { defineEmits } from 'vue';
-import { useForm, router, usePage } from '@inertiajs/vue3';
-import Button from './Button.vue';
+import { defineProps, ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
+import Button from './Button.vue';
+import Modal from './Modal.vue';
+import ModalOnSteroids from '@/Components/ModalOnSteroids.vue';
+
 
 const props = defineProps({
     breadcrumbs: {
@@ -65,6 +65,13 @@ const props = defineProps({
         required: true
     }
 });
+
+const isModalAddCirurgiaOpen = ref(false);
+
+function setIsModalAddCirurgiaOpen(value) {
+    isModalAddCirurgiaOpen.value = value;
+    document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
+}
 
 function closeModal(params) {
     props.setIsModalOpen(false)
@@ -138,9 +145,10 @@ const handleCheckbox = () => {
 </script>
 
 <template>
-    <button class="button-add" title="Delete">
+    <button class="button-add">
         <img src="../../assets/img/mas.png" alt="Add" class="add-icon">
     </button>
+
     <Modal :show="isModalOpen" @close="closeModal">
         <div style="padding:20px;">
             <div style="float:right">
@@ -164,6 +172,27 @@ const handleCheckbox = () => {
             </div>
         </div>
     </Modal>
+
+    <!-- <ModalOnSteroids 
+        :show="isModalAddCirurgiaOpen" 
+        :set="setIsModalAddCirurgiaOpen"
+        :title="`Afegir nova cirurgia`"
+    >
+        <template v-slot:body>
+            <div class="form">
+                <form @submit.prevent="addSurgerySubmit">
+                    <div class="control">
+                        <input class="input input-add-medication" type="text" placeholder="Nom de la cirugía..."
+                            title="Nom de la cirugía..." v-model="addSurgery.name">
+                    </div>
+                    <div class="control">
+                        <Button type="submit" class="button is-primary" :text="'Afegir'"></Button>
+                    </div>
+                </form>
+            </div>
+        </template>
+    </ModalOnSteroids> -->
+
     <Modal :show="isModalOpen1" @close="closeModal1">
         <div style="padding:20px;">
             <div style="float:right">

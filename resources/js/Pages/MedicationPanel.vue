@@ -21,7 +21,8 @@ const toggleMedication = (medicationId) => {
 const isAddDoseModalActive = ref(false);
 const isAddDosageActive = ref(false);
 const isModalMedicationInfoOpen = ref(false);
-const isModalMedicationInfoOpen2 = ref(false);
+const isModalAddMedicationOpen = ref(false);
+const isModalDeleteMedicationOpen = ref(false);
 
 
 function setIsModalMedicationInfoOpen(value) {
@@ -29,17 +30,17 @@ function setIsModalMedicationInfoOpen(value) {
     document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
 }
 
-function setIsModalMedicationInfoOpen2(value) {
+function setIsModalAddMedicationOpen(value) {
     EditDosageForm.dosage = medicationDosage.value.find(dosage => dosage.id === activeMedication.value)?.dosage;
-    isModalMedicationInfoOpen2.value = value;
+    isModalAddMedicationOpen.value = value;
     document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
 }
 
-// const showModalDosage = () => {
-//     isAddDosageActive.value = true;
-//     EditDosageForm.dosage = medicationDosage.value.find(dosage => dosage.id === activeMedication.value)?.dosage;
-
-// };
+function setIsModalDeleteMedicationOpen(value) {
+    EditDosageForm.name = medications.value.find(medication => medication.id === activeMedication.value)?.name;
+    isModalDeleteMedicationOpen.value = value;
+    document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
+}
 
 const closeModalDosis = () => {
     isAddDoseModalActive.value = false;
@@ -327,7 +328,7 @@ const editDosage = () => {
     EditDosageForm.medicationId = activeMedication.value;
     EditDosageForm.post('/medication-panel/edit-medication-dosage', {
         onSuccess: () => {
-            setIsModalMedicationInfoOpen2(false);
+            setIsModalAddMedicationOpen(false);
             getDoses(activeMedication.value);
             getMedicationDosage(activeMedication.value);
         }
@@ -335,19 +336,18 @@ const editDosage = () => {
 };
 
 // delete medication
-const deleteMedication = (medicationId) => {
-    const confirmDelete = confirm("Segur que vols eliminar aquest medicament?");
-    if (confirmDelete) {
-        axios.delete('/medication-panel/delete-medication/' + medicationId)
-            .then(response => {
-                getMedications();
-                console.log('medication deleted');
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+function deleteMedication(medicationId) {
+    axios.delete('/medication-panel/delete-medication/' + medicationId)
+        .then(response => {
+            setIsModalDeleteMedicationOpen(false);
+            getMedications();
+            console.log('medication deleted');
+        })
+        .catch(error => {
+            console.log(error);
+        });
 };
+
 let traduccion=JSON.parse(props.traduccionjson)
 </script>
 
@@ -364,7 +364,7 @@ let traduccion=JSON.parse(props.traduccionjson)
             <div class="medications">
                 <div class="add-medication" v-if="user.isManager">
                     <button @click="setIsModalMedicationInfoOpen(true)" class="add-button" id="showModal">
-                        + Afegir medicament
+                        + Afegir Medicament
                     </button>
 
                     <ModalOnSteroids 
@@ -419,8 +419,8 @@ let traduccion=JSON.parse(props.traduccionjson)
                         </div>
 
                         <ModalOnSteroids 
-                                :show="isModalMedicationInfoOpen2" 
-                                :set="setIsModalMedicationInfoOpen2"
+                                :show="isModalAddMedicationOpen" 
+                                :set="setIsModalAddMedicationOpen"
                                 :title="`Dosificació de ${medications.find(med => med.id === activeMedication)?.name }:`"
                             >
                                 <template v-slot:body>
@@ -441,7 +441,7 @@ let traduccion=JSON.parse(props.traduccionjson)
                                                 Actualizar
                                             </button>
 
-                                            <button class="button add-button-delete" @click="setIsModalMedicationInfoOpen2(false)" type="submit">
+                                            <button class="button add-button-delete" @click="setIsModalAddMedicationOpen(false)" type="submit">
                                                 Cancelar
                                             </button>
                                         </div>
@@ -450,32 +450,35 @@ let traduccion=JSON.parse(props.traduccionjson)
                                 </template>
                         </ModalOnSteroids>
 
-                        <ModalOnSteroids 
-                            :show="isModalMedicationInfoOpen" 
-                            :set="setIsModalMedicationInfoOpen"
-                            :title="`Eliminació d'usuari`"
-                        >
-                            <template v-slot:body>
-                                <div class="consolas">Estàs segur de que vols eliminar l'usuari </div>
-                                <div class="nota consolas">Aquesta opció no es podra desfer</div>
-                            </template>
-                        </ModalOnSteroids>
                         <!-- only if IsMaager (user) is true -->
                         <div class="buttons-dosage" v-if="props.user.isManager">
                                           
                             <Button
-                                @click="setIsModalMedicationInfoOpen2(true)"
+                                @click="setIsModalAddMedicationOpen(true)"
                                 class="button-dosage" 
                                 :text="'Editar dosificació'" 
                             />
                     
                             <Button
-                                @click="deleteMedication(activeMedication)"
+                                @click="setIsModalDeleteMedicationOpen(true)"
                                 class="delete-med" 
                                 :text="'Eliminar medicament'" 
                                 :id="activeMedication"
                             />
                         </div>
+
+                        <ModalOnSteroids 
+                            :show="isModalDeleteMedicationOpen" 
+                            :set="setIsModalDeleteMedicationOpen"
+                            :title="`Eliminació de medicament ${EditDosageForm.name }`"
+                        >
+                            <template v-slot:body>
+                                <div class="consolas">Estàs segur de que vols eliminar el medicament <span>{{ EditDosageForm.name }}</span>?</div>
+                                <div class="nota consolas">Aquesta opció no es podrà desfer</div>
+
+                                <button class="button delete-medication" @click="deleteMedication(activeMedication)">Eliminar</button>
+                            </template>
+                        </ModalOnSteroids>
                     </div>
                 </div>
             </div>
@@ -656,6 +659,29 @@ let traduccion=JSON.parse(props.traduccionjson)
 .add-button-delete:hover {
     background-color: #a90909;
     color: #ffffff;
+}
+
+.consolas span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.delete-medication {
+    padding: 10px 20px;
+    background: red;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    float: right;
+}
+
+.nota {
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-transform: none;
+    color: #666;
+    padding-bottom: 30px;
 }
 
 .label-dosis {

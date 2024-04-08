@@ -2,6 +2,7 @@
 import UserDropdown from "@/Components/UserDropdown.vue";
 import BreadcrumbsProgress from "@/Components/BreadcrumbsProgress.vue";
 import HeaderButtonModal from "@/Components/HeaderButtonModal.vue";
+import { onMounted, ref } from "vue";
 
 const props = defineProps({
   crumb: {
@@ -53,6 +54,32 @@ const props = defineProps({
   }
 
 });
+const headerContainer = ref(null);
+
+onMounted(() => {
+  const recalculate = () => {
+    console.log(props.crumb);
+    const screenWidth = document.documentElement.clientWidth;
+    if (props.crumb < 2) {
+      if (screenWidth < 479) {
+        headerContainer.value.style.gridTemplateRows = '50px 50px 50px';
+      } else {
+        headerContainer.value.style.gridTemplateRows = '50px';
+      }
+    } else {
+      if (screenWidth < 479) {
+        headerContainer.value.style.gridTemplateRows = '50px 50px';
+      } else {
+        headerContainer.value.style.gridTemplateRows = '50px';
+      }
+    }
+  };
+  recalculate();
+  window.addEventListener("resize", () => {
+    // console.log(window.innerWidth);
+    recalculate();
+  });
+})
 
 console.log(props.selectedSurgery);
 
@@ -63,8 +90,9 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 <template>
     <div
       class="wizard-header-container"
+      ref="headerContainer"
       :style="{
-        'grid-template-columns': props.crumb < 2 ? 'auto 50px 175px' : 'auto 175px'
+        'grid-template-columns': props.crumb < 2 ? 'auto 50px 175px' : 'auto 175px',
       }"
     >
       {{ props.idSurgery }}
@@ -103,8 +131,8 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 
 @media (max-width: 479px) {
   .wizard-header-container {
-    grid-template-columns: auto;
-    grid-template-rows: 50px 50px 50px;
+    grid-template-columns: auto !important;
+    grid-template-rows: 50px 50px;
   }
 
   .breadcrumbs {
