@@ -71,8 +71,8 @@ function handleHeaderButtonClick() {
 </script>
 
 <template>
-    <div class="breadcrumb-buttons-container" v-show="crumb < 2" @click="handleHeaderButtonClick">
-        <div class="breadcrumb-button-modal" v-if="user.isAdmin === 1 || user.isManager === 1">
+    <div class="breadcrumb-buttons-container" v-show="crumb < 2 && (user.isAdmin)" @click="handleHeaderButtonClick">
+        <div class="breadcrumb-button-modal" v-if="user.isAdmin || user.isManager">
             <ModalAddHeader
                 :crumb="crumb"
                 :setCrumb="setCrumb"

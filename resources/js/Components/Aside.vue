@@ -46,12 +46,16 @@ const props = defineProps({
     required: true
   },
   surgeries: Array,
+  setSurgeries: {
+    type: Function,
+    required: true
+  }
 });
 
 
 axios.get("/json/surgeriesWithOperations")
 .then(response => {
-  surgeries.value = response.data;
+  props.setSurgeries(response.data);
 });
 
 
