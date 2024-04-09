@@ -1,11 +1,11 @@
 <script setup>
-import { defineProps } from 'vue';
-import { ref, computed } from 'vue';
-import Modal from './Modal.vue';
-import { defineEmits } from 'vue';
-import { useForm, router, usePage } from '@inertiajs/vue3';
-import Button from './Button.vue';
+import { defineProps, ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
 import axios from 'axios';
+import Button from './Button.vue';
+import Modal from './Modal.vue';
+import ModalOnSteroids from '@/Components/ModalOnSteroids.vue';
+
 
 const props = defineProps({
     breadcrumbs: {
@@ -66,6 +66,13 @@ const props = defineProps({
     }
 });
 
+const isModalAddCirurgiaOpen = ref(false);
+
+function setIsModalAddCirurgiaOpen(value) {
+    isModalAddCirurgiaOpen.value = value;
+    document.body.parentElement.style.overflow = value ? 'hidden' : 'auto';
+}
+
 function closeModal(params) {
     props.setIsModalOpen(false)
 }
@@ -73,11 +80,13 @@ function closeModal(params) {
 function closeModal1(params) {
     props.setIsModalOpen1(false)
     console.log(props.selectedSurgery);
+ 
 }
 
 
 const addSurgery = useForm({
     name: ''
+
 });
 
 const addSurgerySubmit = () => {
@@ -87,7 +96,7 @@ const addSurgerySubmit = () => {
             console.log(response.data);
             const newSurgery = response.data.surgery;
             const newOperation = response.data.operation;
-            newOperation.profilaxis = 1;
+            newOperation.profilaxis = addOperation.profilaxis;
             newSurgery.operations = [newOperation];
             console.log(newSurgery);
             props.setSurgeries([...props.surgeries, newSurgery]);
@@ -96,7 +105,8 @@ const addSurgerySubmit = () => {
 
 const addOperation = useForm({
     name: '',
-    surgeryId: ''
+    surgeryId: '',
+    profilaxis: 1
 });
 
 const addOperationSubmit = () => {
@@ -106,12 +116,12 @@ const addOperationSubmit = () => {
         addOperation.surgeryId = props.selectedSurgery + 1;
     }
 
-    axios.post('/add-operation', {name: addOperation.name, surgeryId: addOperation.surgeryId})
+    axios.post('/add-operation', {name: addOperation.name, surgeryId: addOperation.surgeryId, profilaxis: addOperation.profilaxis})
         .then(response => {
             closeModal1();
             const surgeryId = response.data.operation.surgeryId;
             const operation = response.data.operation;
-            operation.profilaxis = 1;
+            operation.profilaxis = addOperation.profilaxis;
 
             const _surgeries = props.surgeries;
             for (let i = 0; i < _surgeries.length; i++) {
@@ -122,14 +132,23 @@ const addOperationSubmit = () => {
             }
             props.setSurgeries(_surgeries);
             console.log(_surgeries);
+            
         });
 }
+
+
+const handleCheckbox = () => {
+    addOperation.profilaxis = addOperation.profilaxis === 0 ? 1 : 0;
+    console.log(addOperation.profilaxis);
+}
+
 </script>
 
 <template>
-    <button class="button-add" title="Delete">
+    <button class="button-add">
         <img src="../../assets/img/mas.png" alt="Add" class="add-icon">
     </button>
+
     <Modal :show="isModalOpen" @close="closeModal">
         <div style="padding:20px;">
             <div style="float:right">
@@ -153,6 +172,27 @@ const addOperationSubmit = () => {
             </div>
         </div>
     </Modal>
+
+    <!-- <ModalOnSteroids 
+        :show="isModalAddCirurgiaOpen" 
+        :set="setIsModalAddCirurgiaOpen"
+        :title="`Afegir nova cirurgia`"
+    >
+        <template v-slot:body>
+            <div class="form">
+                <form @submit.prevent="addSurgerySubmit">
+                    <div class="control">
+                        <input class="input input-add-medication" type="text" placeholder="Nom de la cirugía..."
+                            title="Nom de la cirugía..." v-model="addSurgery.name">
+                    </div>
+                    <div class="control">
+                        <Button type="submit" class="button is-primary" :text="'Afegir'"></Button>
+                    </div>
+                </form>
+            </div>
+        </template>
+    </ModalOnSteroids> -->
+
     <Modal :show="isModalOpen1" @close="closeModal1">
         <div style="padding:20px;">
             <div style="float:right">
@@ -169,9 +209,18 @@ const addOperationSubmit = () => {
                     <div class="control">
                         <input class="input input-add-medication" type="text" placeholder="Nom de l'operació..."
                             title="Nom de l'operació..." v-model="addOperation.name">
+                            <div class="checkbox-wrapper-46">
+                        <input type="checkbox" id="cbx-46-manager" class="inp-cbx" @change="handleCheckbox">
+                        <label for="cbx-46-manager" class="cbx"><span>
+                                <svg viewBox="0 0 12 10" height="10px" width="12px">
+                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                </svg></span><span>No precisa profilaxis</span>
+                        </label>
+                    </div>
                     </div>
                     <div class="control">
                         <Button type="submit" class="button is-primary" :text="'Afegir'"></Button>
+
                     </div>
                 </form>
             </div>
@@ -206,6 +255,7 @@ const addOperationSubmit = () => {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
 }
 
@@ -214,9 +264,101 @@ const addOperationSubmit = () => {
 }
 
 .title-form {
-
     font-size: 20px;
     font-weight: bold;
     padding: 10px
+}
+
+.checkbox-wrapper-46 input[type="checkbox"] {
+    display: none;
+    visibility: hidden;
+}
+
+.checkbox-wrapper-46 .cbx {
+
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.checkbox-wrapper-46 .cbx span {
+    display: inline-block;
+    vertical-align: middle;
+    transform: translate3d(0, 0, 0);
+}
+
+.checkbox-wrapper-46 .cbx span:first-child {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    transform: scale(1);
+    vertical-align: middle;
+    border: 1px solid #9098a9;
+    transition: all 0.2s ease;
+}
+
+.checkbox-wrapper-46 .cbx span:first-child svg {
+    position: absolute;
+    top: 3px;
+    left: 2px;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 16px;
+    stroke-dashoffset: 16px;
+    transition: all 0.3s ease;
+    transition-delay: 0.1s;
+    transform: translate3d(0, 0, 0);
+}
+
+.checkbox-wrapper-46 .cbx span:first-child:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: #506eec;
+    display: block;
+    transform: scale(0);
+    opacity: 1;
+    border-radius: 50%;
+}
+
+.checkbox-wrapper-46 .cbx span:last-child {
+    padding-left: 8px;
+}
+
+.checkbox-wrapper-46 .cbx:hover span:first-child {
+    border-color: #506eec;
+}
+
+.checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child {
+    background: #506eec;
+    border-color: #506eec;
+    animation: wave-46 0.4s ease;
+}
+
+.checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child svg {
+    stroke-dashoffset: 0;
+}
+
+.checkbox-wrapper-46 .inp-cbx:checked+.cbx span:first-child:before {
+    transform: scale(3.5);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+@keyframes wave-46 {
+    50% {
+        transform: scale(0.9);
+    }
+}
+
+.checkbox-wrapper-46{
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    padding-top: 10px;
 }
 </style>

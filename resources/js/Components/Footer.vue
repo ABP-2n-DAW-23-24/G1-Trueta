@@ -8,8 +8,8 @@
             </div>
             <div class="column has-text-centered">© Desenvolupat per alumnes de l'Institut Cendrassos</div>
             <div class="column is-flex is-justify-content-center">
-                <a href="https://github.com/ABP-2n-DAW-23-24/G1-Trueta" target="_blank" class="footer-octicon">
-                    <img src="../../assets/img/github.png" alt="GitHub del projecte">
+                <a href="https://cendrassos.net" target="_blank" class="footer-octicon">
+                    <img src="../../assets/img/cendrassos.png" alt="Pagina Cendrassos">
                 </a>
             </div>
         </div>

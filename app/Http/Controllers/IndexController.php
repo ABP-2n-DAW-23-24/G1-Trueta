@@ -20,10 +20,12 @@ class IndexController extends Controller
     public function index() {      
         $surgeries = Surgery::with('operations')->get()->toArray();
         $user = Auth::user();
+        $traduccionjson=file_get_contents("lang/".Auth::user()->language."/".Auth::user()->language.".json");
 
         return Inertia::render('Index', [
             'surgeries' => $surgeries,
-            'user' => $user
+            'user' => $user,
+            'traductions'=>$traduccionjson
         ]);
     }
 
@@ -52,6 +54,7 @@ class IndexController extends Controller
         $operation = new Operation();
         $operation->name = $data['name'];
         $operation->surgeryId = $data['surgeryId'];
+        $operation->profilaxis = $data['profilaxis'];
         $operation->save();
         $surgeries = Surgery::with('operations')->get()->toArray();
 

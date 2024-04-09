@@ -75,5 +75,3 @@ jobs:
             sudo chmod +x deploy/deploy.sh
             sudo sh ./deploy/deploy.sh
             echo "No t'oblidis d'executar ./builddbServer.sh"
-            
-            

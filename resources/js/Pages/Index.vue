@@ -81,8 +81,10 @@ function setCrumb(value = 0) {
 const user = ref({})
 const props = defineProps({
     user: Object,
-});
+    traductions: Object
 
+});
+let traductions=JSON.parse(props.traductions)
 const surgeries = ref([]);
 
 const hoveredSurgery = ref(-1);
@@ -148,6 +150,7 @@ function setResumes(value = []) {
         :selectedOperation="selectedOperation"
         :hoveredSurgery="hoveredSurgery"
         :hoveredOperation="hoveredOperation"
+        :surgeries="surgeries"
       />
     </div>
     <div class="col-right">
@@ -161,6 +164,7 @@ function setResumes(value = []) {
         :setHoveredSurgery="setHoveredSurgery"
         :setSelectedSurgery="setSelectedSurgery"
         :user="props.user"
+        :traductions="traductions" 
         :toggleCollapse="toggleCollapse"
         :setSelectedOperation="setSelectedOperation"
         :selectedOperation="selectedOperation"
