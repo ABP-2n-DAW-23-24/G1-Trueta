@@ -5,21 +5,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '19'
-      - uses: shivammathur/setup-php@master
+          node-version: '20'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
         with:
-          php-version: 8.3
+          php-version: 8.3.
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
-      - run: composer update
-      - run: composer install --no-dev --no-interaction --prefer-dist    
-      - run: npm install
-      - run: npm run build
-      - run: rm -rf node_modules
-      - run: rm -rf storage
-      - run: tar -czf app.tgz ./*
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist    
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Clean up
+        run: |
+          rm -rf node_modules
+          rm -rf storage
+
+      - name: Archive application
+        run: tar -czf app.tgz ./*
       - name: ssh scp ssh pipelines
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         env:
