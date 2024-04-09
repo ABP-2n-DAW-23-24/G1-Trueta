@@ -376,11 +376,16 @@ const computeModalMedicationInfo = computed(() => {
 <template>
   <!-- All surgeries -->
   <div v-show="crumb === 0 && !isLoading" class="wizard-grid-container">
-    <WizardSquare v-show="surgery.operations.length > 0" v-for="(surgery, index) in surgeries" :class="{
+    <WizardSquare
+      v-show="surgery.operations.length > 0"
+      v-for="(surgery, index) in surgeries"
+      type="surgery"
+      :surgeryId="surgery.id"
+      :class="{
     'hover': props.hoveredSurgery == surgery.id,
   }" @mouseover="props.setHoveredSurgery(surgery.id)" @mouseleave="props.setHoveredSurgery(-1)"
       @click="() => handleSurgeryClick(index)" :name="surgery.name" :color="surgery.color"
-      :textColor="makeTextColorReadable(surgery.color)" type="surgery" />
+      :textColor="makeTextColorReadable(surgery.color)"/>
   </div>
 
   <!-- All operations with profilaxis -->
@@ -389,13 +394,15 @@ const computeModalMedicationInfo = computed(() => {
       :class="{
         'hover': props.hoveredOperation === operation.id,
       }"
+      type="operation"
+      :operationId="operation.id"
       @mouseover="props.setHoveredOperation(operation.id)" 
       @mouseleave="props.setHoveredOperation(-1)"
       v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 1) : []"
       @click="() => props.setSelectedOperation(operation.id)" 
       :name="operation.name"
       :color="props.surgeries[props.selectedSurgery].color"
-      :textColor="makeTextColorReadable(props.surgeries[props.selectedSurgery].color)" type="operation" />
+      :textColor="makeTextColorReadable(props.surgeries[props.selectedSurgery].color)" />
   </div>
 
   <!-- Text separator for operations without profilaxis -->
@@ -410,15 +417,16 @@ const computeModalMedicationInfo = computed(() => {
     <WizardSquare
       :class="{
         'hover': props.hoveredOperation == operation.id,
-      }" 
+      }"
+      v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
+      type="operation"
+      :operationId="operation.id"
       @mouseover="props.setHoveredOperation(operation.id)" 
       @mouseleave="props.setHoveredOperation(-1)"
-      v-for="operation in props.surgeries.length > 0 ? props.surgeries[props.selectedSurgery].operations.filter(op => op.profilaxis === 0) : []"
       :name="operation.name" 
       :color="makeDarkColor(props.surgeries[props.selectedSurgery].color)"
-      :textColor="makeTextColorReadable(makeDarkColor(props.surgeries[props.selectedSurgery].color))" type="operation" />
+      :textColor="makeTextColorReadable(makeDarkColor(props.surgeries[props.selectedSurgery].color))" />
   </div>
-
   <div v-show="crumb === 2 && !isLoading" :class="{ 'questions-container': true, 'show-both': props.user.isAdmin == 1 || props.user.isManager == 1 }">
     <div class="questions-manager-container" ref="checkboxContainer">
       <h2>{{ currentOperation && currentOperation.name }}</h2>
