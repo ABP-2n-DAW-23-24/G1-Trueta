@@ -47,11 +47,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           connect_timeout: 10s
           first_ssh: |
-            cd ${{ secrets.SSH_DIR }}
             sudo rm -R ${{ secrets.SSH_DIR }}
             sudo mkdir -p ${{ secrets.SSH_DIR }}
             sudo chown -R www-data:www-data ${{ secrets.SSH_DIR }}
-            sudo chmod 775 ${{ secrets.SSH_DIR }}
+            sudo chmod 777 ${{ secrets.SSH_DIR }}
             cd ${{ secrets.SSH_DIR }}
           scp: |
             './app.tgz' => ${{ secrets.SSH_DIR }}
@@ -69,4 +68,5 @@ jobs:
             sed -i "s/mysql -u user -ppassword -e 'CREATE DATABASE trueta;'/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'CREATE DATABASE trueta;'/g" builddbServer.sh
             sh ./deploy/deploy.sh
             sh ./builddbServer.sh
+            
             
