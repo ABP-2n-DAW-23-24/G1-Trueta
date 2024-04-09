@@ -74,7 +74,6 @@ jobs:
             echo "Executant deploy.sh..."
             sudo chmod +x deploy/deploy.sh
             sudo sh ./deploy/deploy.sh
-            echo "Executant builddbServer.sh..."
-            sudo sh ./builddbServer.sh
+            echo "No t'oblidis d'executar ./builddbServer.sh"
             
             
