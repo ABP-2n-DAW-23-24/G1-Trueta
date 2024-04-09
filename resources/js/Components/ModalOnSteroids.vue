@@ -8,7 +8,7 @@ const props = defineProps({
         type: String,
         default: 'Modal'
     }
-});
+}); 
 
 const close = () => {
     props.set(false);
@@ -16,7 +16,7 @@ const close = () => {
 </script>
 
 <template>
-    <div v-show="show" class="modal-on-steroids-container">
+    <div v-show="show" class="modal-on-steroids-container" >
         <div class="modal-on-steroids-wrapper">
             <div class="modal-on-steroids-header">
                 <span class="modal-on-steroids-title">{{ props.title }}</span>

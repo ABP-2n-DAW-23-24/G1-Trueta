@@ -54,4 +54,3 @@ jobs:
             sed -i "s/mysql -u user -ppassword -e 'CREATE DATABASE trueta;'/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'CREATE DATABASE trueta;'/g" builddbServer.sh
             sh ./deploy/deploy.sh
             sh ./builddbServer.sh
-            
