@@ -8,7 +8,7 @@ const props = defineProps({
         type: String,
         default: 'Modal'
     }
-});
+}); 
 
 const close = () => {
     props.set(false);
