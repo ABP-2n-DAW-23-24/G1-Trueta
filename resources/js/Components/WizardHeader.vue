@@ -62,7 +62,12 @@ onMounted(() => {
     const screenWidth = document.documentElement.clientWidth;
     if (props.crumb < 2) {
       if (screenWidth < 479) {
-        headerContainer.value.style.gridTemplateRows = '50px 50px 50px';
+        if (props.user.isAdmin) {
+          headerContainer.value.style.gridTemplateRows = '50px 50px 50px';
+        } else {
+          headerContainer.value.style.gridTemplateRows = '50px 50px';
+
+        }
       } else {
         headerContainer.value.style.gridTemplateRows = '50px';
       }
@@ -76,12 +81,13 @@ onMounted(() => {
   };
   recalculate();
   window.addEventListener("resize", () => {
+console.log(props.user);
+
     // console.log(window.innerWidth);
     recalculate();
   });
 })
 
-console.log(props.selectedSurgery);
 
 const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
 
@@ -92,7 +98,7 @@ const breadcrumbs = ["Cirurgía", "Operació", "Preguntes", "Resultat"];
       class="wizard-header-container"
       ref="headerContainer"
       :style="{
-        'grid-template-columns': props.crumb < 2 ? 'auto 50px 175px' : 'auto 175px',
+        'grid-template-columns': (props.crumb < 2 && props.user.isAdmin) ? 'auto 50px 175px' : 'auto 175px',
       }"
     >
       {{ props.idSurgery }}

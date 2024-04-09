@@ -173,26 +173,6 @@ const handleCheckbox = () => {
         </div>
     </Modal>
 
-    <!-- <ModalOnSteroids 
-        :show="isModalAddCirurgiaOpen" 
-        :set="setIsModalAddCirurgiaOpen"
-        :title="`Afegir nova cirurgia`"
-    >
-        <template v-slot:body>
-            <div class="form">
-                <form @submit.prevent="addSurgerySubmit">
-                    <div class="control">
-                        <input class="input input-add-medication" type="text" placeholder="Nom de la cirugía..."
-                            title="Nom de la cirugía..." v-model="addSurgery.name">
-                    </div>
-                    <div class="control">
-                        <Button type="submit" class="button is-primary" :text="'Afegir'"></Button>
-                    </div>
-                </form>
-            </div>
-        </template>
-    </ModalOnSteroids> -->
-
     <Modal :show="isModalOpen1" @close="closeModal1">
         <div style="padding:20px;">
             <div style="float:right">
