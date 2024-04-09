@@ -31,12 +31,6 @@ const props = defineProps({
 
 <template>
   <div class="square-container">
-    <div v-if="type === 'surgery'">
-        <span>{{ surgeryId }}</span>
-      </div>
-      <div v-else-if="type === 'operation'">
-        <span>{{ opreationId }}</span>
-      </div>
     <div
       :style="{ backgroundColor: color, color: textColor }"
       class="square"
