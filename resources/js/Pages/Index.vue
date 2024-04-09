@@ -67,7 +67,7 @@ const toggleCollapse = (id) => {
 
 const crumb = ref(0);
 
-function setCrumb(value) {
+function setCrumb(value = 0) {
   crumb.value = value;
   if (value == 0) {
     collapsed.value = null;
@@ -107,27 +107,27 @@ function setSelectedOperation(value) {
   });
 }
 
-function setSurgeries(value) {
+function setSurgeries(value = []) {
   surgeries.value = value;
 }
 
-function setHoveredSurgery(id) {
+function setHoveredSurgery(id = -1) {
   hoveredSurgery.value = id;
 }
 
-function setHoveredOperation(id) {
+function setHoveredOperation(id = -1) {
   hoveredOperation.value = id;
 }
 
-function setIsLoading(value) {
+function setIsLoading(value = false) {
   isLoading.value = value;
 }
 
-function setSelectedQuestions(value) {
+function setSelectedQuestions(value = []) {
   selectedQuestions.value = value;
 }
 
-function setResumes(value) {
+function setResumes(value = []) {
   resumes.value = value;
 }
 

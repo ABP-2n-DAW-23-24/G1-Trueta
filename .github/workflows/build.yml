@@ -5,21 +5,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '19'
-      - uses: shivammathur/setup-php@master
+          node-version: '20'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
         with:
-          php-version: 8.3
+          php-version: 8.3.
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
-      - run: composer update
-      - run: composer install --no-dev --no-interaction --prefer-dist    
-      - run: npm install
-      - run: npm run build
-      - run: rm -rf node_modules
-      - run: rm -rf storage
-      - run: tar -czf app.tgz ./*
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist    
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Clean up
+        run: |
+          rm -rf node_modules
+          rm -rf storage
+
+      - name: Archive application
+        run: tar -czf app.tgz ./*
       - name: ssh scp ssh pipelines
         uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         env:
@@ -32,18 +47,22 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           connect_timeout: 10s
           first_ssh: |
-            cd ${{ secrets.SSH_DIR }}
             sudo rm -R ${{ secrets.SSH_DIR }}
             sudo mkdir -p ${{ secrets.SSH_DIR }}
             sudo chown -R www-data:www-data ${{ secrets.SSH_DIR }}
-            sudo chmod 775 ${{ secrets.SSH_DIR }}
+            sudo chmod 777 ${{ secrets.SSH_DIR }}
             cd ${{ secrets.SSH_DIR }}
           scp: |
+            echo "Descarregant el fitxer..."
             './app.tgz' => ${{ secrets.SSH_DIR }}
+            echo "Fitxer descarregat"
           last_ssh: |
             cd ${{ secrets.SSH_DIR }} 
+            echo "Descomprimint fitxer..."
             tar -xzf app.tgz
+            echo "Fitxer descomprimit"
             cp env/env.example .env
+            echo "Generant fitxer env"
             sed -i "s/DB_CONNECTION=mysql/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/g" .env
             sed -i "s/DB_HOST=127.0.0.1/DB_HOST=${{ secrets.DB_HOST }}/g" .env
             sed -i "s/DB_PORT=3306/DB_PORT=${{ secrets.DB_PORT }}/g" .env
@@ -52,5 +71,7 @@ jobs:
             sed -i "s/DB_PASSWORD=mypassword/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/g" .env
             sed -i "s/mysql -u user -ppassword -e 'DROP DATABASE IF EXISTS trueta;'/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'DROP DATABASE IF EXISTS trueta;'/g" builddbServer.sh
             sed -i "s/mysql -u user -ppassword -e 'CREATE DATABASE trueta;'/mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e 'CREATE DATABASE trueta;'/g" builddbServer.sh
-            sh ./deploy/deploy.sh
-            sh ./builddbServer.sh
+            echo "Executant deploy.sh..."
+            sudo chmod +x deploy/deploy.sh
+            sudo sh ./deploy/deploy.sh
+            echo "No t'oblidis d'executar ./builddbServer.sh"
