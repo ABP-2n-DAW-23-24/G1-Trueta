@@ -7,6 +7,8 @@ import UserDropdown from '@/Components/UserDropdown.vue';
 import Footer from '@/Components/Footer.vue';
 import Button from '@/Components/Button.vue';
 import ModalOnSteroids from '@/Components/ModalOnSteroids.vue';
+import { Head } from '@inertiajs/vue3';
+
 
 // Medications
 const activeMedication = ref(1);
@@ -352,6 +354,7 @@ let traduccion=JSON.parse(props.traduccionjson)
 </script>
 
 <template>
+    <Head title="Panel de Medicaments" />
     <div class="medication-panel-container">
         <header class="header">
             <Logo class="logo" />
@@ -409,7 +412,7 @@ let traduccion=JSON.parse(props.traduccionjson)
                 <div class="medication-dosage-content">
                     <h1 class="title-dosage">Dosificacions de l'antibiòtic {{ medications.find(med => med.id === activeMedication)?.name }}: </h1>
                     <div class="medication-dosage-div" v-for="dosage in medicationDosage" :key="dosage.id">
-                        <textarea class="textarea is-link" readonly placeholder="Encara no hi ha dosificació per aquest antibiòtic"
+                        <textarea class="textarea is-link" readonly placeholder="Encara no hi ha dosificació per aquest antibiòtic" title="Dosificació de l'antibiòtic..."
                         >{{ dosage.dosage === null ? 'Encara no hi ha dosificació per aquest antibiòtic' : dosage.dosage }}
                         </textarea>
                     </div>
