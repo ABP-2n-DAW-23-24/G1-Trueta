@@ -5,7 +5,7 @@ import Logo from '@/Components/Logo.vue';
 
 
 
-describe('fetchQuestions', () => {
+describe('Dom Img Test', () => {
   
 
   it('El Logo contiene un elemento img', async () => {
