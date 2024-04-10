@@ -2,7 +2,6 @@
 import { ref, defineProps } from 'vue';
 import axios from 'axios';
 
-const surgeries = ref(null);
 
 
 const props = defineProps({
@@ -45,13 +44,18 @@ const props = defineProps({
   hoveredOperation: {
     type: Number,
     required: true
+  },
+  surgeries: Array,
+  setSurgeries: {
+    type: Function,
+    required: true
   }
 });
 
 
 axios.get("/json/surgeriesWithOperations")
 .then(response => {
-  surgeries.value = response.data;
+  props.setSurgeries(response.data);
 });
 
 
@@ -66,7 +70,7 @@ function handleOperationClick(operationId) {
 <template>
   <ul class="menu-list" style="margin-bottom: 20px;">
     <li
-      v-for="surgery in surgeries"
+      v-for="surgery in props.surgeries"
       @mouseover="props.setHoveredSurgery(surgery.id)"
       @mouseleave="props.setHoveredSurgery(-1)"
       v-show="surgery.operations.length > 0"

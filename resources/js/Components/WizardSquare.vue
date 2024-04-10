@@ -17,6 +17,14 @@ const props = defineProps({
   textColor: {
     type: String,
     required: true
+  },
+  opreationId: {
+    type: Number,
+    required: false
+  },
+  surgeryId: {
+    type: Number,
+    required: false
   }
 });
 </script>

@@ -54,6 +54,7 @@ class IndexController extends Controller
         $operation = new Operation();
         $operation->name = $data['name'];
         $operation->surgeryId = $data['surgeryId'];
+        $operation->profilaxis = $data['profilaxis'];
         $operation->save();
         $surgeries = Surgery::with('operations')->get()->toArray();
 
