@@ -13,6 +13,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\ResumesController;
 
+
+
 Route::middleware('auth')->group(function () {
     Route::middleware('IsAdmin')->group(function () {
         Route::get('/admin-panel', [Adminpanel::class, 'index'])->name('admin_panel');
@@ -56,5 +58,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+//ajax test
+
+Route::get('/tests', function (){
+    return response()->json([ 'status' => 200]);
+
+});
 
 require __DIR__ . '/auth.php';

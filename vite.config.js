@@ -20,6 +20,8 @@ export default defineConfig({
     ],
     test: {
         globals: true,
-        environment: 'jsdom',
+        environmentMatchGlobs:[
+            ['tests/JsTests/AjaxJsTest/**','node'],['tests/JsTests/domTests/**','jsdom']
+        ],   
       },
 });
