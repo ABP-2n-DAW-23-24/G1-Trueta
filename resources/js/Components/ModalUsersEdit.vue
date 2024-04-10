@@ -60,7 +60,7 @@ function setIsModalMedicationInfoOpen(value) {
 </script>
 
 <template>
-    <button @click="setIsModalMedicationInfoOpen(true)">
+    <button @click="setIsModalMedicationInfoOpen(true)" title="edit">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icons">
             <path
                 d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" 
@@ -82,6 +82,7 @@ function setIsModalMedicationInfoOpen(value) {
                         :placeholder="props.traduccion['name']" 
                         :value="name" 
                         v-model="name"
+                        title="name"
                     >
                     <div v-if="message">
                         <p v-if="message.name" class="text_error" v-for=" (item) in message.name"> 
@@ -95,6 +96,7 @@ function setIsModalMedicationInfoOpen(value) {
                         :placeholder="props.traduccion['surnames']" 
                         :value="surnames" 
                         v-model="surnames"
+                        title="surnames"
                     >
                 </div>
                 <div class="correo_back center_flex">
@@ -104,6 +106,7 @@ function setIsModalMedicationInfoOpen(value) {
                         :placeholder="props.traduccion['email']" 
                         :value="email" 
                         v-model="email"
+                        title="mail"
                     >
                     <div v-if="message">
                         <p v-if="message.email" class="text_error" v-for=" (item, index) in message.email"> 
@@ -117,6 +120,7 @@ function setIsModalMedicationInfoOpen(value) {
                         style="width: 100%;"
                         :placeholder="props.traduccion['pass']" 
                         v-model="pass"
+                        title="pass"
                     >
                     <div v-if="message">
                         <p v-if="message.pass" class="text_error" v-for=" (item) in message.pass"> 
@@ -126,8 +130,8 @@ function setIsModalMedicationInfoOpen(value) {
                 </div>
                 <div class="rols">
                     <div class="checkbox-wrapper-46">
-                        <input type="checkbox" id="cbx-46-admin" class="inp-cbx" v-model="isAdmin">
-                        <label for="cbx-46-admin" class="cbx">
+                        <input type="checkbox" class="inp-cbx" v-model="isAdmin" title="admin" :id="`cbx-46-admin` + props.users.id">
+                        <label :for="`cbx-46-admin` + props.users.id" class="cbx">
                             <span>
                                 <svg viewBox="0 0 12 10" height="10px" width="12px">
                                     <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
@@ -137,8 +141,8 @@ function setIsModalMedicationInfoOpen(value) {
                         </label>
                     </div>
                     <div class="checkbox-wrapper-46">
-                        <input type="checkbox" id="cbx-46-manager" class="inp-cbx" v-model="isManager">
-                        <label for="cbx-46-manager" class="cbx">
+                        <input type="checkbox" class="inp-cbx" v-model="isManager" title="manager" :id="`cbx-46-manager` + props.users.id">
+                        <label  class="cbx" :for="`cbx-46-manager` + props.users.id">
                             <span>
                                 <svg viewBox="0 0 12 10" height="10px" width="12px">
                                     <polyline points="1.5 6 4.5 9 10.5 1"></polyline>

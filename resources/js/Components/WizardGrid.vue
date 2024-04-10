@@ -440,7 +440,7 @@ const computeModalMedicationInfo = computed(() => {
   </div>
   <div v-show="crumb === 2 && !isLoading" :class="{ 'questions-container': true, 'show-both': props.user.isAdmin == 1 || props.user.isManager == 1 }">
     <div class="questions-manager-container" ref="checkboxContainer">
-      <h2>{{ currentOperation && currentOperation.name }}</h2>
+      <h2>{{ currentOperation && currentOperation.name ? currentOperation.name : 'Encara no hi ha nom' }}</h2>
       <div class="questions">
         <div class="form__group" v-for="(question, index) in questions" :key="index">
           <div class="checkbox-wrapper-46 flex">
@@ -488,13 +488,14 @@ const computeModalMedicationInfo = computed(() => {
     <div v-show="props.user.isAdmin == 1 || props.user.isManager == 1" class="questions-manager-container">
       <h2>Gestor de condicions</h2>
       <div class="manager-inputs">
-        <input type="text" placeholder="Nom de la condició" ref="conditionNameInput">
+        <input type="text" placeholder="Nom de la condició" ref="conditionNameInput" title="Nom de la condició">
         <div class="ck-medications-editor">
           <div class="select-options">
+            <label for="cercador"></label>
             <SelectOnSteroids 
               :update-header="false" +
               @change="addAntibioticToTextarea"
-              placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic"
+              placeholder="Selecciona un antibiòtic" search-placeholder="Cerca un antibiòtic" title="Cercador d'antibiotics"  name="cercador" id="cercador"
             >
               <option v-for="medication in medications" :value="medication.id">{{ medication.name }}</option>
             </SelectOnSteroids>
@@ -504,7 +505,7 @@ const computeModalMedicationInfo = computed(() => {
           </TextAreaOnSteroids>
         </div>
       </div>
-      <Boto @click="handleAddCondition" text="Afegir condició" type="submit" class="button-btn-condition"></Boto>
+      <Boto @click="handleAddCondition" text="Afegir condició" type="submit" class="button-btn-condition" title="Afegir Condició"></Boto>
     </div>
   </div>
 

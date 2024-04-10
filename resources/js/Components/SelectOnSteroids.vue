@@ -19,6 +19,10 @@ const props = defineProps({
         required: false,
         default: true,
     },
+    name: {
+        type: String,
+        required: true,
+    },
 });
 
 const _value = ref(null);
@@ -124,6 +128,8 @@ const getInnerTextFromValue = computed(() => {
             class="input-option"
             type="text"
             :placeholder="props.searchPlaceholder"
+            name="search"
+            title="search"
         />
         <slot></slot>
     </div>

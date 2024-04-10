@@ -63,18 +63,18 @@ function btn_add_user() {
     <template v-slot:body>
       <div class="container-modal-edit">
         <div class="center_flex_modal">
-          <input type="text" class="input-model" :placeholder="props.traduccion['name']" :value="name" v-model="name">
+          <input type="text" class="input-model" :placeholder="props.traduccion['name']" :value="name" v-model="name" title="name">
           <div v-if="message">
             <p v-if="message.name" class="text_error" v-for=" (item) in message.name">
               {{ item }}
             </p>
           </div>
 
-          <input type="text" class="input-model" :placeholder="props.traduccion['surnames']" :value="surnames"
+          <input type="text" class="input-model" :placeholder="props.traduccion['surnames']" :value="surnames" title="surnames"
             v-model="surnames">
         </div>
         <div class="correo_back center_flex">
-          <input type="email" style="width: 100%;" :placeholder="props.traduccion['email']" :value="email"
+          <input type="email" style="width: 100%;" :placeholder="props.traduccion['email']" :value="email" title="email"
             v-model="email">
           <div v-if="message">
             <p v-if="message.email" class="text_error" v-for=" (item, index) in message.email">
@@ -83,7 +83,7 @@ function btn_add_user() {
           </div>
         </div>
         <div class="correo_back center_flex">
-          <input type="password" style="width: 100%;" :placeholder="props.traduccion['pass']" v-model="pass">
+          <input type="password" style="width: 100%;" :placeholder="props.traduccion['pass']" v-model="pass" title="pass">
           <div v-if="message">
             <p v-if="message.pass" class="text_error" v-for=" (item) in message.pass">
               {{ item }}
@@ -92,7 +92,7 @@ function btn_add_user() {
         </div>
         <div class="rols">
           <div class="checkbox-wrapper-46">
-            <input type="checkbox" id="cbx-46-admin" class="inp-cbx" v-model="isAdmin">
+            <input type="checkbox" id="cbx-46-admin" class="inp-cbx" v-model="isAdmin" title="isAdmin">
             <label for="cbx-46-admin" class="cbx">
               <span>
                 <svg viewBox="0 0 12 10" height="10px" width="12px">
@@ -103,7 +103,7 @@ function btn_add_user() {
             </label>
           </div>
           <div class="checkbox-wrapper-46">
-            <input type="checkbox" id="cbx-46-manager" class="inp-cbx" v-model="isManager">
+            <input type="checkbox" id="cbx-46-manager" class="inp-cbx" v-model="isManager" title="isManager">
             <label for="cbx-46-manager" class="cbx">
               <span>
                 <svg viewBox="0 0 12 10" height="10px" width="12px">
