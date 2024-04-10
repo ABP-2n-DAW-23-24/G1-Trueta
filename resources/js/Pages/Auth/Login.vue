@@ -93,7 +93,8 @@ const submit = () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100dvh;
+    overflow-y: hidden;
 }
 
 .main {
@@ -264,11 +265,16 @@ const submit = () => {
         border-radius: 0 0 0 0;
         box-shadow: 1px solid #4648481e;
         max-width: 350px;
+        max-height: 500px;
     }
 
     .image-container {
         border-radius: 0 0 0 0;
         box-shadow: 1px solid #151717;
+    }
+
+    .image-container img {
+        max-height: 180px;
     }
 
     .image-container img:first-child {
