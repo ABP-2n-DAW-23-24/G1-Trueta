@@ -55,9 +55,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-resumes/{operationId}/{questionId}', [IndexController::class, 'getResume'])->name('getResume');
 });
 Route::get('/get-questions-test/{operationId}', [IndexController::class, 'getQuestions'])->name('getQuestions');
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 //ajax test
 
 Route::get('/tests', function (){
