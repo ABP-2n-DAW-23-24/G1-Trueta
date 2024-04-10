@@ -8,7 +8,7 @@ use App\Models\User;
 class LoginTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     public function test_login_screen_can_be_rendered()
     {
         $response = $this->get('/login');
@@ -17,23 +17,23 @@ class LoginTest extends TestCase
 
     public function test_authenticated_user_can_login()
     {
-        $this->withoutExceptionHandling(); 
-    
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create([
             'email' => 'administrador@trueta.cat',
-            'password' => bcrypt('administrador'), 
+            'password' => bcrypt('administrador'),
         ]);
-    
+
         $response = $this->post('/login', [
             'email' => 'administrador@trueta.cat',
-            'password' => 'administrador', 
+            'password' => 'administrador',
         ]);
-    
+
         $response->assertRedirect('/dashboard');
         $this->assertAuthenticatedAs($user);
     }
-    
-    
+
+
 
     public function test_invalid_credentials_cannot_login()
     {
