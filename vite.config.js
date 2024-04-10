@@ -21,7 +21,7 @@ export default defineConfig({
     test: {
         globals: true,
         environmentMatchGlobs:[
-            ['tests/AjaxJsTest/**','node'],['tests/Feature/**','jsdom']
+            ['tests/JsTests/AjaxJsTest/**','node'],['tests/JsTests/domTests/**','jsdom']
         ],   
       },
 });
